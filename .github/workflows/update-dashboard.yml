@@ -42,7 +42,10 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
           git add clarity_dashboard.html
-          # Only commit if the file actually changed
+          # Persist the ASC request ID cache so limited-role keys work across runs
+          git add .asc_cache.json 2>/dev/null || true
+          # Only commit if something actually changed
           git diff --staged --quiet || git commit -m "chore: update dashboard $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push
