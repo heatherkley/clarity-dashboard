@@ -42,7 +42,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main
+          git pull --rebase --autostash origin main
           git add clarity_dashboard.html
           # Persist the ASC request ID cache so limited-role keys work across runs
           git add .asc_cache.json 2>/dev/null || true
