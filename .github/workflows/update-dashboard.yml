@@ -1,0 +1,48 @@
+name: Update Clarity Dashboard
+
+on:
+  # Run automatically every Monday at 7am UTC
+  schedule:
+    - cron: "0 7 * * 1"
+  # Allow manual trigger from the GitHub Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install requests PyJWT cryptography weasyprint
+
+      - name: Run dashboard generator
+        env:
+          # Full config.json contents — paste yours into this GitHub Secret
+          CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
+          # ASC private key contents (.p8 file) for each Apple Developer account
+          ASC_KEY_SHIFT: ${{ secrets.ASC_KEY_SHIFT }}
+          ASC_KEY_TODAYS_FRONT_PAGES: ${{ secrets.ASC_KEY_TODAYS_FRONT_PAGES }}
+          ASC_KEY_P3: ${{ secrets.ASC_KEY_P3 }}
+        run: |
+          python clarity_dashboard.py
+
+      - name: Commit and push updated dashboard
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add clarity_dashboard.html
+          # Only commit if the file actually changed
+          git diff --staged --quiet || git commit -m "chore: update dashboard $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push

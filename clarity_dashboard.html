@@ -1,0 +1,2281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clarity Dashboard — Feb 05 – Mar 07, 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+      min-height: 100vh;
+    }
+    header {
+      background: #1e293b;
+      color: white;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    header h1 { font-size: 1.4rem; font-weight: 600; }
+    .meta { font-size: 0.85rem; opacity: 0.7; }
+    .summary {
+      background: #3b82f6;
+      color: white;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .summary-item {
+      flex: 1;
+      min-width: 140px;
+      padding: 20px 28px;
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+    .summary-item:last-child { border-right: none; }
+    .summary-value { font-size: 2rem; font-weight: 700; }
+    .summary-label { font-size: 0.75rem; opacity: 0.8; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .legend {
+      background: #1e293b;
+      padding: 10px 32px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #94a3b8; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+      gap: 20px;
+      padding: 28px 32px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .project-name { font-weight: 700; font-size: 1rem; color: #1e293b; }
+    .platform-count { font-size: 0.75rem; color: #94a3b8; }
+    .combined-total {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+      font-size: 0.82rem;
+    }
+    .combined-label { font-weight: 600; color: #475569; }
+    .combined-stat { color: #1e293b; font-weight: 500; }
+    .combined-sep { color: #cbd5e1; }
+    .platform-row {
+      border-radius: 8px;
+      padding: 12px 12px 12px 14px;
+      margin-bottom: 10px;
+      background: #fafafa;
+    }
+    .platform-row:last-child { margin-bottom: 0; }
+    .platform-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .badge {
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+    .metrics {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .metric {
+      flex: 1;
+      min-width: 76px;
+      background: white;
+      border-radius: 6px;
+      padding: 8px 10px;
+      text-align: center;
+      border: 1px solid #f1f5f9;
+    }
+    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1e293b; }
+    .metric-label { font-size: 0.65rem; color: #64748b; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.02em; white-space: nowrap; overflow: visible; }
+    .device-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #f1f5f9;
+    }
+    .device-pill {
+      font-size: 0.75rem;
+      color: #475569;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 4px 10px;
+    }
+    .device-pill strong { color: #1e293b; }
+    .device-pct { color: #94a3b8; font-size: 0.7rem; }
+    .rc-block {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+    }
+    .rc-block.rc-debug { background: #fefce8; border-color: #fde68a; }
+    .rc-title { font-size: 0.75rem; font-weight: 600; color: #166534; display: block; margin-bottom: 8px; }
+    .rc-block.rc-debug .rc-title { color: #92400e; }
+    .rc-metrics { display: flex; gap: 8px; flex-wrap: wrap; }
+    .rc-metric {
+      flex: 1;
+      min-width: 72px;
+      background: white;
+      border-radius: 6px;
+      padding: 7px 10px;
+      text-align: center;
+      border: 1px solid #dcfce7;
+    }
+    .rc-value { font-size: 1rem; font-weight: 700; color: #166534; }
+    .rc-label { font-size: 0.65rem; color: #4ade80; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .raw-toggle {
+      margin-top: 10px;
+      font-size: 0.72rem;
+      color: #94a3b8;
+      cursor: pointer;
+      user-select: none;
+    }
+    .raw-toggle:hover { color: #3b82f6; }
+    .raw-data {
+      margin-top: 6px;
+      background: #f1f5f9;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 0.68rem;
+      overflow-x: auto;
+      color: #475569;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+    code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }
+  @media print, (format: pdf) {
+    @page { size: A4 landscape; margin: 12mm; }
+    body { background: #f1f5f9; }
+    header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .summary { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .legend { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card { break-inside: avoid; }
+    .raw-toggle, .raw-data { display: none !important; }
+    .grid { grid-template-columns: repeat(3, 1fr); padding: 16px; gap: 14px; }
+  }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>📊 Microsoft Clarity — All Projects</h1>
+    <div class="meta">Last 30 days &nbsp;·&nbsp; Feb 05 – Mar 07, 2026</div>
+  </div>
+  <div class="meta">Generated Mar 08, 2026 at 09:15 PM</div>
+</header>
+
+<div class="summary">
+  <div class="summary-item">
+    <div class="summary-value">6</div>
+    <div class="summary-label">Apps / Sites</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-value">16</div>
+    <div class="summary-label">Total Platforms</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-value">4,458</div>
+    <div class="summary-label">Total Sessions</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-value">4,173</div>
+    <div class="summary-label">Total Users</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-value">6/6</div>
+    <div class="summary-label">Apps with Data</div>
+  </div>
+  
+  <div class="summary-item">
+    <div class="summary-value">$398</div>
+    <div class="summary-label">Total MRR</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-value">$380</div>
+    <div class="summary-label">Total Revenue</div>
+  </div>
+</div>
+
+<div class="legend">
+  <span style="color:#94a3b8;font-size:0.75rem;">PLATFORMS:</span>
+  <div class="legend-item"><div class="legend-dot" style="background:#007aff"></div> iOS</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3ddc84"></div> Android</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Website</div>
+</div>
+
+<div class="grid">
+
+      <div class="card">
+        <div class="card-header">
+          <span class="project-name">Shift</span>
+          <span class="platform-count">2 platforms</span>
+        </div>
+        
+        <div class="combined-total">
+          <span class="combined-label">Combined</span>
+          <span class="combined-stat">448 sessions</span>
+          <span class="combined-sep">·</span>
+          <span class="combined-stat">225 users</span>
+        </div>
+        
+      <div class="platform-row" style="border-left:3px solid #007aff">
+        <div class="platform-header">
+          <span class="badge" style="background:#007aff">iOS</span>
+          <span class="status-dot" style="background:#22c55e" title="Data OK"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">348</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">186</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">3.3</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">5.2m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>345</strong> <span class="device-pct">(99.1%)</span></span><span class="device-pill">⬛ Tablet <strong>3</strong> <span class="device-pct">(0.9%)</span></span></div>
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadTapCount",
+    "information": [
+      {
+        "sessionsCount": "348",
+        "sessionsWithMetricPercentage": 37.93,
+        "sessionsWithoutMetricPercentage": 62.07,
+        "screensViews": "299",
+        "subTotal": "551"
+      }
+    ]
+  },
+  {
+    "metricName": "RageTapCount",
+    "information": [
+      {
+        "sessionsCount": "348",
+        "sessionsWithMetricPercentage": 0.57,
+        "sessionsWithoutMetricPercentage": 99.43,
+        "screensViews": "2",
+        "subTotal": "7"
+      }
+    ]
+  },
+  {
+    "metricName": "ApplicationErrorCount",
+    "information": [
+      {
+        "sessionsCount": "348",
+        "sessionsWithMetricPercentage": 0.29,
+        "sessionsWithoutMetricPercentage": 99.71,
+        "screensViews": "1",
+        "subTotal": "2"
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "348",
+        "totalBotSessionCount": "0",
+        "distinctUserCount": "186",
+        "screensPerSessionPercentage": 3.2685714285714287
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": "313",
+        "activeTime": "313"
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "information": [
+      {
+        "name": "Mobile",
+        "sessionsCount": "345"
+      },
+      {
+        "name": "Tablet",
+        "sessionsCount": "3"
+      }
+    ]
+  },
+  {
+    "metricName": "OS",
+    "information": [
+      {
+        "name": "IOS",
+        "sessionsCount": "348"
+      }
+    ]
+  },
+  {
+    "metricName": "Country",
+    "information": [
+      {
+        "name": "United States",
+        "sessionsCount": "233"
+      },
+      {
+        "name": "United Kingdom",
+        "sessionsCount": "60"
+      },
+      {
+        "name": "Ireland",
+        "sessionsCount": "48"
+      },
+      {
+        "name": "Canada",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Isle of Man",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Spain",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Guernsey",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "PopularScreens",
+    "information": [
+      {
+        "name": "UIViewController",
+        "sessionsCount": "348"
+      },
+      {
+        "name": "RCTFabricModalHostViewController",
+        "sessionsCount": "103"
+      },
+      {
+        "name": "PaywallViewController",
+        "sessionsCount": "70"
+      },
+      {
+        "name": "Location Disabled",
+        "sessionsCount": "4"
+      },
+      {
+        "name": "Error",
+        "sessionsCount": "4"
+      },
+      {
+        "name": "Are you absolutely sure?",
+        "sessionsCount": "3"
+      },
+      {
+        "name": "Delete Account?",
+        "sessionsCount": "3"
+      },
+      {
+        "name": "Login Failure",
+        "sessionsCount": "3"
+      },
+      {
+        "name": "Account Requirements",
+        "sessionsCount": "3"
+      },
+      {
+        "name": "MFMessageC</pre>
+      </div>
+      <div class="platform-row" style="border-left:3px solid #3ddc84">
+        <div class="platform-header">
+          <span class="badge" style="background:#3ddc84">Android</span>
+          <span class="status-dot" style="background:#22c55e" title="Data OK"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">100</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">39</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">3.0</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">12.0m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>100</strong> <span class="device-pct">(100.0%)</span></span></div>
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadTapCount",
+    "information": [
+      {
+        "sessionsCount": "100",
+        "sessionsWithMetricPercentage": 56,
+        "sessionsWithoutMetricPercentage": 44,
+        "screensViews": "87",
+        "subTotal": "367"
+      }
+    ]
+  },
+  {
+    "metricName": "RageTapCount",
+    "information": [
+      {
+        "sessionsCount": "100",
+        "sessionsWithMetricPercentage": 1,
+        "sessionsWithoutMetricPercentage": 99,
+        "screensViews": "1",
+        "subTotal": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "ApplicationErrorCount",
+    "information": [
+      {
+        "sessionsCount": "100",
+        "sessionsWithMetricPercentage": 1,
+        "sessionsWithoutMetricPercentage": 99,
+        "screensViews": "1",
+        "subTotal": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "100",
+        "totalBotSessionCount": "0",
+        "distinctUserCount": "39",
+        "screensPerSessionPercentage": 2.97
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": "718",
+        "activeTime": "383"
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "information": [
+      {
+        "name": "Mobile",
+        "sessionsCount": "100"
+      }
+    ]
+  },
+  {
+    "metricName": "OS",
+    "information": [
+      {
+        "name": "Android",
+        "sessionsCount": "100"
+      }
+    ]
+  },
+  {
+    "metricName": "Country",
+    "information": [
+      {
+        "name": "United Kingdom",
+        "sessionsCount": "37"
+      },
+      {
+        "name": "Ireland",
+        "sessionsCount": "35"
+      },
+      {
+        "name": "United States",
+        "sessionsCount": "26"
+      },
+      {
+        "name": "Canada",
+        "sessionsCount": "2"
+      }
+    ]
+  },
+  {
+    "metricName": "PopularScreens",
+    "information": [
+      {
+        "name": "MainActivity",
+        "sessionsCount": "100"
+      },
+      {
+        "name": "PaywallActivity",
+        "sessionsCount": "26"
+      },
+      {
+        "name": "LicenseActivity",
+        "sessionsCount": "4"
+      },
+      {
+        "name": "IntercomRootActivity",
+        "sessionsCount": "4"
+      }
+    ]
+  }
+]</pre>
+      </div>
+        <div class="rc-block"><span class="rc-title">💰 Revenue (last 30 days)</span><div class="rc-metrics"><div class="rc-metric"><div class="rc-value">$332.00</div><div class="rc-label">MRR</div></div><div class="rc-metric"><div class="rc-value">$291.00</div><div class="rc-label">Revenue</div></div><div class="rc-metric"><div class="rc-value">44</div><div class="rc-label">Subscribers</div></div><div class="rc-metric"><div class="rc-value">114</div><div class="rc-label">Trials</div></div></div></div>
+        <div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Data initializing — check back tomorrow</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="project-name">Today's Front Pages</span>
+          <span class="platform-count">3 platforms</span>
+        </div>
+        
+        <div class="combined-total">
+          <span class="combined-label">Combined</span>
+          <span class="combined-stat">3,053 sessions</span>
+          <span class="combined-sep">·</span>
+          <span class="combined-stat">3,071 users</span>
+        </div>
+        
+      <div class="platform-row" style="border-left:3px solid #007aff">
+        <div class="platform-header">
+          <span class="badge" style="background:#007aff">iOS</span>
+          <span class="status-dot" style="background:#22c55e" title="Data OK"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">390</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">288</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">4.7</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">3.0m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>243</strong> <span class="device-pct">(62.3%)</span></span><span class="device-pill">⬛ Tablet <strong>147</strong> <span class="device-pct">(37.7%)</span></span></div>
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadTapCount",
+    "information": [
+      {
+        "sessionsCount": "390",
+        "sessionsWithMetricPercentage": 35.38,
+        "sessionsWithoutMetricPercentage": 64.62,
+        "screensViews": "259",
+        "subTotal": "406"
+      }
+    ]
+  },
+  {
+    "metricName": "RageTapCount",
+    "information": [
+      {
+        "sessionsCount": "390",
+        "sessionsWithMetricPercentage": 1.28,
+        "sessionsWithoutMetricPercentage": 98.72,
+        "screensViews": "5",
+        "subTotal": "7"
+      }
+    ]
+  },
+  {
+    "metricName": "ApplicationErrorCount",
+    "information": [
+      {
+        "sessionsCount": "390",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "390",
+        "totalBotSessionCount": "0",
+        "distinctUserCount": "288",
+        "screensPerSessionPercentage": 4.692695214105793
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": "178",
+        "activeTime": "178"
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "information": [
+      {
+        "name": "Mobile",
+        "sessionsCount": "243"
+      },
+      {
+        "name": "Tablet",
+        "sessionsCount": "147"
+      }
+    ]
+  },
+  {
+    "metricName": "OS",
+    "information": [
+      {
+        "name": "IOS",
+        "sessionsCount": "390"
+      }
+    ]
+  },
+  {
+    "metricName": "Country",
+    "information": [
+      {
+        "name": "United States",
+        "sessionsCount": "341"
+      },
+      {
+        "name": "Canada",
+        "sessionsCount": "13"
+      },
+      {
+        "name": "United Kingdom",
+        "sessionsCount": "7"
+      },
+      {
+        "name": "Japan",
+        "sessionsCount": "5"
+      },
+      {
+        "name": "Germany",
+        "sessionsCount": "4"
+      },
+      {
+        "name": "India",
+        "sessionsCount": "4"
+      },
+      {
+        "name": "Saudi Arabia",
+        "sessionsCount": "3"
+      },
+      {
+        "name": "Switzerland",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Israel",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Portugal",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "PopularScreens",
+    "information": [
+      {
+        "name": "Home",
+        "sessionsCount": "351"
+      },
+      {
+        "name": "Favorites",
+        "sessionsCount": "191"
+      },
+      {
+        "name": "Newspaper Detail",
+        "sessionsCount": "157"
+      },
+      {
+        "name": "Gallery",
+        "sessionsCount": "148"
+      },
+      {
+        "name": "Search",
+        "sessionsCount": "63"
+      },
+      {
+        "name": "Profile",
+        "sessionsCount": "31"
+      },
+      {
+        "name": "UIViewController",
+        "sessionsCount": "22"
+      },
+      {
+        "name": "Onboarding",
+     </pre>
+      </div>
+      <div class="platform-row" style="border-left:3px solid #3ddc84">
+        <div class="platform-header">
+          <span class="badge" style="background:#3ddc84">Android</span>
+          <span class="status-dot" style="background:#22c55e" title="Data OK"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">45</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">37</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">6.3</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">4.5m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>42</strong> <span class="device-pct">(93.3%)</span></span><span class="device-pill">⬛ Tablet <strong>3</strong> <span class="device-pct">(6.7%)</span></span></div>
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadTapCount",
+    "information": [
+      {
+        "sessionsCount": "45",
+        "sessionsWithMetricPercentage": 40,
+        "sessionsWithoutMetricPercentage": 60,
+        "screensViews": "41",
+        "subTotal": "125"
+      }
+    ]
+  },
+  {
+    "metricName": "RageTapCount",
+    "information": [
+      {
+        "sessionsCount": "45",
+        "sessionsWithMetricPercentage": 2.22,
+        "sessionsWithoutMetricPercentage": 97.78,
+        "screensViews": "1",
+        "subTotal": "4"
+      }
+    ]
+  },
+  {
+    "metricName": "ApplicationErrorCount",
+    "information": [
+      {
+        "sessionsCount": "45",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "45",
+        "totalBotSessionCount": "0",
+        "distinctUserCount": "37",
+        "screensPerSessionPercentage": 6.288888888888889
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": "269",
+        "activeTime": "177"
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "information": [
+      {
+        "name": "Mobile",
+        "sessionsCount": "42"
+      },
+      {
+        "name": "Tablet",
+        "sessionsCount": "3"
+      }
+    ]
+  },
+  {
+    "metricName": "OS",
+    "information": [
+      {
+        "name": "Android",
+        "sessionsCount": "45"
+      }
+    ]
+  },
+  {
+    "metricName": "Country",
+    "information": [
+      {
+        "name": "United States",
+        "sessionsCount": "32"
+      },
+      {
+        "name": "United Kingdom",
+        "sessionsCount": "4"
+      },
+      {
+        "name": "Germany",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Netherlands",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Argentina",
+        "sessionsCount": "1"
+      },
+      {
+        "name": "China",
+        "sessionsCount": "1"
+      },
+      {
+        "name": "India",
+        "sessionsCount": "1"
+      },
+      {
+        "name": "Ireland",
+        "sessionsCount": "1"
+      },
+      {
+        "name": "Mexico",
+        "sessionsCount": "1"
+      },
+      {
+        "name": "Thailand",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "PopularScreens",
+    "information": [
+      {
+        "name": "Home",
+        "sessionsCount": "43"
+      },
+      {
+        "name": "MainActivity",
+        "sessionsCount": "23"
+      },
+      {
+        "name": "Newspaper Detail",
+        "sessionsCount": "23"
+      },
+      {
+        "name": "Gallery",
+        "sessionsCount": "22"
+      },
+      {
+        "name": "Favorites",
+        "sessionsCount": "21"
+      },
+      {
+        "name": "Search",
+        "sessionsCount": "9"
+      },
+      {
+        "name": "Brought You By",
+        "sessionsCount": "3"
+      },
+      {
+        "name": "Onboarding",
+        "sessionsCount":</pre>
+      </div>
+      <div class="platform-row" style="border-left:3px solid #f59e0b">
+        <div class="platform-header">
+          <span class="badge" style="background:#f59e0b">Website</span>
+          <span class="status-dot" style="background:#22c55e" title="Data OK"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">2,618</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">2,746</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">0.0</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">1.9m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>598</strong> <span class="device-pct">(22.8%)</span></span><span class="device-pill">⬛ Tablet <strong>159</strong> <span class="device-pct">(6.1%)</span></span><span class="device-pill">🖥 PC <strong>1,859</strong> <span class="device-pct">(71.0%)</span></span></div>
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadClickCount",
+    "information": [
+      {
+        "sessionsCount": "2610",
+        "sessionsWithMetricPercentage": 9.92,
+        "sessionsWithoutMetricPercentage": 90.08,
+        "pagesViews": "425",
+        "subTotal": "688"
+      }
+    ]
+  },
+  {
+    "metricName": "ExcessiveScroll",
+    "information": [
+      {
+        "sessionsCount": "2610",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "pagesViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "RageClickCount",
+    "information": [
+      {
+        "sessionsCount": "2610",
+        "sessionsWithMetricPercentage": 0.15,
+        "sessionsWithoutMetricPercentage": 99.85,
+        "pagesViews": "4",
+        "subTotal": "9"
+      }
+    ]
+  },
+  {
+    "metricName": "QuickbackClick",
+    "information": [
+      {
+        "sessionsCount": "2610",
+        "sessionsWithMetricPercentage": 13.52,
+        "sessionsWithoutMetricPercentage": 86.48,
+        "pagesViews": "1197",
+        "subTotal": "1197"
+      }
+    ]
+  },
+  {
+    "metricName": "ScriptErrorCount",
+    "information": [
+      {
+        "sessionsCount": "2610",
+        "sessionsWithMetricPercentage": 0.23,
+        "sessionsWithoutMetricPercentage": 99.77,
+        "pagesViews": "8",
+        "subTotal": "10"
+      }
+    ]
+  },
+  {
+    "metricName": "ErrorClickCount",
+    "information": [
+      {
+        "sessionsCount": "2610",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "pagesViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "ScrollDepth",
+    "information": [
+      {
+        "averageScrollDepth": 63.12
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "2618",
+        "totalBotSessionCount": "292",
+        "distinctUserCount": "2746",
+        "pagesPerSessionPercentage": 3.1449180327868853
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": "115",
+        "activeTime": "49"
+      }
+    ]
+  },
+  {
+    "metricName": "Browser",
+    "information": [
+      {
+        "name": "Chrome",
+        "sessionsCount": "1261"
+      },
+      {
+        "name": "MobileSafari",
+        "sessionsCount": "326"
+      },
+      {
+        "name": "ChromeMobile",
+        "sessionsCount": "279"
+      },
+      {
+        "name": "Firefox",
+        "sessionsCount": "202"
+      },
+      {
+        "name": "Edge",
+        "sessionsCount": "165"
+      },
+      {
+        "name": "Opera",
+        "sessionsCount": "157"
+      },
+      {
+        "name": "Safari",
+        "sessionsCount": "154"
+      },
+      {
+        "name": "GoogleApp",
+        "sessionsCount": "31"
+      },
+      {
+        "name": "SamsungInternet",
+        "sessionsCount": "31"
+      },
+      {
+        "name": "FirefoxMobile",
+        "sessionsCount": "7"
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "inf</pre>
+      </div>
+        
+        <div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Data initializing — check back tomorrow</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="project-name">Quiet Collection</span>
+          <span class="platform-count">2 platforms</span>
+        </div>
+        
+        <div class="combined-total">
+          <span class="combined-label">Combined</span>
+          <span class="combined-stat">941 sessions</span>
+          <span class="combined-sep">·</span>
+          <span class="combined-stat">861 users</span>
+        </div>
+        
+      <div class="platform-row" style="border-left:3px solid #007aff">
+        <div class="platform-header">
+          <span class="badge" style="background:#007aff">iOS</span>
+          <span class="status-dot" style="background:#22c55e" title="Data OK"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">816</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">741</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">1.1</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">7.4m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>779</strong> <span class="device-pct">(95.5%)</span></span><span class="device-pill">⬛ Tablet <strong>37</strong> <span class="device-pct">(4.5%)</span></span></div>
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadTapCount",
+    "information": [
+      {
+        "sessionsCount": "816",
+        "sessionsWithMetricPercentage": 9.31,
+        "sessionsWithoutMetricPercentage": 90.69,
+        "screensViews": "78",
+        "subTotal": "110"
+      }
+    ]
+  },
+  {
+    "metricName": "RageTapCount",
+    "information": [
+      {
+        "sessionsCount": "816",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "ApplicationErrorCount",
+    "information": [
+      {
+        "sessionsCount": "816",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "816",
+        "totalBotSessionCount": "0",
+        "distinctUserCount": "741",
+        "screensPerSessionPercentage": 1.1479713603818615
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": "443",
+        "activeTime": "443"
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "information": [
+      {
+        "name": "Mobile",
+        "sessionsCount": "779"
+      },
+      {
+        "name": "Tablet",
+        "sessionsCount": "37"
+      }
+    ]
+  },
+  {
+    "metricName": "OS",
+    "information": [
+      {
+        "name": "IOS",
+        "sessionsCount": "816"
+      }
+    ]
+  },
+  {
+    "metricName": "Country",
+    "information": [
+      {
+        "name": "United States",
+        "sessionsCount": "732"
+      },
+      {
+        "name": "Canada",
+        "sessionsCount": "34"
+      },
+      {
+        "name": "Australia",
+        "sessionsCount": "9"
+      },
+      {
+        "name": "United Kingdom",
+        "sessionsCount": "9"
+      },
+      {
+        "name": "New Zealand",
+        "sessionsCount": "5"
+      },
+      {
+        "name": "South Africa",
+        "sessionsCount": "3"
+      },
+      {
+        "name": "Tanzania, United Republic of",
+        "sessionsCount": "3"
+      },
+      {
+        "name": "Saudi Arabia",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Ghana",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Slovakia",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "PopularScreens",
+    "information": [
+      {
+        "name": "UIViewController",
+        "sessionsCount": "816"
+      },
+      {
+        "name": "Error",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "MFMessageComposeViewController",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Gift Purchase Successful",
+        "sessionsCount": "1"
+      },
+      {
+        "name": "Restore Purchases Unsuccessful",
+        "sessionsCount": "1"
+      },
+      {
+        "name": "Restore Purchases Successful",
+        "sessionsCount": "1"
+      },
+      {
+        "name": "I</pre>
+      </div>
+      <div class="platform-row" style="border-left:3px solid #3ddc84">
+        <div class="platform-header">
+          <span class="badge" style="background:#3ddc84">Android</span>
+          <span class="status-dot" style="background:#22c55e" title="Data OK"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">125</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">120</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">1.0</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">7.4m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>124</strong> <span class="device-pct">(99.2%)</span></span><span class="device-pill">⬛ Tablet <strong>1</strong> <span class="device-pct">(0.8%)</span></span></div>
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadTapCount",
+    "information": [
+      {
+        "sessionsCount": "125",
+        "sessionsWithMetricPercentage": 27.2,
+        "sessionsWithoutMetricPercentage": 72.8,
+        "screensViews": "34",
+        "subTotal": "64"
+      }
+    ]
+  },
+  {
+    "metricName": "RageTapCount",
+    "information": [
+      {
+        "sessionsCount": "125",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "ApplicationErrorCount",
+    "information": [
+      {
+        "sessionsCount": "125",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "125",
+        "totalBotSessionCount": "0",
+        "distinctUserCount": "120",
+        "screensPerSessionPercentage": 1.0303030303030303
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": "445",
+        "activeTime": "206"
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "information": [
+      {
+        "name": "Mobile",
+        "sessionsCount": "124"
+      },
+      {
+        "name": "Tablet",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "OS",
+    "information": [
+      {
+        "name": "Android",
+        "sessionsCount": "125"
+      }
+    ]
+  },
+  {
+    "metricName": "Country",
+    "information": [
+      {
+        "name": "United States",
+        "sessionsCount": "94"
+      },
+      {
+        "name": "Canada",
+        "sessionsCount": "10"
+      },
+      {
+        "name": "United Kingdom",
+        "sessionsCount": "4"
+      },
+      {
+        "name": "Malaysia",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "India",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Germany",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "New Zealand",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Nicaragua",
+        "sessionsCount": "1"
+      },
+      {
+        "name": "Switzerland",
+        "sessionsCount": "1"
+      },
+      {
+        "name": "Spain",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "PopularScreens",
+    "information": [
+      {
+        "name": "MainActivity",
+        "sessionsCount": "125"
+      }
+    ]
+  }
+]</pre>
+      </div>
+        
+        
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="project-name">P3</span>
+          <span class="platform-count">2 platforms</span>
+        </div>
+        
+        <div class="combined-total">
+          <span class="combined-label">Combined</span>
+          <span class="combined-stat">4 sessions</span>
+          <span class="combined-sep">·</span>
+          <span class="combined-stat">4 users</span>
+        </div>
+        
+      <div class="platform-row" style="border-left:3px solid #007aff">
+        <div class="platform-header">
+          <span class="badge" style="background:#007aff">iOS</span>
+          <span class="status-dot" style="background:#22c55e" title="Data OK"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">3</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">3</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">1.0</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">1.4m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>3</strong> <span class="device-pct">(100.0%)</span></span></div>
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadTapCount",
+    "information": [
+      {
+        "sessionsCount": "3",
+        "sessionsWithMetricPercentage": 33.33,
+        "sessionsWithoutMetricPercentage": 66.67,
+        "screensViews": "1",
+        "subTotal": "3"
+      }
+    ]
+  },
+  {
+    "metricName": "RageTapCount",
+    "information": [
+      {
+        "sessionsCount": "3",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "ApplicationErrorCount",
+    "information": [
+      {
+        "sessionsCount": "3",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "3",
+        "totalBotSessionCount": "0",
+        "distinctUserCount": "3",
+        "screensPerSessionPercentage": 1
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": "86",
+        "activeTime": "86"
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "information": [
+      {
+        "name": "Mobile",
+        "sessionsCount": "3"
+      }
+    ]
+  },
+  {
+    "metricName": "OS",
+    "information": [
+      {
+        "name": "IOS",
+        "sessionsCount": "3"
+      }
+    ]
+  },
+  {
+    "metricName": "Country",
+    "information": [
+      {
+        "name": "United States",
+        "sessionsCount": "3"
+      }
+    ]
+  },
+  {
+    "metricName": "PopularScreens",
+    "information": [
+      {
+        "name": "UIViewController",
+        "sessionsCount": "3"
+      }
+    ]
+  }
+]</pre>
+      </div>
+      <div class="platform-row" style="border-left:3px solid #3ddc84">
+        <div class="platform-header">
+          <span class="badge" style="background:#3ddc84">Android</span>
+          <span class="status-dot" style="background:#22c55e" title="Data OK"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">1</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">1</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">1.0</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">1.8m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>1</strong> <span class="device-pct">(100.0%)</span></span></div>
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadTapCount",
+    "information": [
+      {
+        "sessionsCount": "1",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "RageTapCount",
+    "information": [
+      {
+        "sessionsCount": "1",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "ApplicationErrorCount",
+    "information": [
+      {
+        "sessionsCount": "1",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "1",
+        "totalBotSessionCount": "0",
+        "distinctUserCount": "1",
+        "screensPerSessionPercentage": 1
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": "105",
+        "activeTime": "80"
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "information": [
+      {
+        "name": "Mobile",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "OS",
+    "information": [
+      {
+        "name": "Android",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "Country",
+    "information": [
+      {
+        "name": "United States",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "PopularScreens",
+    "information": [
+      {
+        "name": "MainActivity",
+        "sessionsCount": "1"
+      }
+    ]
+  }
+]</pre>
+      </div>
+        
+        <div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Data initializing — check back tomorrow</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="project-name">Self Speak</span>
+          <span class="platform-count">2 platforms</span>
+        </div>
+        
+        <div class="combined-total">
+          <span class="combined-label">Combined</span>
+          <span class="combined-stat">11 sessions</span>
+          <span class="combined-sep">·</span>
+          <span class="combined-stat">11 users</span>
+        </div>
+        
+      <div class="platform-row" style="border-left:3px solid #007aff">
+        <div class="platform-header">
+          <span class="badge" style="background:#007aff">iOS</span>
+          <span class="status-dot" style="background:#22c55e" title="Data OK"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">7</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">7</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">2.5</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">0.8m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>7</strong> <span class="device-pct">(100.0%)</span></span></div>
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadTapCount",
+    "information": [
+      {
+        "sessionsCount": "7",
+        "sessionsWithMetricPercentage": 14.29,
+        "sessionsWithoutMetricPercentage": 85.71000000000001,
+        "screensViews": "4",
+        "subTotal": "26"
+      }
+    ]
+  },
+  {
+    "metricName": "RageTapCount",
+    "information": [
+      {
+        "sessionsCount": "7",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "ApplicationErrorCount",
+    "information": [
+      {
+        "sessionsCount": "7",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "7",
+        "totalBotSessionCount": "0",
+        "distinctUserCount": "7",
+        "screensPerSessionPercentage": 2.5
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": "51",
+        "activeTime": "51"
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "information": [
+      {
+        "name": "Mobile",
+        "sessionsCount": "7"
+      }
+    ]
+  },
+  {
+    "metricName": "OS",
+    "information": [
+      {
+        "name": "IOS",
+        "sessionsCount": "7"
+      }
+    ]
+  },
+  {
+    "metricName": "Country",
+    "information": [
+      {
+        "name": "United States",
+        "sessionsCount": "5"
+      },
+      {
+        "name": "Canada",
+        "sessionsCount": "1"
+      },
+      {
+        "name": "Nepal",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "PopularScreens",
+    "information": [
+      {
+        "name": "UIViewController",
+        "sessionsCount": "7"
+      },
+      {
+        "name": "Sign in with redirect failed",
+        "sessionsCount": "1"
+      }
+    ]
+  }
+]</pre>
+      </div>
+      <div class="platform-row" style="border-left:3px solid #3ddc84">
+        <div class="platform-header">
+          <span class="badge" style="background:#3ddc84">Android</span>
+          <span class="status-dot" style="background:#22c55e" title="Data OK"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">4</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">4</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">1.0</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">2.8m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>4</strong> <span class="device-pct">(100.0%)</span></span></div>
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadTapCount",
+    "information": [
+      {
+        "sessionsCount": "4",
+        "sessionsWithMetricPercentage": 25,
+        "sessionsWithoutMetricPercentage": 75,
+        "screensViews": "1",
+        "subTotal": "6"
+      }
+    ]
+  },
+  {
+    "metricName": "RageTapCount",
+    "information": [
+      {
+        "sessionsCount": "4",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "ApplicationErrorCount",
+    "information": [
+      {
+        "sessionsCount": "4",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "4",
+        "totalBotSessionCount": "0",
+        "distinctUserCount": "4",
+        "screensPerSessionPercentage": 1
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": "168",
+        "activeTime": "129"
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "information": [
+      {
+        "name": "Mobile",
+        "sessionsCount": "4"
+      }
+    ]
+  },
+  {
+    "metricName": "OS",
+    "information": [
+      {
+        "name": "Android",
+        "sessionsCount": "4"
+      }
+    ]
+  },
+  {
+    "metricName": "Country",
+    "information": [
+      {
+        "name": "United States",
+        "sessionsCount": "3"
+      },
+      {
+        "name": "Kenya",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "PopularScreens",
+    "information": [
+      {
+        "name": "MainActivity",
+        "sessionsCount": "4"
+      }
+    ]
+  }
+]</pre>
+      </div>
+        <div class="rc-block"><span class="rc-title">💰 Revenue (last 30 days)</span><div class="rc-metrics"><div class="rc-metric"><div class="rc-value">$66.00</div><div class="rc-label">MRR</div></div><div class="rc-metric"><div class="rc-value">$89.00</div><div class="rc-label">Revenue</div></div><div class="rc-metric"><div class="rc-value">19</div><div class="rc-label">Subscribers</div></div><div class="rc-metric"><div class="rc-value">0</div><div class="rc-label">Trials</div></div></div></div>
+        
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="project-name">Footsteps with Jesus</span>
+          <span class="platform-count">2 platforms</span>
+        </div>
+        
+        <div class="combined-total">
+          <span class="combined-label">Combined</span>
+          <span class="combined-stat">1 sessions</span>
+          <span class="combined-sep">·</span>
+          <span class="combined-stat">1 users</span>
+        </div>
+        
+      <div class="platform-row" style="border-left:3px solid #007aff">
+        <div class="platform-header">
+          <span class="badge" style="background:#007aff">iOS</span>
+          <span class="status-dot" style="background:#22c55e" title="Data OK"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">1</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">1</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">1.0</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">2.0m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>1</strong> <span class="device-pct">(100.0%)</span></span></div>
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadTapCount",
+    "information": [
+      {
+        "sessionsCount": "1",
+        "sessionsWithMetricPercentage": 100,
+        "sessionsWithoutMetricPercentage": 0,
+        "screensViews": "1",
+        "subTotal": "39"
+      }
+    ]
+  },
+  {
+    "metricName": "RageTapCount",
+    "information": [
+      {
+        "sessionsCount": "1",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "ApplicationErrorCount",
+    "information": [
+      {
+        "sessionsCount": "1",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "1",
+        "totalBotSessionCount": "0",
+        "distinctUserCount": "1",
+        "screensPerSessionPercentage": 1
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": "118",
+        "activeTime": "118"
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "information": [
+      {
+        "name": "Mobile",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "OS",
+    "information": [
+      {
+        "name": "IOS",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "Country",
+    "information": [
+      {
+        "name": "United States",
+        "sessionsCount": "1"
+      }
+    ]
+  },
+  {
+    "metricName": "PopularScreens",
+    "information": [
+      {
+        "name": "UIViewController",
+        "sessionsCount": "1"
+      }
+    ]
+  }
+]</pre>
+      </div>
+      <div class="platform-row" style="border-left:3px solid #3ddc84">
+        <div class="platform-header">
+          <span class="badge" style="background:#3ddc84">Android</span>
+          <span class="status-dot" style="background:#e2e8f0" title="No data"></span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+              <div class="metric-value">0</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">0</div>
+              <div class="metric-label">Users</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">0</div>
+              <div class="metric-label">Screens</div>
+            </div>
+          <div class="metric">
+              <div class="metric-value">0m</div>
+              <div class="metric-label">Eng. Time</div>
+            </div>
+        </div>
+        
+        <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
+  {
+    "metricName": "DeadTapCount",
+    "information": [
+      {
+        "sessionsCount": "0",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "RageTapCount",
+    "information": [
+      {
+        "sessionsCount": "0",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "ApplicationErrorCount",
+    "information": [
+      {
+        "sessionsCount": "0",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
+      }
+    ]
+  },
+  {
+    "metricName": "Traffic",
+    "information": [
+      {
+        "totalSessionCount": "0",
+        "totalBotSessionCount": "0",
+        "distinctUserCount": "0",
+        "screensPerSessionPercentage": null
+      }
+    ]
+  },
+  {
+    "metricName": "EngagementTime",
+    "information": [
+      {
+        "totalTime": null,
+        "activeTime": null
+      }
+    ]
+  },
+  {
+    "metricName": "Device",
+    "information": []
+  },
+  {
+    "metricName": "OS",
+    "information": []
+  },
+  {
+    "metricName": "Country",
+    "information": []
+  },
+  {
+    "metricName": "PopularScreens",
+    "information": []
+  }
+]</pre>
+      </div>
+        
+        
+      </div>
+</div>
+
+<footer>Clarity Dashboard · Refresh by running <code>python3 clarity_dashboard.py</code> again</footer>
+
+<script>
+function toggleRaw(el) {
+  const pre = el.nextElementSibling;
+  if (pre.style.display === 'none') {
+    pre.style.display = 'block';
+    el.textContent = '▼ Hide raw response';
+  } else {
+    pre.style.display = 'none';
+    el.textContent = '▶ Show raw response';
+  }
+}
+</script>
+</body>
+</html>
