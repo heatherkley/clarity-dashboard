@@ -1142,7 +1142,8 @@ body {{ background: white; font-size: 9pt; color: #1e293b; }}
 def _env_key_name(group):
     """Derive an env-var-safe name from a group string, e.g. "Today's Front Pages" → ASC_KEY_TODAYS_FRONT_PAGES"""
     import re
-    slug = re.sub(r"[^A-Z0-9]+", "_", group.upper()).strip("_")
+    clean = group.upper().replace("'", "").replace("'", "")  # remove apostrophes first
+    slug  = re.sub(r"[^A-Z0-9]+", "_", clean).strip("_")
     return f"ASC_KEY_{slug}"
 
 def main():
