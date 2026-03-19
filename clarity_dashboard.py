@@ -14,6 +14,7 @@ import gzip
 import io
 import json
 import os
+import re
 import sys
 import tempfile
 import time
@@ -129,6 +130,31 @@ def extract_clarity_metrics(raw):
         "engagementSec":    safe_float(engagement.get("totalTime",               0)),
         "devices":          devices,
     }
+
+def extract_clarity_daily(raw):
+    """Extract per-day {date: {sessions, users}} from Clarity granularity=daily response."""
+    if not isinstance(raw, list):
+        return {}
+    daily = {}
+    for item in raw:
+        if item.get("metricName") != "Traffic":
+            continue
+        for info in item.get("information", []):
+            # Clarity may return startDate, date, or timePeriod
+            date_raw = (info.get("startDate") or info.get("date") or
+                        info.get("timePeriod") or "")
+            if not date_raw:
+                continue
+            try:
+                date_key = str(date_raw)[:10]   # YYYY-MM-DD
+                daily[date_key] = {
+                    "sessions": safe_float(info.get("totalSessionCount", 0)),
+                    "users":    safe_float(info.get("distinctUserCount",  0)),
+                }
+            except Exception:
+                pass
+    return dict(sorted(daily.items()))
+
 
 # ── RevenueCat Fetching ─────────────────────────────────────────────────────────
 
@@ -472,13 +498,19 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
         content = gzip.decompress(r6.content).decode("utf-8")
         reader  = csv.DictReader(io.StringIO(content), delimiter="\t")
         total_installs = 0
+        daily_installs = {}
         for row in reader:
-            val = row.get("Installations") or row.get("First Time Downloads") or 0
+            val  = row.get("Installations") or row.get("First Time Downloads") or 0
+            date = (row.get("Date") or row.get("date") or "").strip()[:10]
             try:
-                total_installs += int(float(str(val).replace(",", "") or 0))
+                count = int(float(str(val).replace(",", "") or 0))
+                total_installs += count
+                if date:
+                    daily_installs[date] = daily_installs.get(date, 0) + count
             except (ValueError, TypeError):
                 pass
-        result["installs"] = total_installs
+        result["installs"]       = total_installs
+        result["daily_installs"] = dict(sorted(daily_installs.items()))
         return result
 
     except Exception as e:
@@ -595,304 +627,324 @@ def platform_row(platform, data, raw):
 # ── HTML Generation ─────────────────────────────────────────────────────────────
 
 def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end_dt):
-    date_range = f"{start_dt.strftime('%b %d')} – {end_dt.strftime('%b %d, %Y')}"
+    date_range = f"{start_dt.strftime('%b %d')} \u2013 {end_dt.strftime('%b %d, %Y')}"
     generated  = datetime.now().strftime("%b %d, %Y at %I:%M %p")
 
-    # Summary totals across all platforms
+    GROUP_ORDER = ["Shift", "Today's Front Pages", "Quiet Collection",
+                   "P3", "Self Speak", "Footsteps with Jesus"]
+    GROUP_COLORS = {
+        "Shift":                "#3b82f6",
+        "Today's Front Pages":  "#10b981",
+        "Quiet Collection":     "#8b5cf6",
+        "P3":                   "#f59e0b",
+        "Self Speak":           "#ef4444",
+        "Footsteps with Jesus": "#ec4899",
+        "Lifeplus Pets":        "#06b6d4",
+        "TeamBuildr Practice":  "#84cc16",
+        "Shift Irish":          "#64748b",
+    }
+    PLATFORM_ORDER = {"iOS": 0, "Android": 1, "Website": 2}
+
+    def gcolor(n):  return GROUP_COLORS.get(n, "#6b7280")
+    def gsort(n):   return (GROUP_ORDER.index(n) if n in GROUP_ORDER else len(GROUP_ORDER), n)
+    def tid(n):     return "tab-" + re.sub(r"[^a-z0-9]+", "-", n.lower()).strip("-")
+
+    sorted_group_names = sorted(groups.keys(), key=gsort)
+
+    # ── Build per-group chart data ──────────────────────────────────────────────
+    chart_data           = {}
+    all_sessions_by_date = {}
+    all_users_by_date    = {}
+
+    for gname in sorted_group_names:
+        members         = groups[gname]
+        merged_sessions = {}
+        merged_users    = {}
+        for r in members:
+            for date, vals in extract_clarity_daily(r.get("raw") or []).items():
+                merged_sessions[date] = merged_sessions.get(date, 0) + vals["sessions"]
+                merged_users[date]    = merged_users.get(date, 0)    + vals["users"]
+                all_sessions_by_date[date] = all_sessions_by_date.get(date, 0) + vals["sessions"]
+                all_users_by_date[date]    = all_users_by_date.get(date, 0)    + vals["users"]
+
+        sess_dates = sorted(merged_sessions.keys())
+        asc_g      = asc_by_group.get(gname) or {}
+        di         = asc_g.get("daily_installs") or {}
+        inst_dates = sorted(di.keys())
+
+        chart_data[gname] = {
+            "sessions": {"dates": sess_dates,  "values": [int(merged_sessions[d]) for d in sess_dates]},
+            "users":    {"dates": sess_dates,  "values": [int(merged_users[d])    for d in sess_dates]},
+            "installs": {"dates": inst_dates,  "values": [int(di[d])              for d in inst_dates]},
+            "color":    gcolor(gname),
+        }
+
+    ov_dates = sorted(all_sessions_by_date.keys())
+    chart_data["_overview"] = {
+        "sessions": {"dates": ov_dates, "values": [int(all_sessions_by_date[d]) for d in ov_dates]},
+        "users":    {"dates": ov_dates, "values": [int(all_users_by_date[d])    for d in ov_dates]},
+    }
+    chart_data_json = json.dumps(chart_data)
+
+    # ── Summary totals ──────────────────────────────────────────────────────────
     all_results    = [p for g in groups.values() for p in g]
     total_sessions = sum(extract_clarity_metrics(r["raw"]).get("sessions", 0) for r in all_results)
     total_users    = sum(extract_clarity_metrics(r["raw"]).get("users",    0) for r in all_results)
-    ok_groups      = sum(
-        1 for g in groups.values()
-        if any(extract_clarity_metrics(r["raw"]).get("sessions", 0) > 0 for r in g)
-    )
-
-    # Revenue totals across all RevenueCat apps
-    total_mrr     = 0.0
-    total_revenue = 0.0
+    total_mrr = total_revenue = 0.0
     for rc_data in rc_by_group.values():
-        if "_metrics" in rc_data:
-            m = rc_data["_metrics"]
-        else:
-            m = extract_revenuecat_metrics(rc_data)
+        m = rc_data.get("_metrics") or extract_revenuecat_metrics(rc_data)
         total_mrr     += m.get("mrr",     0)
         total_revenue += m.get("revenue", 0)
-    mrr_str = "${:,.0f}".format(total_mrr)
-    rev_str = "${:,.0f}".format(total_revenue)
-    rc_summary_html = ""
-    if rc_by_group:
-        rc_summary_html = f"""
-  <div class="summary-item">
-    <div class="summary-value">{mrr_str}</div>
-    <div class="summary-label">Total MRR</div>
+
+    # ── Overview mini-cards ─────────────────────────────────────────────────────
+    overview_cards_html = ""
+    for gname in sorted_group_names:
+        members    = groups[gname]
+        g_sessions = sum(extract_clarity_metrics(r["raw"]).get("sessions", 0) for r in members)
+        g_users    = sum(extract_clarity_metrics(r["raw"]).get("users",    0) for r in members)
+        asc_g      = asc_by_group.get(gname) or {}
+        installs   = asc_g.get("installs")
+        pending    = asc_g.get("pending", False)
+        rc         = rc_by_group.get(gname)
+        rc_m       = (rc.get("_metrics") or extract_revenuecat_metrics(rc)) if rc else {}
+        mrr        = rc_m.get("mrr", 0)
+        subs       = rc_m.get("subscribers", 0)
+        color      = gcolor(gname)
+        tab_target = tid(gname)
+
+        inst_str = ""
+        if pending:
+            inst_str = "<span style='color:#94a3b8;font-size:0.75em'>⏳ initializing</span>"
+        elif installs is not None:
+            inst_str = f"<b>{int(installs):,}</b> <span class='ov-sub'>iOS installs</span>"
+
+        rc_line = ""
+        if mrr:
+            rc_line = f"<div class='ov-rc'>${mrr:,.0f} MRR &nbsp;·&nbsp; {int(subs):,} subs</div>"
+
+        overview_cards_html += f"""
+      <div class="ov-card" onclick="showTab('{tab_target}')" style="--accent:{color}">
+        <div class="ov-name" style="color:{color}">{gname}</div>
+        <div class="ov-stats">
+          <div><b>{int(g_sessions):,}</b><span class="ov-sub"> sessions</span></div>
+          <div><b>{int(g_users):,}</b><span class="ov-sub"> users</span></div>
+          {"<div>" + inst_str + "</div>" if inst_str else ""}
+        </div>
+        {rc_line}
+        <canvas id="spark-{tab_target}" height="44" style="margin-top:8px;width:100%"></canvas>
+        <div class="ov-tap">tap to explore &rarr;</div>
+      </div>"""
+
+    # ── Per-group tab buttons + content ────────────────────────────────────────
+    tabs_nav_html  = '<button class="tab-btn active" id="btn-tab-overview" onclick="showTab(\'tab-overview\')">Overview</button>\n'
+    tabs_body_html = f"""
+<div id="tab-overview" class="tab-pane">
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">Combined Daily Sessions</div>
+      <canvas id="chart-ov-sessions"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Combined Daily Users</div>
+      <canvas id="chart-ov-users"></canvas>
+    </div>
   </div>
-  <div class="summary-item">
-    <div class="summary-value">{rev_str}</div>
-    <div class="summary-label">Total Revenue</div>
-  </div>"""
+  <div class="ov-grid">{overview_cards_html}
+  </div>
+</div>"""
 
-    # Build group cards — custom order, remaining groups alphabetically at the end
-    GROUP_ORDER = [
-        "Shift",
-        "Today's Front Pages",
-        "Quiet Collection",
-        "P3",
-        "Self Speak",
-        "Footsteps with Jesus",
-    ]
-    def group_sort_key(item):
-        name = item[0]
-        return (GROUP_ORDER.index(name) if name in GROUP_ORDER else len(GROUP_ORDER), name)
+    for gname in sorted_group_names:
+        members    = groups[gname]
+        t_id       = tid(gname)
+        color      = gcolor(gname)
+        g_sessions = sum(extract_clarity_metrics(r["raw"]).get("sessions", 0) for r in members)
+        g_users    = sum(extract_clarity_metrics(r["raw"]).get("users",    0) for r in members)
+        asc_g      = asc_by_group.get(gname) or {}
+        installs   = asc_g.get("installs")
+        pending    = asc_g.get("pending", False)
+        rc         = rc_by_group.get(gname)
+        rc_m       = (rc.get("_metrics") or extract_revenuecat_metrics(rc)) if rc else {}
+        mrr        = rc_m.get("mrr", 0)
+        revenue    = rc_m.get("revenue", 0)
+        subs       = rc_m.get("subscribers", 0)
+        trials     = rc_m.get("trials", 0)
+        has_installs = bool(chart_data.get(gname, {}).get("installs", {}).get("dates"))
 
-    cards_html = ""
-    for group_name, members in sorted(groups.items(), key=group_sort_key):
-        group_sessions = sum(extract_clarity_metrics(r["raw"]).get("sessions", 0) for r in members)
-        group_users    = sum(extract_clarity_metrics(r["raw"]).get("users",    0) for r in members)
+        tabs_nav_html += f'<button class="tab-btn" id="btn-{t_id}" onclick="showTab(\'{t_id}\')">{gname}</button>\n'
 
-        platform_rows = ""
-        PLATFORM_ORDER = {"iOS": 0, "Android": 1, "Website": 2}
+        # KPI bar
+        kpi_items = [
+            (f"{int(g_sessions):,}", "Sessions"),
+            (f"{int(g_users):,}",    "Users"),
+        ]
+        if pending:
+            kpi_items.append(("⏳", "iOS (initializing)"))
+        elif installs is not None:
+            kpi_items.append((f"{int(installs):,}", "iOS Installs"))
+        if mrr:     kpi_items.append((f"${mrr:,.0f}",    "MRR"))
+        if revenue: kpi_items.append((f"${revenue:,.2f}", "Revenue"))
+        if subs:    kpi_items.append((f"{int(subs):,}",  "Subscribers"))
+        if trials:  kpi_items.append((f"{int(trials):,}", "Trials"))
+
+        kpi_html = "".join(
+            f'<div class="kpi"><div class="kpi-val">{v}</div><div class="kpi-lbl">{l}</div></div>'
+            for v, l in kpi_items
+        )
+
+        # Charts row
+        charts_row = f"""
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Daily Sessions &amp; Users</div>
+        <canvas id="chart-{t_id}-sessions"></canvas>
+      </div>"""
+        if has_installs:
+            charts_row += f"""
+      <div class="chart-card">
+        <div class="chart-title">Daily iOS Downloads</div>
+        <canvas id="chart-{t_id}-installs"></canvas>
+      </div>"""
+        charts_row += "\n    </div>"
+
+        # Platform detail card
+        platform_rows_html = ""
         for r in sorted(members, key=lambda x: PLATFORM_ORDER.get(x["platform"], 99)):
-            platform_rows += platform_row(r["platform"], r["data"], r["raw"])
+            platform_rows_html += platform_row(r["platform"], r["data"], r["raw"])
 
         combined_block = ""
         if len(members) > 1:
             combined_block = f"""
-        <div class="combined-total">
-          <span class="combined-label">Combined</span>
-          <span class="combined-stat">{int(group_sessions):,} sessions</span>
-          <span class="combined-sep">·</span>
-          <span class="combined-stat">{int(group_users):,} users</span>
-        </div>"""
+          <div class="combined-total">
+            <span class="combined-label">Combined</span>
+            <span class="combined-stat">{int(g_sessions):,} sessions</span>
+            <span class="combined-sep">&middot;</span>
+            <span class="combined-stat">{int(g_users):,} users</span>
+          </div>"""
 
-        rc_html  = revenuecat_block(rc_by_group.get(group_name))
-        asc_html = appstore_block(asc_by_group.get(group_name))
+        rc_html_block  = revenuecat_block(rc)
+        asc_html_block = appstore_block(asc_g)
 
-        cards_html += f"""
-      <div class="card">
-        <div class="card-header">
-          <span class="project-name">{group_name}</span>
-          <span class="platform-count">{len(members)} platform{"s" if len(members) != 1 else ""}</span>
-        </div>
-        {combined_block}
-        {platform_rows}
-        {rc_html}
-        {asc_html}
-      </div>"""
+        tabs_body_html += f"""
+<div id="{t_id}" class="tab-pane hidden">
+  <div class="client-kpi-bar" style="border-top:3px solid {color}">
+    {kpi_html}
+  </div>
+  {charts_row}
+  <div class="grid">
+    <div class="card">
+      <div class="card-header">
+        <span class="project-name">{gname}</span>
+        <span class="platform-count">{len(members)} platform{"s" if len(members)!=1 else ""}</span>
+      </div>
+      {combined_block}
+      {platform_rows_html}
+      {rc_html_block}
+      {asc_html_block}
+    </div>
+  </div>
+</div>"""
+
+    # ── Final HTML assembly ─────────────────────────────────────────────────────
+    mrr_str = "${:,.0f}".format(total_mrr)
+    rev_str = "${:,.0f}".format(total_revenue)
+    rc_summary = (
+        f'<div class="summary-item"><div class="summary-value">{mrr_str}</div>'
+        f'<div class="summary-label">Total MRR</div></div>'
+        f'<div class="summary-item"><div class="summary-value">{rev_str}</div>'
+        f'<div class="summary-label">Total Revenue</div></div>'
+    ) if rc_by_group else ""
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clarity Dashboard — {date_range}</title>
+  <title>3Advance Analytics \u2014 {date_range}</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
   <style>
-    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-    body {{
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f1f5f9;
-      color: #1e293b;
-      min-height: 100vh;
-    }}
-    header {{
-      background: #1e293b;
-      color: white;
-      padding: 24px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }}
-    header h1 {{ font-size: 1.4rem; font-weight: 600; }}
-    .meta {{ font-size: 0.85rem; opacity: 0.7; }}
-    .summary {{
-      background: #3b82f6;
-      color: white;
-      display: flex;
-      flex-wrap: wrap;
-    }}
-    .summary-item {{
-      flex: 1;
-      min-width: 140px;
-      padding: 20px 28px;
-      border-right: 1px solid rgba(255,255,255,0.15);
-    }}
-    .summary-item:last-child {{ border-right: none; }}
-    .summary-value {{ font-size: 2rem; font-weight: 700; }}
-    .summary-label {{ font-size: 0.75rem; opacity: 0.8; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }}
-    .legend {{
-      background: #1e293b;
-      padding: 10px 32px;
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      align-items: center;
-    }}
-    .legend-item {{ display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #94a3b8; }}
-    .legend-dot {{ width: 10px; height: 10px; border-radius: 2px; }}
-    .grid {{
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-      gap: 20px;
-      padding: 28px 32px;
-      max-width: 1600px;
-      margin: 0 auto;
-    }}
-    .card {{
-      background: white;
-      border-radius: 12px;
-      padding: 20px 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    }}
-    .card-header {{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #f1f5f9;
-    }}
-    .project-name {{ font-weight: 700; font-size: 1rem; color: #1e293b; }}
-    .platform-count {{ font-size: 0.75rem; color: #94a3b8; }}
-    .combined-total {{
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #f8fafc;
-      border-radius: 8px;
-      padding: 8px 12px;
-      margin-bottom: 12px;
-      font-size: 0.82rem;
-    }}
-    .combined-label {{ font-weight: 600; color: #475569; }}
-    .combined-stat {{ color: #1e293b; font-weight: 500; }}
-    .combined-sep {{ color: #cbd5e1; }}
-    .platform-row {{
-      border-radius: 8px;
-      padding: 12px 12px 12px 14px;
-      margin-bottom: 10px;
-      background: #fafafa;
-    }}
-    .platform-row:last-child {{ margin-bottom: 0; }}
-    .platform-header {{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }}
-    .badge {{
-      color: white;
-      font-size: 0.7rem;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }}
-    .status-dot {{
-      width: 8px; height: 8px;
-      border-radius: 50%;
-    }}
-    .metrics {{
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }}
-    .metric {{
-      flex: 1;
-      min-width: 76px;
-      background: white;
-      border-radius: 6px;
-      padding: 8px 10px;
-      text-align: center;
-      border: 1px solid #f1f5f9;
-    }}
-    .metric-value {{ font-size: 1.1rem; font-weight: 700; color: #1e293b; }}
-    .metric-label {{ font-size: 0.65rem; color: #64748b; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.02em; white-space: nowrap; overflow: visible; }}
-    .device-row {{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid #f1f5f9;
-    }}
-    .device-pill {{
-      font-size: 0.75rem;
-      color: #475569;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 20px;
-      padding: 4px 10px;
-    }}
-    .device-pill strong {{ color: #1e293b; }}
-    .device-pct {{ color: #94a3b8; font-size: 0.7rem; }}
-    .rc-block {{
-      margin-top: 12px;
-      padding: 12px 14px;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 8px;
-    }}
-    .rc-block.rc-debug {{ background: #fefce8; border-color: #fde68a; }}
-    .rc-title {{ font-size: 0.75rem; font-weight: 600; color: #166534; display: block; margin-bottom: 8px; }}
-    .rc-block.rc-debug .rc-title {{ color: #92400e; }}
-    .rc-metrics {{ display: flex; gap: 8px; flex-wrap: wrap; }}
-    .rc-metric {{
-      flex: 1;
-      min-width: 72px;
-      background: white;
-      border-radius: 6px;
-      padding: 7px 10px;
-      text-align: center;
-      border: 1px solid #dcfce7;
-    }}
-    .rc-value {{ font-size: 1rem; font-weight: 700; color: #166534; }}
-    .rc-label {{ font-size: 0.65rem; color: #4ade80; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }}
-    .raw-toggle {{
-      margin-top: 10px;
-      font-size: 0.72rem;
-      color: #94a3b8;
-      cursor: pointer;
-      user-select: none;
-    }}
-    .raw-toggle:hover {{ color: #3b82f6; }}
-    .raw-data {{
-      margin-top: 6px;
-      background: #f1f5f9;
-      border-radius: 6px;
-      padding: 10px;
-      font-size: 0.68rem;
-      overflow-x: auto;
-      color: #475569;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }}
-    footer {{
-      text-align: center;
-      padding: 24px;
-      font-size: 0.8rem;
-      color: #94a3b8;
-    }}
-    code {{ background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }}
-  @media print, (format: pdf) {{
-    @page {{ size: A4 landscape; margin: 12mm; }}
-    body {{ background: #f1f5f9; }}
-    header {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
-    .summary {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
-    .legend {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
-    .card {{ break-inside: avoid; }}
-    .raw-toggle, .raw-data {{ display: none !important; }}
-    .grid {{ grid-template-columns: repeat(3, 1fr); padding: 16px; gap: 14px; }}
-  }}
+    *{{box-sizing:border-box;margin:0;padding:0}}
+    body{{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh}}
+    /* ── Header ── */
+    header{{background:#1e293b;color:white;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}}
+    header h1{{font-size:1.3rem;font-weight:700}}
+    .meta{{font-size:0.82rem;opacity:0.65}}
+    /* ── Summary bar ── */
+    .summary{{background:#3b82f6;color:white;display:flex;flex-wrap:wrap}}
+    .summary-item{{flex:1;min-width:130px;padding:18px 24px;border-right:1px solid rgba(255,255,255,0.15)}}
+    .summary-item:last-child{{border-right:none}}
+    .summary-value{{font-size:1.8rem;font-weight:700}}
+    .summary-label{{font-size:0.72rem;opacity:0.8;margin-top:3px;text-transform:uppercase;letter-spacing:0.05em}}
+    /* ── Tabs nav ── */
+    .tabs-nav{{background:#1e293b;padding:0 32px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}}
+    .tabs-nav::-webkit-scrollbar{{display:none}}
+    .tab-btn{{background:none;border:none;color:#94a3b8;padding:14px 18px;font-size:0.85rem;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:color 0.15s}}
+    .tab-btn:hover{{color:#e2e8f0}}
+    .tab-btn.active{{color:white;border-bottom-color:#3b82f6}}
+    /* ── Tab panes ── */
+    .tab-pane{{display:block}}
+    .tab-pane.hidden{{display:none}}
+    /* ── KPI bar per client ── */
+    .client-kpi-bar{{display:flex;flex-wrap:wrap;background:white;padding:16px 32px;gap:8px;border-bottom:1px solid #e2e8f0}}
+    .kpi{{flex:1;min-width:100px;text-align:center;padding:10px 8px}}
+    .kpi-val{{font-size:1.5rem;font-weight:700;color:#1e293b}}
+    .kpi-lbl{{font-size:0.68rem;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-top:3px}}
+    /* ── Charts ── */
+    .charts-row{{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;padding:20px 32px 0}}
+    .chart-card{{background:white;border-radius:12px;padding:18px 20px;box-shadow:0 1px 3px rgba(0,0,0,0.07)}}
+    .chart-title{{font-size:0.82rem;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}}
+    /* ── Overview grid ── */
+    .ov-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:20px 32px}}
+    .ov-card{{background:white;border-radius:12px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,0.07);cursor:pointer;border-left:4px solid var(--accent,#6b7280);transition:transform 0.12s,box-shadow 0.12s}}
+    .ov-card:hover{{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}}
+    .ov-name{{font-weight:700;font-size:1rem;margin-bottom:8px}}
+    .ov-stats{{display:flex;gap:16px;font-size:0.85rem;flex-wrap:wrap}}
+    .ov-sub{{color:#94a3b8;font-size:0.78em}}
+    .ov-rc{{margin-top:6px;font-size:0.78rem;color:#166534;background:#f0fdf4;border-radius:6px;padding:4px 8px}}
+    .ov-tap{{font-size:0.7rem;color:#cbd5e1;margin-top:6px;text-align:right}}
+    /* ── Detail grid ── */
+    .grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:20px;padding:20px 32px 32px;max-width:1600px;margin:0 auto}}
+    .card{{background:white;border-radius:12px;padding:20px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.08)}}
+    .card-header{{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #f1f5f9}}
+    .project-name{{font-weight:700;font-size:1rem;color:#1e293b}}
+    .platform-count{{font-size:0.75rem;color:#94a3b8}}
+    .combined-total{{display:flex;align-items:center;gap:8px;background:#f8fafc;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:0.82rem}}
+    .combined-label{{font-weight:600;color:#475569}}
+    .combined-stat{{color:#1e293b;font-weight:500}}
+    .combined-sep{{color:#cbd5e1}}
+    .platform-row{{border-radius:8px;padding:12px 12px 12px 14px;margin-bottom:10px;background:#fafafa}}
+    .platform-row:last-child{{margin-bottom:0}}
+    .platform-header{{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}}
+    .badge{{color:white;font-size:0.7rem;font-weight:600;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.04em}}
+    .status-dot{{width:8px;height:8px;border-radius:50%}}
+    .metrics{{display:flex;gap:6px;flex-wrap:wrap}}
+    .metric{{flex:1;min-width:76px;background:white;border-radius:6px;padding:8px 10px;text-align:center;border:1px solid #f1f5f9}}
+    .metric-value{{font-size:1.1rem;font-weight:700;color:#1e293b}}
+    .metric-label{{font-size:0.65rem;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:0.02em;white-space:nowrap}}
+    .device-row{{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid #f1f5f9}}
+    .device-pill{{font-size:0.75rem;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;border-radius:20px;padding:4px 10px}}
+    .device-pill strong{{color:#1e293b}}
+    .device-pct{{color:#94a3b8;font-size:0.7rem}}
+    .rc-block{{margin-top:12px;padding:12px 14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px}}
+    .rc-block.rc-debug{{background:#fefce8;border-color:#fde68a}}
+    .rc-title{{font-size:0.75rem;font-weight:600;color:#166534;display:block;margin-bottom:8px}}
+    .rc-block.rc-debug .rc-title{{color:#92400e}}
+    .rc-metrics{{display:flex;gap:8px;flex-wrap:wrap}}
+    .rc-metric{{flex:1;min-width:72px;background:white;border-radius:6px;padding:7px 10px;text-align:center;border:1px solid #dcfce7}}
+    .rc-value{{font-size:1rem;font-weight:700;color:#166534}}
+    .rc-label{{font-size:0.65rem;color:#4ade80;margin-top:2px;text-transform:uppercase;letter-spacing:0.04em}}
+    .raw-toggle{{margin-top:10px;font-size:0.72rem;color:#94a3b8;cursor:pointer;user-select:none}}
+    .raw-toggle:hover{{color:#3b82f6}}
+    .raw-data{{margin-top:6px;background:#f1f5f9;border-radius:6px;padding:10px;font-size:0.68rem;overflow-x:auto;color:#475569;white-space:pre-wrap;word-break:break-all}}
+    footer{{text-align:center;padding:24px;font-size:0.8rem;color:#94a3b8}}
+    code{{background:#f1f5f9;padding:2px 6px;border-radius:4px}}
   </style>
 </head>
 <body>
 
 <header>
   <div>
-    <h1>📊 Microsoft Clarity — All Projects</h1>
-    <div class="meta">Last 30 days &nbsp;·&nbsp; {date_range}</div>
+    <h1>&#x1F4CA; 3Advance Analytics Dashboard</h1>
+    <div class="meta">Last 30 days &nbsp;&middot;&nbsp; {date_range}</div>
   </div>
   <div class="meta">Generated {generated}</div>
 </header>
@@ -904,7 +956,7 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
   </div>
   <div class="summary-item">
     <div class="summary-value">{total_projects}</div>
-    <div class="summary-label">Total Platforms</div>
+    <div class="summary-label">Platforms</div>
   </div>
   <div class="summary-item">
     <div class="summary-value">{int(total_sessions):,}</div>
@@ -914,37 +966,115 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
     <div class="summary-value">{int(total_users):,}</div>
     <div class="summary-label">Total Users</div>
   </div>
-  <div class="summary-item">
-    <div class="summary-value">{ok_groups}/{len(groups)}</div>
-    <div class="summary-label">Apps with Data</div>
-  </div>
-  {rc_summary_html}
+  {rc_summary}
 </div>
 
-<div class="legend">
-  <span style="color:#94a3b8;font-size:0.75rem;">PLATFORMS:</span>
-  <div class="legend-item"><div class="legend-dot" style="background:#007aff"></div> iOS</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#3ddc84"></div> Android</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Website</div>
+<div class="tabs-nav">
+{tabs_nav_html}
 </div>
 
-<div class="grid">
-{cards_html}
-</div>
+{tabs_body_html}
 
-<footer>Clarity Dashboard · Refresh by running <code>python3 clarity_dashboard.py</code> again</footer>
+<footer>3Advance Analytics &middot; Auto-updated weekly via GitHub Actions</footer>
 
 <script>
+const CD = {chart_data_json};
+
+function hexToRgb(hex) {{
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `${{r}},${{g}},${{b}}`;
+}}
+
+function makeLineChart(canvasId, labels, datasets, opts) {{
+  const el = document.getElementById(canvasId);
+  if (!el || !labels.length) return null;
+  const ctx = el.getContext('2d');
+  const dsets = datasets.map(d => ({{
+    label: d.label,
+    data: d.values,
+    borderColor: d.color,
+    backgroundColor: `rgba(${{hexToRgb(d.color)}},0.12)`,
+    borderWidth: 2,
+    pointRadius: labels.length > 20 ? 0 : 3,
+    pointHoverRadius: 5,
+    fill: true,
+    tension: 0.35,
+  }}));
+  return new Chart(ctx, {{
+    type: 'line',
+    data: {{ labels, datasets: dsets }},
+    options: {{
+      responsive: true,
+      maintainAspectRatio: opts && opts.spark ? false : true,
+      plugins: {{
+        legend: {{ display: dsets.length > 1, labels: {{ boxWidth: 10, font: {{ size: 11 }} }} }},
+        tooltip: {{ mode: 'index', intersect: false }},
+      }},
+      scales: opts && opts.spark ? {{ x: {{ display:false }}, y: {{ display:false }} }} : {{
+        x: {{ ticks: {{ maxTicksLimit: 8, font: {{ size: 11 }} }}, grid: {{ display: false }} }},
+        y: {{ ticks: {{ font: {{ size: 11 }} }}, beginAtZero: true }},
+      }},
+      interaction: {{ mode: 'nearest', axis: 'x', intersect: false }},
+    }},
+  }});
+}}
+
+function initCharts() {{
+  const ov = CD['_overview'] || {{}};
+  makeLineChart('chart-ov-sessions', ov.sessions ? ov.sessions.dates : [], [
+    {{ label:'Sessions', values: ov.sessions ? ov.sessions.values : [], color:'#3b82f6' }}
+  ]);
+  makeLineChart('chart-ov-users', ov.users ? ov.users.dates : [], [
+    {{ label:'Users', values: ov.users ? ov.users.values : [], color:'#10b981' }}
+  ]);
+
+  for (const [gname, gd] of Object.entries(CD)) {{
+    if (gname.startsWith('_')) continue;
+    const tabId  = 'tab-' + gname.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g,'');
+    const color  = gd.color || '#6b7280';
+    // Spark (overview card)
+    const sparkId = 'spark-' + tabId;
+    if (gd.sessions && gd.sessions.dates.length)
+      makeLineChart(sparkId, gd.sessions.dates, [
+        {{ label:'Sessions', values: gd.sessions.values, color }}
+      ], {{ spark: true }});
+    // Sessions + Users dual line
+    const sessId = `chart-${{tabId}}-sessions`;
+    if (gd.sessions && gd.sessions.dates.length)
+      makeLineChart(sessId, gd.sessions.dates, [
+        {{ label:'Sessions', values: gd.sessions.values, color }},
+        {{ label:'Users',    values: (gd.users||{{values:[]}}).values, color:'#94a3b8' }},
+      ]);
+    // Installs
+    const instId = `chart-${{tabId}}-installs`;
+    if (gd.installs && gd.installs.dates.length)
+      makeLineChart(instId, gd.installs.dates, [
+        {{ label:'Downloads', values: gd.installs.values, color:'#f59e0b' }}
+      ]);
+  }}
+}}
+
+function showTab(tabId) {{
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const pane = document.getElementById(tabId);
+  const btn  = document.getElementById('btn-' + tabId);
+  if (pane) pane.classList.remove('hidden');
+  if (btn)  btn.classList.add('active');
+}}
+
 function toggleRaw(el) {{
   const pre = el.nextElementSibling;
   if (pre.style.display === 'none') {{
     pre.style.display = 'block';
-    el.textContent = '▼ Hide raw response';
+    el.textContent = '\u25bc Hide raw response';
   }} else {{
     pre.style.display = 'none';
-    el.textContent = '▶ Show raw response';
+    el.textContent = '\u25ba Show raw response';
   }}
 }}
+
+window.addEventListener('DOMContentLoaded', initCharts);
 </script>
 </body>
 </html>"""
@@ -1141,8 +1271,7 @@ body {{ background: white; font-size: 9pt; color: #1e293b; }}
 
 def _env_key_name(group):
     """Derive an env-var-safe name from a group string, e.g. "Today's Front Pages" → ASC_KEY_TODAYS_FRONT_PAGES"""
-    import re
-    clean = group.upper().replace("'", "").replace("'", "")  # remove apostrophes first
+    clean = group.upper().replace("'", "").replace("\u2019", "")  # remove apostrophes first
     slug  = re.sub(r"[^A-Z0-9]+", "_", clean).strip("_")
     return f"ASC_KEY_{slug}"
 
