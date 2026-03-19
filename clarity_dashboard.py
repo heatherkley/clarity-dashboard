@@ -735,9 +735,20 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         }
 
     ov_dates = sorted(all_sessions_by_date.keys())
+    # Per-group current values for bar charts (always available, no history needed)
+    _bar_sess, _bar_users, _bar_colors = [], [], []
+    for _gn in sorted_group_names:
+        _ms = groups[_gn]
+        _bar_sess.append(int(sum(extract_clarity_metrics(r["raw"]).get("sessions", 0) for r in _ms)))
+        _bar_users.append(int(sum(extract_clarity_metrics(r["raw"]).get("users",    0) for r in _ms)))
+        _bar_colors.append(gcolor(_gn))
     chart_data["_overview"] = {
-        "sessions": {"dates": ov_dates, "values": [int(all_sessions_by_date[d]) for d in ov_dates]},
-        "users":    {"dates": ov_dates, "values": [int(all_users_by_date[d])    for d in ov_dates]},
+        "sessions":      {"dates": ov_dates, "values": [int(all_sessions_by_date[d]) for d in ov_dates]},
+        "users":         {"dates": ov_dates, "values": [int(all_users_by_date[d])    for d in ov_dates]},
+        "group_labels":  sorted_group_names,
+        "group_sessions": _bar_sess,
+        "group_users":   _bar_users,
+        "group_colors":  _bar_colors,
     }
     chart_data_json = json.dumps(chart_data)
 
@@ -777,6 +788,22 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         if mrr:
             rc_line = f"<div class='ov-rc'>${mrr:,.0f} MRR &nbsp;·&nbsp; {int(subs):,} subs</div>"
 
+        # Only render sparkline canvas when we have ≥2 history points to draw a meaningful line
+        _g_hist = clarity_history.get(gname, {})
+        if len(_g_hist) >= 2:
+            spark_el = f'<canvas id="spark-{tab_target}" height="44" style="margin-top:10px;width:100%;display:block"></canvas>'
+        else:
+            # Show a proportion bar as a placeholder while history accumulates
+            _pct = int(g_sessions / max(total_sessions, 1) * 100)
+            spark_el = (
+                f'<div style="margin-top:10px">'
+                f'<div style="height:3px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden">'
+                f'<div style="width:{_pct}%;height:100%;background:{color};border-radius:2px"></div>'
+                f'</div>'
+                f'<div style="font-size:0.65rem;color:#334155;margin-top:5px">{_pct}% of total sessions</div>'
+                f'</div>'
+            )
+
         overview_cards_html += f"""
       <div class="ov-card" onclick="showTab('{tab_target}')" style="--accent:{color}">
         <div class="ov-name" style="color:{color}">{gname}</div>
@@ -786,7 +813,7 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
           {"<div>" + inst_str + "</div>" if inst_str else ""}
         </div>
         {rc_line}
-        <canvas id="spark-{tab_target}" height="44" style="margin-top:8px;width:100%"></canvas>
+        {spark_el}
         <div class="ov-tap">tap to explore &rarr;</div>
       </div>"""
 
@@ -937,12 +964,12 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
   <style>
     *{{box-sizing:border-box;margin:0;padding:0}}
-    body{{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh}}
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     /* ── Base ── */
     body{{font-family:'Inter',system-ui,sans-serif;background:#060d1a;color:#e2e8f0;min-height:100vh;position:relative}}
     body::before{{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(56,189,248,0.04) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0}}
-    *>*{{position:relative;z-index:1}}
+    canvas{{background:transparent!important}}
+    header,.summary,.tabs-nav,.tab-pane,.grid,.charts-row,.ov-grid,.client-kpi-bar,footer{{position:relative;z-index:1}}
     /* ── Header ── */
     header{{background:linear-gradient(135deg,#070e1c 0%,#0c1a35 60%,#070e1c 100%);border-bottom:1px solid rgba(56,189,248,0.12);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:relative;overflow:hidden}}
     header::after{{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(56,189,248,0.6),transparent)}}
@@ -1069,6 +1096,39 @@ function hexToRgb(hex) {{
   return `${{r}},${{g}},${{b}}`;
 }}
 
+function makeBarChart(canvasId, labels, values, colors, label) {{
+  const el = document.getElementById(canvasId);
+  if (!el || !labels.length) return null;
+  const ctx = el.getContext('2d');
+  return new Chart(ctx, {{
+    type: 'bar',
+    data: {{
+      labels,
+      datasets: [{{
+        label,
+        data: values,
+        backgroundColor: colors.map(c => `rgba(${{hexToRgb(c)}},0.65)`),
+        borderColor: colors,
+        borderWidth: 1,
+        borderRadius: 5,
+        borderSkipped: false,
+      }}]
+    }},
+    options: {{
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {{
+        legend: {{ display: false }},
+        tooltip: {{ backgroundColor:'rgba(6,13,26,0.92)', titleColor:'#e2e8f0', bodyColor:'#94a3b8', borderColor:'rgba(56,189,248,0.2)', borderWidth:1 }},
+      }},
+      scales: {{
+        x: {{ ticks: {{ font: {{ size: 10 }}, color:'#475569', maxRotation: 35, minRotation: 0 }}, grid: {{ display:false }} }},
+        y: {{ ticks: {{ font: {{ size: 11 }}, color:'#334155' }}, grid: {{ color:'rgba(255,255,255,0.04)' }}, beginAtZero:true }},
+      }},
+    }},
+  }});
+}}
+
 function makeLineChart(canvasId, labels, datasets, opts) {{
   const el = document.getElementById(canvasId);
   if (!el || !labels.length) return null;
@@ -1111,20 +1171,19 @@ function makeLineChart(canvasId, labels, datasets, opts) {{
 
 function initCharts() {{
   const ov = CD['_overview'] || {{}};
-  makeLineChart('chart-ov-sessions', ov.sessions ? ov.sessions.dates : [], [
-    {{ label:'Sessions', values: ov.sessions ? ov.sessions.values : [], color:'#3b82f6' }}
-  ]);
-  makeLineChart('chart-ov-users', ov.users ? ov.users.dates : [], [
-    {{ label:'Users', values: ov.users ? ov.users.values : [], color:'#10b981' }}
-  ]);
+  // Overview: bar charts by group (always available from today's data)
+  if (ov.group_labels && ov.group_labels.length) {{
+    makeBarChart('chart-ov-sessions', ov.group_labels, ov.group_sessions, ov.group_colors, 'Sessions');
+    makeBarChart('chart-ov-users',    ov.group_labels, ov.group_users,    ov.group_colors, 'Users');
+  }}
 
   for (const [gname, gd] of Object.entries(CD)) {{
     if (gname.startsWith('_')) continue;
     const tabId  = 'tab-' + gname.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g,'');
     const color  = gd.color || '#6b7280';
-    // Spark (overview card)
+    // Spark (overview card) — only if canvas exists and we have ≥2 points
     const sparkId = 'spark-' + tabId;
-    if (gd.sessions && gd.sessions.dates.length)
+    if (gd.sessions && gd.sessions.dates.length >= 2 && document.getElementById(sparkId))
       makeLineChart(sparkId, gd.sessions.dates, [
         {{ label:'Sessions', values: gd.sessions.values, color }}
       ], {{ spark: true }});
