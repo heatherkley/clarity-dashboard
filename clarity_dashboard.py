@@ -45,10 +45,11 @@ except ImportError:
 
 # ── Settings ───────────────────────────────────────────────────────────────────
 
-CONFIG_FILE  = "config.json"
-OUTPUT_FILE  = "clarity_dashboard.html"
-OUTPUT_PDF   = "clarity_dashboard.pdf"
-DAYS_BACK    = 30
+CONFIG_FILE   = "config.json"
+OUTPUT_FILE   = "clarity_dashboard.html"
+OUTPUT_PDF    = "clarity_dashboard.pdf"
+HISTORY_FILE  = "dashboard_history.json"
+DAYS_BACK     = 30
 
 CLARITY_API    = "https://www.clarity.ms/export-data/api/v1/project-live-insights"
 REVENUECAT_API = "https://api.revenuecat.com/v1"
@@ -140,10 +141,6 @@ def extract_clarity_daily(raw):
         if item.get("metricName") != "Traffic":
             continue
         info_items = item.get("information", [])
-        # Debug: print keys of first info item so we can see the actual structure
-        if info_items:
-            print(f"    [Clarity daily] Traffic info[0] keys: {list(info_items[0].keys())}")
-            print(f"    [Clarity daily] {len(info_items)} info items")
         for info in info_items:
             # Try all known Clarity date field names
             date_raw = (info.get("startDate") or info.get("date") or
@@ -303,6 +300,50 @@ def _asc_cache_save(cache):
             json.dump(cache, f, indent=2)
     except Exception:
         pass
+
+def _history_load():
+    """Load the persistent dashboard history (daily snapshots for charts)."""
+    if os.path.exists(HISTORY_FILE):
+        try:
+            with open(HISTORY_FILE) as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"clarity": {}, "revenuecat": {}}
+
+def _history_save(history):
+    """Save history file, keeping at most 365 entries per group (rolling year)."""
+    try:
+        for section in ("clarity", "revenuecat"):
+            for gname, daily in history.get(section, {}).items():
+                # Keep last 365 days only
+                sorted_dates = sorted(daily.keys())
+                if len(sorted_dates) > 365:
+                    for old in sorted_dates[:-365]:
+                        daily.pop(old, None)
+        with open(HISTORY_FILE, "w") as f:
+            json.dump(history, f, indent=2, sort_keys=True)
+    except Exception as e:
+        print(f"    ⚠️  Could not save history: {e}")
+
+def _history_append_clarity(history, group_name, sessions, users):
+    """Append today's Clarity aggregate for a group into the history."""
+    today = datetime.now().strftime("%Y-%m-%d")
+    history.setdefault("clarity", {}).setdefault(group_name, {})[today] = {
+        "sessions": int(sessions),
+        "users":    int(users),
+    }
+
+def _history_append_revenuecat(history, group_name, metrics):
+    """Append today's RevenueCat metrics for a group into the history."""
+    today = datetime.now().strftime("%Y-%m-%d")
+    history.setdefault("revenuecat", {}).setdefault(group_name, {})[today] = {
+        "mrr":         round(metrics.get("mrr",         0), 2),
+        "revenue":     round(metrics.get("revenue",     0), 2),
+        "subscribers": int(metrics.get("subscribers",   0)),
+        "trials":      int(metrics.get("trials",        0)),
+    }
+
 
 def _asc_create_request(apple_id, hdrs):
     """Create a new ONGOING analytics report request. Returns (id, is_new) or (None, False)."""
@@ -632,9 +673,10 @@ def platform_row(platform, data, raw):
 
 # ── HTML Generation ─────────────────────────────────────────────────────────────
 
-def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end_dt):
+def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end_dt, history=None):
     date_range = f"{start_dt.strftime('%b %d')} \u2013 {end_dt.strftime('%b %d, %Y')}"
     generated  = datetime.now().strftime("%b %d, %Y at %I:%M %p")
+    history    = history or {}
 
     GROUP_ORDER = ["Shift", "Today's Front Pages", "Quiet Collection",
                    "P3", "Self Speak", "Footsteps with Jesus"]
@@ -657,32 +699,39 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
 
     sorted_group_names = sorted(groups.keys(), key=gsort)
 
-    # ── Build per-group chart data ──────────────────────────────────────────────
+    # ── Build per-group chart data from history (accumulated weekly snapshots) ──
+    # Clarity doesn't return time-series via its API — we build our own history
+    # by saving each run's aggregate, giving us a growing trend over time.
     chart_data           = {}
     all_sessions_by_date = {}
     all_users_by_date    = {}
+    clarity_history      = history.get("clarity",    {})
+    rc_history           = history.get("revenuecat", {})
 
     for gname in sorted_group_names:
-        members         = groups[gname]
-        merged_sessions = {}
-        merged_users    = {}
-        for r in members:
-            for date, vals in extract_clarity_daily(r.get("raw") or []).items():
-                merged_sessions[date] = merged_sessions.get(date, 0) + vals["sessions"]
-                merged_users[date]    = merged_users.get(date, 0)    + vals["users"]
-                all_sessions_by_date[date] = all_sessions_by_date.get(date, 0) + vals["sessions"]
-                all_users_by_date[date]    = all_users_by_date.get(date, 0)    + vals["users"]
+        # Sessions / users from accumulated history
+        g_clarity  = clarity_history.get(gname, {})
+        sess_dates = sorted(g_clarity.keys())
+        for d in sess_dates:
+            all_sessions_by_date[d] = all_sessions_by_date.get(d, 0) + g_clarity[d].get("sessions", 0)
+            all_users_by_date[d]    = all_users_by_date.get(d, 0)    + g_clarity[d].get("users",    0)
 
-        sess_dates = sorted(merged_sessions.keys())
+        # ASC daily installs (from TSV — already per-day)
         asc_g      = asc_by_group.get(gname) or {}
         di         = asc_g.get("daily_installs") or {}
         inst_dates = sorted(di.keys())
 
+        # RevenueCat history
+        g_rc       = rc_history.get(gname, {})
+        rc_dates   = sorted(g_rc.keys())
+
         chart_data[gname] = {
-            "sessions": {"dates": sess_dates,  "values": [int(merged_sessions[d]) for d in sess_dates]},
-            "users":    {"dates": sess_dates,  "values": [int(merged_users[d])    for d in sess_dates]},
-            "installs": {"dates": inst_dates,  "values": [int(di[d])              for d in inst_dates]},
-            "color":    gcolor(gname),
+            "sessions":    {"dates": sess_dates,  "values": [g_clarity[d].get("sessions", 0) for d in sess_dates]},
+            "users":       {"dates": sess_dates,  "values": [g_clarity[d].get("users",    0) for d in sess_dates]},
+            "installs":    {"dates": inst_dates,  "values": [int(di[d])                       for d in inst_dates]},
+            "mrr":         {"dates": rc_dates,    "values": [g_rc[d].get("mrr",         0)   for d in rc_dates]},
+            "subscribers": {"dates": rc_dates,    "values": [g_rc[d].get("subscribers", 0)   for d in rc_dates]},
+            "color":       gcolor(gname),
         }
 
     ov_dates = sorted(all_sessions_by_date.keys())
@@ -774,7 +823,10 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         revenue    = rc_m.get("revenue", 0)
         subs       = rc_m.get("subscribers", 0)
         trials     = rc_m.get("trials", 0)
-        has_installs = bool(chart_data.get(gname, {}).get("installs", {}).get("dates"))
+        gcd          = chart_data.get(gname, {})
+        has_sessions = bool(gcd.get("sessions", {}).get("dates"))
+        has_installs = bool(gcd.get("installs", {}).get("dates"))
+        has_rc_trend = bool(gcd.get("mrr",      {}).get("dates"))
 
         tabs_nav_html += f'<button class="tab-btn" id="btn-{t_id}" onclick="showTab(\'{t_id}\')">{gname}</button>\n'
 
@@ -797,18 +849,33 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
             for v, l in kpi_items
         )
 
-        # Charts row
+        # Charts row — sessions/users trend, iOS downloads, MRR/subscribers
+        no_data_note = (
+            '<div class="chart-no-data">Building trend data \u2014 charts grow with each weekly run</div>'
+            if not has_sessions and not has_installs and not has_rc_trend else ""
+        )
         charts_row = f"""
     <div class="charts-row">
       <div class="chart-card">
-        <div class="chart-title">Daily Sessions &amp; Users</div>
-        <canvas id="chart-{t_id}-sessions"></canvas>
+        <div class="chart-title">Sessions &amp; Users Over Time</div>
+        {no_data_note}
+        <canvas id="chart-{t_id}-sessions" {"style='display:none'" if not has_sessions else ""}></canvas>
       </div>"""
-        if has_installs:
+        if has_installs or asc_g.get("pending"):
+            inst_note = '<div class="chart-no-data">iOS download trend — initializing first report</div>' if not has_installs else ""
             charts_row += f"""
       <div class="chart-card">
         <div class="chart-title">Daily iOS Downloads</div>
-        <canvas id="chart-{t_id}-installs"></canvas>
+        {inst_note}
+        <canvas id="chart-{t_id}-installs" {"style='display:none'" if not has_installs else ""}></canvas>
+      </div>"""
+        if has_rc_trend or mrr:
+            rc_note = '<div class="chart-no-data">Revenue trend \u2014 grows with each weekly run</div>' if not has_rc_trend else ""
+            charts_row += f"""
+      <div class="chart-card">
+        <div class="chart-title">MRR &amp; Subscribers Over Time</div>
+        {rc_note}
+        <canvas id="chart-{t_id}-revenue" {"style='display:none'" if not has_rc_trend else ""}></canvas>
       </div>"""
         charts_row += "\n    </div>"
 
@@ -898,6 +965,7 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
     .charts-row{{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;padding:20px 32px 0}}
     .chart-card{{background:white;border-radius:12px;padding:18px 20px;box-shadow:0 1px 3px rgba(0,0,0,0.07)}}
     .chart-title{{font-size:0.82rem;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}}
+    .chart-no-data{{font-size:0.8rem;color:#94a3b8;padding:32px 0;text-align:center;font-style:italic}}
     /* ── Overview grid ── */
     .ov-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:20px 32px}}
     .ov-card{{background:white;border-radius:12px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,0.07);cursor:pointer;border-left:4px solid var(--accent,#6b7280);transition:transform 0.12s,box-shadow 0.12s}}
@@ -1053,10 +1121,28 @@ function initCharts() {{
       ]);
     // Installs
     const instId = `chart-${{tabId}}-installs`;
-    if (gd.installs && gd.installs.dates.length)
+    if (gd.installs && gd.installs.dates.length) {{
+      const el = document.getElementById(instId);
+      if (el) el.style.display = '';
       makeLineChart(instId, gd.installs.dates, [
         {{ label:'Downloads', values: gd.installs.values, color:'#f59e0b' }}
       ]);
+    }}
+    // MRR + Subscribers (dual axis via two datasets)
+    const revId = `chart-${{tabId}}-revenue`;
+    if (gd.mrr && gd.mrr.dates.length) {{
+      const el = document.getElementById(revId);
+      if (el) el.style.display = '';
+      makeLineChart(revId, gd.mrr.dates, [
+        {{ label:'MRR ($)',       values: gd.mrr.values,         color:'#10b981' }},
+        {{ label:'Subscribers',   values: (gd.subscribers||{{values:[]}}).values, color:'#8b5cf6' }},
+      ]);
+    }}
+    // Unhide sessions canvas if we have data
+    if (gd.sessions && gd.sessions.dates.length) {{
+      const el = document.getElementById(`chart-${{tabId}}-sessions`);
+      if (el) el.style.display = '';
+    }}
   }}
 }}
 
@@ -1310,6 +1396,11 @@ def main():
     print(f"   Period  : {start_dt.strftime('%b %d')} – {end_dt.strftime('%b %d, %Y')}")
     print(f"   Projects: {len(projects)}\n")
 
+    # Load accumulated history (builds trend charts over time)
+    history = _history_load()
+    print(f"   History : {sum(len(v) for v in history.get('clarity',{}).values())} clarity snapshots, "
+          f"{sum(len(v) for v in history.get('revenuecat',{}).values())} RC snapshots\n")
+
     groups = defaultdict(list)
 
     for proj in projects:
@@ -1340,6 +1431,14 @@ def main():
         print("\n❌  No data fetched. Double-check your tokens in config.json")
         sys.exit(1)
 
+    # ── Snapshot Clarity aggregates into history (for trend charts) ─────────────
+    print("📅 Saving Clarity snapshots to history...")
+    for gname, members in groups.items():
+        g_sessions = sum(extract_clarity_metrics(r["raw"]).get("sessions", 0) for r in members)
+        g_users    = sum(extract_clarity_metrics(r["raw"]).get("users",    0) for r in members)
+        if g_sessions > 0 or g_users > 0:
+            _history_append_clarity(history, gname, g_sessions, g_users)
+
     # ── RevenueCat ──────────────────────────────────────────────────────────────
     rc_by_group = {}
     rc_config   = config.get("revenuecat", {})
@@ -1358,6 +1457,10 @@ def main():
             print("✅" if rc_data else "❌ no data")
             if rc_data:
                 rc_by_group[group_name] = rc_data
+                # Snapshot RC metrics into history for trend charts
+                rc_m = rc_data.get("_metrics") or extract_revenuecat_metrics(rc_data)
+                if rc_m.get("mrr") or rc_m.get("subscribers"):
+                    _history_append_revenuecat(history, group_name, rc_m)
     else:
         print("\n💰 RevenueCat: skipped (no apps configured)")
 
@@ -1403,7 +1506,11 @@ def main():
     else:
         print("\n🍎 App Store Connect: skipped (no apps configured)")
 
-    html = render_html(groups, rc_by_group, asc_by_group, len(projects), start_dt, end_dt)
+    # Save accumulated history so next run builds on it
+    _history_save(history)
+    print(f"📅 History saved → {HISTORY_FILE}")
+
+    html = render_html(groups, rc_by_group, asc_by_group, len(projects), start_dt, end_dt, history=history)
 
     with open(OUTPUT_FILE, "w") as f:
         f.write(html)

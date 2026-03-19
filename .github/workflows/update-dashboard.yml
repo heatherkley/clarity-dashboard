@@ -44,8 +44,9 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git pull --rebase --autostash origin main
           git add clarity_dashboard.html
-          # Persist the ASC request ID cache so limited-role keys work across runs
+          # Persist ASC request ID cache and accumulated trend history
           git add .asc_cache.json 2>/dev/null || true
+          git add dashboard_history.json 2>/dev/null || true
           # Only commit if something actually changed
           git diff --staged --quiet || git commit -m "chore: update dashboard $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push
