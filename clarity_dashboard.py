@@ -932,95 +932,105 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
   <title>3Advance Analytics \u2014 {date_range}</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
   <style>
     *{{box-sizing:border-box;margin:0;padding:0}}
     body{{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh}}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    /* ── Base ── */
+    body{{font-family:'Inter',system-ui,sans-serif;background:#060d1a;color:#e2e8f0;min-height:100vh;position:relative}}
+    body::before{{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(56,189,248,0.04) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0}}
+    *>*{{position:relative;z-index:1}}
     /* ── Header ── */
-    header{{background:#1e293b;color:white;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}}
-    header h1{{font-size:1.3rem;font-weight:700}}
-    .meta{{font-size:0.82rem;opacity:0.65}}
+    header{{background:linear-gradient(135deg,#070e1c 0%,#0c1a35 60%,#070e1c 100%);border-bottom:1px solid rgba(56,189,248,0.12);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:relative;overflow:hidden}}
+    header::after{{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(56,189,248,0.6),transparent)}}
+    header h1{{font-size:1.25rem;font-weight:700;color:white;letter-spacing:-0.01em}}
+    header h1 span{{background:linear-gradient(90deg,#38bdf8,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}}
+    .meta{{font-size:0.8rem;color:#475569}}
     /* ── Summary bar ── */
-    .summary{{background:#3b82f6;color:white;display:flex;flex-wrap:wrap}}
-    .summary-item{{flex:1;min-width:130px;padding:18px 24px;border-right:1px solid rgba(255,255,255,0.15)}}
+    .summary{{display:flex;flex-wrap:wrap;background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(255,255,255,0.05)}}
+    .summary-item{{flex:1;min-width:130px;padding:18px 24px;border-right:1px solid rgba(255,255,255,0.05)}}
     .summary-item:last-child{{border-right:none}}
-    .summary-value{{font-size:1.8rem;font-weight:700}}
-    .summary-label{{font-size:0.72rem;opacity:0.8;margin-top:3px;text-transform:uppercase;letter-spacing:0.05em}}
+    .summary-value{{font-size:1.8rem;font-weight:700;color:white;letter-spacing:-0.02em}}
+    .summary-label{{font-size:0.68rem;color:#475569;margin-top:3px;text-transform:uppercase;letter-spacing:0.06em}}
     /* ── Tabs nav ── */
-    .tabs-nav{{background:#1e293b;padding:0 32px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}}
+    .tabs-nav{{padding:0 32px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.01)}}
     .tabs-nav::-webkit-scrollbar{{display:none}}
-    .tab-btn{{background:none;border:none;color:#94a3b8;padding:14px 18px;font-size:0.85rem;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:color 0.15s}}
-    .tab-btn:hover{{color:#e2e8f0}}
-    .tab-btn.active{{color:white;border-bottom-color:#3b82f6}}
+    .tab-btn{{background:none;border:none;color:#475569;padding:14px 20px;font-size:0.82rem;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;letter-spacing:0.02em;font-family:inherit}}
+    .tab-btn:hover{{color:#94a3b8}}
+    .tab-btn.active{{color:#38bdf8;border-bottom-color:#38bdf8;text-shadow:0 0 20px rgba(56,189,248,0.4)}}
     /* ── Tab panes ── */
     .tab-pane{{display:block}}
     .tab-pane.hidden{{display:none}}
     /* ── KPI bar per client ── */
-    .client-kpi-bar{{display:flex;flex-wrap:wrap;background:white;padding:16px 32px;gap:8px;border-bottom:1px solid #e2e8f0}}
-    .kpi{{flex:1;min-width:100px;text-align:center;padding:10px 8px}}
-    .kpi-val{{font-size:1.5rem;font-weight:700;color:#1e293b}}
-    .kpi-lbl{{font-size:0.68rem;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-top:3px}}
+    .client-kpi-bar{{display:flex;flex-wrap:wrap;background:rgba(255,255,255,0.015);padding:20px 32px;gap:8px;border-bottom:1px solid rgba(255,255,255,0.05);border-top:3px solid var(--accent,#38bdf8)}}
+    .kpi{{flex:1;min-width:110px;text-align:center;padding:12px 8px}}
+    .kpi-val{{font-size:2rem;font-weight:700;color:white;letter-spacing:-0.02em}}
+    .kpi-lbl{{font-size:0.65rem;color:#475569;text-transform:uppercase;letter-spacing:0.07em;margin-top:4px}}
     /* ── Charts ── */
     .charts-row{{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;padding:20px 32px 0}}
-    .chart-card{{background:white;border-radius:12px;padding:18px 20px;box-shadow:0 1px 3px rgba(0,0,0,0.07)}}
-    .chart-title{{font-size:0.82rem;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}}
-    .chart-no-data{{font-size:0.8rem;color:#94a3b8;padding:32px 0;text-align:center;font-style:italic}}
+    .chart-card{{background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:20px 22px;backdrop-filter:blur(8px);transition:border-color 0.2s,box-shadow 0.2s}}
+    .chart-card:hover{{border-color:rgba(56,189,248,0.2);box-shadow:0 0 32px rgba(56,189,248,0.06)}}
+    .chart-title{{font-size:0.72rem;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:0.09em;margin-bottom:16px}}
+    .chart-no-data{{font-size:0.8rem;color:#1e3a4a;padding:32px 0;text-align:center;font-style:italic}}
     /* ── Overview grid ── */
     .ov-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:20px 32px}}
-    .ov-card{{background:white;border-radius:12px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,0.07);cursor:pointer;border-left:4px solid var(--accent,#6b7280);transition:transform 0.12s,box-shadow 0.12s}}
-    .ov-card:hover{{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}}
-    .ov-name{{font-weight:700;font-size:1rem;margin-bottom:8px}}
-    .ov-stats{{display:flex;gap:16px;font-size:0.85rem;flex-wrap:wrap}}
-    .ov-sub{{color:#94a3b8;font-size:0.78em}}
-    .ov-rc{{margin-top:6px;font-size:0.78rem;color:#166534;background:#f0fdf4;border-radius:6px;padding:4px 8px}}
-    .ov-tap{{font-size:0.7rem;color:#cbd5e1;margin-top:6px;text-align:right}}
+    .ov-card{{background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:18px 20px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}}
+    .ov-card::before{{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent,#3b82f6),transparent)}}
+    .ov-card:hover{{transform:translateY(-2px);border-color:rgba(56,189,248,0.2);box-shadow:0 8px 40px rgba(56,189,248,0.07)}}
+    .ov-name{{font-weight:700;font-size:1rem;margin-bottom:10px}}
+    .ov-stats{{display:flex;gap:16px;font-size:0.85rem;flex-wrap:wrap;color:#e2e8f0}}
+    .ov-sub{{color:#334155;font-size:0.78em}}
+    .ov-rc{{margin-top:8px;font-size:0.78rem;color:#34d399;background:rgba(52,211,153,0.08);border-radius:6px;padding:4px 10px;border:1px solid rgba(52,211,153,0.12)}}
+    .ov-tap{{font-size:0.68rem;color:#1e3a4a;margin-top:8px;text-align:right}}
     /* ── Detail grid ── */
     .grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:20px;padding:20px 32px 32px;max-width:1600px;margin:0 auto}}
-    .card{{background:white;border-radius:12px;padding:20px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.08)}}
-    .card-header{{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #f1f5f9}}
-    .project-name{{font-weight:700;font-size:1rem;color:#1e293b}}
-    .platform-count{{font-size:0.75rem;color:#94a3b8}}
-    .combined-total{{display:flex;align-items:center;gap:8px;background:#f8fafc;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:0.82rem}}
-    .combined-label{{font-weight:600;color:#475569}}
-    .combined-stat{{color:#1e293b;font-weight:500}}
-    .combined-sep{{color:#cbd5e1}}
-    .platform-row{{border-radius:8px;padding:12px 12px 12px 14px;margin-bottom:10px;background:#fafafa}}
+    .card{{background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:20px 24px}}
+    .card-header{{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.06)}}
+    .project-name{{font-weight:700;font-size:1rem;color:white}}
+    .platform-count{{font-size:0.75rem;color:#334155}}
+    .combined-total{{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:0.82rem;border:1px solid rgba(255,255,255,0.06)}}
+    .combined-label{{font-weight:600;color:#64748b}}
+    .combined-stat{{color:#e2e8f0;font-weight:500}}
+    .combined-sep{{color:#1e3a4a}}
+    .platform-row{{border-radius:10px;padding:12px 12px 12px 14px;margin-bottom:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05)}}
     .platform-row:last-child{{margin-bottom:0}}
     .platform-header{{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}}
-    .badge{{color:white;font-size:0.7rem;font-weight:600;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.04em}}
-    .status-dot{{width:8px;height:8px;border-radius:50%}}
+    .badge{{color:white;font-size:0.68rem;font-weight:600;padding:3px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:0.05em}}
+    .status-dot{{width:7px;height:7px;border-radius:50%}}
     .metrics{{display:flex;gap:6px;flex-wrap:wrap}}
-    .metric{{flex:1;min-width:76px;background:white;border-radius:6px;padding:8px 10px;text-align:center;border:1px solid #f1f5f9}}
-    .metric-value{{font-size:1.1rem;font-weight:700;color:#1e293b}}
-    .metric-label{{font-size:0.65rem;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:0.02em;white-space:nowrap}}
-    .device-row{{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid #f1f5f9}}
-    .device-pill{{font-size:0.75rem;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;border-radius:20px;padding:4px 10px}}
-    .device-pill strong{{color:#1e293b}}
-    .device-pct{{color:#94a3b8;font-size:0.7rem}}
-    .rc-block{{margin-top:12px;padding:12px 14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px}}
-    .rc-block.rc-debug{{background:#fefce8;border-color:#fde68a}}
-    .rc-title{{font-size:0.75rem;font-weight:600;color:#166534;display:block;margin-bottom:8px}}
-    .rc-block.rc-debug .rc-title{{color:#92400e}}
+    .metric{{flex:1;min-width:76px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:8px 10px;text-align:center}}
+    .metric-value{{font-size:1.1rem;font-weight:700;color:white}}
+    .metric-label{{font-size:0.62rem;color:#475569;margin-top:2px;text-transform:uppercase;letter-spacing:0.03em;white-space:nowrap}}
+    .device-row{{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06)}}
+    .device-pill{{font-size:0.75rem;color:#64748b;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:4px 10px}}
+    .device-pill strong{{color:#e2e8f0}}
+    .device-pct{{color:#334155;font-size:0.7rem}}
+    .rc-block{{margin-top:12px;padding:12px 14px;background:rgba(52,211,153,0.05);border:1px solid rgba(52,211,153,0.12);border-radius:12px}}
+    .rc-block.rc-debug{{background:rgba(251,191,36,0.05);border-color:rgba(251,191,36,0.15)}}
+    .rc-title{{font-size:0.72rem;font-weight:600;color:#34d399;display:block;margin-bottom:8px}}
+    .rc-block.rc-debug .rc-title{{color:#fbbf24}}
     .rc-metrics{{display:flex;gap:8px;flex-wrap:wrap}}
-    .rc-metric{{flex:1;min-width:72px;background:white;border-radius:6px;padding:7px 10px;text-align:center;border:1px solid #dcfce7}}
-    .rc-value{{font-size:1rem;font-weight:700;color:#166534}}
-    .rc-label{{font-size:0.65rem;color:#4ade80;margin-top:2px;text-transform:uppercase;letter-spacing:0.04em}}
-    .raw-toggle{{margin-top:10px;font-size:0.72rem;color:#94a3b8;cursor:pointer;user-select:none}}
-    .raw-toggle:hover{{color:#3b82f6}}
-    .raw-data{{margin-top:6px;background:#f1f5f9;border-radius:6px;padding:10px;font-size:0.68rem;overflow-x:auto;color:#475569;white-space:pre-wrap;word-break:break-all}}
-    footer{{text-align:center;padding:24px;font-size:0.8rem;color:#94a3b8}}
-    code{{background:#f1f5f9;padding:2px 6px;border-radius:4px}}
+    .rc-metric{{flex:1;min-width:72px;background:rgba(255,255,255,0.04);border-radius:8px;padding:7px 10px;text-align:center;border:1px solid rgba(52,211,153,0.08)}}
+    .rc-value{{font-size:1rem;font-weight:700;color:#34d399}}
+    .rc-label{{font-size:0.62rem;color:#064e3b;margin-top:2px;text-transform:uppercase;letter-spacing:0.05em}}
+    .raw-toggle{{margin-top:10px;font-size:0.7rem;color:#1e3a4a;cursor:pointer;user-select:none}}
+    .raw-toggle:hover{{color:#38bdf8}}
+    .raw-data{{margin-top:6px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:10px;font-size:0.68rem;overflow-x:auto;color:#475569;white-space:pre-wrap;word-break:break-all}}
+    footer{{text-align:center;padding:24px;font-size:0.78rem;color:#1e3a4a}}
+    code{{background:rgba(56,189,248,0.08);padding:2px 6px;border-radius:4px;color:#38bdf8}}
   </style>
 </head>
 <body>
 
 <header>
   <div>
-    <h1>&#x1F4CA; 3Advance Analytics Dashboard</h1>
+    <h1>&#x1F4CA; 3Advance <span>Analytics</span></h1>
     <div class="meta">Last 30 days &nbsp;&middot;&nbsp; {date_range}</div>
   </div>
-  <div class="meta">Generated {generated}</div>
+  <div class="meta" style="text-align:right">Generated {generated}<br><span style="color:#1e3a4a;font-size:0.75rem">Auto-updates every Monday</span></div>
 </header>
 
 <div class="summary">
@@ -1063,17 +1073,23 @@ function makeLineChart(canvasId, labels, datasets, opts) {{
   const el = document.getElementById(canvasId);
   if (!el || !labels.length) return null;
   const ctx = el.getContext('2d');
-  const dsets = datasets.map(d => ({{
-    label: d.label,
-    data: d.values,
-    borderColor: d.color,
-    backgroundColor: `rgba(${{hexToRgb(d.color)}},0.12)`,
-    borderWidth: 2,
-    pointRadius: labels.length > 20 ? 0 : 3,
-    pointHoverRadius: 5,
-    fill: true,
-    tension: 0.35,
-  }}));
+  const dsets = datasets.map(d => {{
+    const grad = ctx.createLinearGradient(0, 0, 0, opts && opts.spark ? 44 : 200);
+    grad.addColorStop(0, `rgba(${{hexToRgb(d.color)}},0.18)`);
+    grad.addColorStop(1, `rgba(${{hexToRgb(d.color)}},0)`);
+    return {{
+      label: d.label,
+      data: d.values,
+      borderColor: d.color,
+      backgroundColor: grad,
+      borderWidth: opts && opts.spark ? 1.5 : 2,
+      pointRadius: (opts && opts.spark) ? 0 : (labels.length > 14 ? 0 : 3),
+      pointHoverRadius: opts && opts.spark ? 0 : 5,
+      pointBackgroundColor: d.color,
+      fill: true,
+      tension: 0.4,
+    }};
+  }});
   return new Chart(ctx, {{
     type: 'line',
     data: {{ labels, datasets: dsets }},
@@ -1081,12 +1097,12 @@ function makeLineChart(canvasId, labels, datasets, opts) {{
       responsive: true,
       maintainAspectRatio: opts && opts.spark ? false : true,
       plugins: {{
-        legend: {{ display: dsets.length > 1, labels: {{ boxWidth: 10, font: {{ size: 11 }} }} }},
-        tooltip: {{ mode: 'index', intersect: false }},
+        legend: {{ display: !opts?.spark && dsets.length > 1, labels: {{ boxWidth: 8, font: {{ size: 11 }}, color:'#64748b' }} }},
+        tooltip: {{ mode: 'index', intersect: false, backgroundColor:'rgba(6,13,26,0.9)', titleColor:'#e2e8f0', bodyColor:'#94a3b8', borderColor:'rgba(56,189,248,0.2)', borderWidth:1 }},
       }},
       scales: opts && opts.spark ? {{ x: {{ display:false }}, y: {{ display:false }} }} : {{
-        x: {{ ticks: {{ maxTicksLimit: 8, font: {{ size: 11 }} }}, grid: {{ display: false }} }},
-        y: {{ ticks: {{ font: {{ size: 11 }} }}, beginAtZero: true }},
+        x: {{ ticks: {{ maxTicksLimit: 8, font: {{ size: 11 }}, color:'#334155' }}, grid: {{ color:'rgba(255,255,255,0.04)' }} }},
+        y: {{ ticks: {{ font: {{ size: 11 }}, color:'#334155' }}, grid: {{ color:'rgba(255,255,255,0.04)' }}, beginAtZero: true }},
       }},
       interaction: {{ mode: 'nearest', axis: 'x', intersect: false }},
     }},
