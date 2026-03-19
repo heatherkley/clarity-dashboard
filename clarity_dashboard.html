@@ -3,217 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clarity Dashboard — Feb 16 – Mar 18, 2026</title>
+  <title>3Advance Analytics — Feb 16 – Mar 18, 2026</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f1f5f9;
-      color: #1e293b;
-      min-height: 100vh;
-    }
-    header {
-      background: #1e293b;
-      color: white;
-      padding: 24px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    header h1 { font-size: 1.4rem; font-weight: 600; }
-    .meta { font-size: 0.85rem; opacity: 0.7; }
-    .summary {
-      background: #3b82f6;
-      color: white;
-      display: flex;
-      flex-wrap: wrap;
-    }
-    .summary-item {
-      flex: 1;
-      min-width: 140px;
-      padding: 20px 28px;
-      border-right: 1px solid rgba(255,255,255,0.15);
-    }
-    .summary-item:last-child { border-right: none; }
-    .summary-value { font-size: 2rem; font-weight: 700; }
-    .summary-label { font-size: 0.75rem; opacity: 0.8; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .legend {
-      background: #1e293b;
-      padding: 10px 32px;
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #94a3b8; }
-    .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-      gap: 20px;
-      padding: 28px 32px;
-      max-width: 1600px;
-      margin: 0 auto;
-    }
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    }
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #f1f5f9;
-    }
-    .project-name { font-weight: 700; font-size: 1rem; color: #1e293b; }
-    .platform-count { font-size: 0.75rem; color: #94a3b8; }
-    .combined-total {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #f8fafc;
-      border-radius: 8px;
-      padding: 8px 12px;
-      margin-bottom: 12px;
-      font-size: 0.82rem;
-    }
-    .combined-label { font-weight: 600; color: #475569; }
-    .combined-stat { color: #1e293b; font-weight: 500; }
-    .combined-sep { color: #cbd5e1; }
-    .platform-row {
-      border-radius: 8px;
-      padding: 12px 12px 12px 14px;
-      margin-bottom: 10px;
-      background: #fafafa;
-    }
-    .platform-row:last-child { margin-bottom: 0; }
-    .platform-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .badge {
-      color: white;
-      font-size: 0.7rem;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .status-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-    }
-    .metrics {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .metric {
-      flex: 1;
-      min-width: 76px;
-      background: white;
-      border-radius: 6px;
-      padding: 8px 10px;
-      text-align: center;
-      border: 1px solid #f1f5f9;
-    }
-    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1e293b; }
-    .metric-label { font-size: 0.65rem; color: #64748b; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.02em; white-space: nowrap; overflow: visible; }
-    .device-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid #f1f5f9;
-    }
-    .device-pill {
-      font-size: 0.75rem;
-      color: #475569;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 20px;
-      padding: 4px 10px;
-    }
-    .device-pill strong { color: #1e293b; }
-    .device-pct { color: #94a3b8; font-size: 0.7rem; }
-    .rc-block {
-      margin-top: 12px;
-      padding: 12px 14px;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 8px;
-    }
-    .rc-block.rc-debug { background: #fefce8; border-color: #fde68a; }
-    .rc-title { font-size: 0.75rem; font-weight: 600; color: #166534; display: block; margin-bottom: 8px; }
-    .rc-block.rc-debug .rc-title { color: #92400e; }
-    .rc-metrics { display: flex; gap: 8px; flex-wrap: wrap; }
-    .rc-metric {
-      flex: 1;
-      min-width: 72px;
-      background: white;
-      border-radius: 6px;
-      padding: 7px 10px;
-      text-align: center;
-      border: 1px solid #dcfce7;
-    }
-    .rc-value { font-size: 1rem; font-weight: 700; color: #166534; }
-    .rc-label { font-size: 0.65rem; color: #4ade80; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
-    .raw-toggle {
-      margin-top: 10px;
-      font-size: 0.72rem;
-      color: #94a3b8;
-      cursor: pointer;
-      user-select: none;
-    }
-    .raw-toggle:hover { color: #3b82f6; }
-    .raw-data {
-      margin-top: 6px;
-      background: #f1f5f9;
-      border-radius: 6px;
-      padding: 10px;
-      font-size: 0.68rem;
-      overflow-x: auto;
-      color: #475569;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
-    footer {
-      text-align: center;
-      padding: 24px;
-      font-size: 0.8rem;
-      color: #94a3b8;
-    }
-    code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }
-  @media print, (format: pdf) {
-    @page { size: A4 landscape; margin: 12mm; }
-    body { background: #f1f5f9; }
-    header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .summary { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .legend { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .card { break-inside: avoid; }
-    .raw-toggle, .raw-data { display: none !important; }
-    .grid { grid-template-columns: repeat(3, 1fr); padding: 16px; gap: 14px; }
-  }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh}
+    /* ── Header ── */
+    header{background:#1e293b;color:white;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+    header h1{font-size:1.3rem;font-weight:700}
+    .meta{font-size:0.82rem;opacity:0.65}
+    /* ── Summary bar ── */
+    .summary{background:#3b82f6;color:white;display:flex;flex-wrap:wrap}
+    .summary-item{flex:1;min-width:130px;padding:18px 24px;border-right:1px solid rgba(255,255,255,0.15)}
+    .summary-item:last-child{border-right:none}
+    .summary-value{font-size:1.8rem;font-weight:700}
+    .summary-label{font-size:0.72rem;opacity:0.8;margin-top:3px;text-transform:uppercase;letter-spacing:0.05em}
+    /* ── Tabs nav ── */
+    .tabs-nav{background:#1e293b;padding:0 32px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+    .tabs-nav::-webkit-scrollbar{display:none}
+    .tab-btn{background:none;border:none;color:#94a3b8;padding:14px 18px;font-size:0.85rem;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:color 0.15s}
+    .tab-btn:hover{color:#e2e8f0}
+    .tab-btn.active{color:white;border-bottom-color:#3b82f6}
+    /* ── Tab panes ── */
+    .tab-pane{display:block}
+    .tab-pane.hidden{display:none}
+    /* ── KPI bar per client ── */
+    .client-kpi-bar{display:flex;flex-wrap:wrap;background:white;padding:16px 32px;gap:8px;border-bottom:1px solid #e2e8f0}
+    .kpi{flex:1;min-width:100px;text-align:center;padding:10px 8px}
+    .kpi-val{font-size:1.5rem;font-weight:700;color:#1e293b}
+    .kpi-lbl{font-size:0.68rem;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-top:3px}
+    /* ── Charts ── */
+    .charts-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;padding:20px 32px 0}
+    .chart-card{background:white;border-radius:12px;padding:18px 20px;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+    .chart-title{font-size:0.82rem;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}
+    /* ── Overview grid ── */
+    .ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:20px 32px}
+    .ov-card{background:white;border-radius:12px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,0.07);cursor:pointer;border-left:4px solid var(--accent,#6b7280);transition:transform 0.12s,box-shadow 0.12s}
+    .ov-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+    .ov-name{font-weight:700;font-size:1rem;margin-bottom:8px}
+    .ov-stats{display:flex;gap:16px;font-size:0.85rem;flex-wrap:wrap}
+    .ov-sub{color:#94a3b8;font-size:0.78em}
+    .ov-rc{margin-top:6px;font-size:0.78rem;color:#166534;background:#f0fdf4;border-radius:6px;padding:4px 8px}
+    .ov-tap{font-size:0.7rem;color:#cbd5e1;margin-top:6px;text-align:right}
+    /* ── Detail grid ── */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:20px;padding:20px 32px 32px;max-width:1600px;margin:0 auto}
+    .card{background:white;border-radius:12px;padding:20px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+    .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #f1f5f9}
+    .project-name{font-weight:700;font-size:1rem;color:#1e293b}
+    .platform-count{font-size:0.75rem;color:#94a3b8}
+    .combined-total{display:flex;align-items:center;gap:8px;background:#f8fafc;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:0.82rem}
+    .combined-label{font-weight:600;color:#475569}
+    .combined-stat{color:#1e293b;font-weight:500}
+    .combined-sep{color:#cbd5e1}
+    .platform-row{border-radius:8px;padding:12px 12px 12px 14px;margin-bottom:10px;background:#fafafa}
+    .platform-row:last-child{margin-bottom:0}
+    .platform-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .badge{color:white;font-size:0.7rem;font-weight:600;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.04em}
+    .status-dot{width:8px;height:8px;border-radius:50%}
+    .metrics{display:flex;gap:6px;flex-wrap:wrap}
+    .metric{flex:1;min-width:76px;background:white;border-radius:6px;padding:8px 10px;text-align:center;border:1px solid #f1f5f9}
+    .metric-value{font-size:1.1rem;font-weight:700;color:#1e293b}
+    .metric-label{font-size:0.65rem;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:0.02em;white-space:nowrap}
+    .device-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid #f1f5f9}
+    .device-pill{font-size:0.75rem;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;border-radius:20px;padding:4px 10px}
+    .device-pill strong{color:#1e293b}
+    .device-pct{color:#94a3b8;font-size:0.7rem}
+    .rc-block{margin-top:12px;padding:12px 14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px}
+    .rc-block.rc-debug{background:#fefce8;border-color:#fde68a}
+    .rc-title{font-size:0.75rem;font-weight:600;color:#166534;display:block;margin-bottom:8px}
+    .rc-block.rc-debug .rc-title{color:#92400e}
+    .rc-metrics{display:flex;gap:8px;flex-wrap:wrap}
+    .rc-metric{flex:1;min-width:72px;background:white;border-radius:6px;padding:7px 10px;text-align:center;border:1px solid #dcfce7}
+    .rc-value{font-size:1rem;font-weight:700;color:#166534}
+    .rc-label{font-size:0.65rem;color:#4ade80;margin-top:2px;text-transform:uppercase;letter-spacing:0.04em}
+    .raw-toggle{margin-top:10px;font-size:0.72rem;color:#94a3b8;cursor:pointer;user-select:none}
+    .raw-toggle:hover{color:#3b82f6}
+    .raw-data{margin-top:6px;background:#f1f5f9;border-radius:6px;padding:10px;font-size:0.68rem;overflow-x:auto;color:#475569;white-space:pre-wrap;word-break:break-all}
+    footer{text-align:center;padding:24px;font-size:0.8rem;color:#94a3b8}
+    code{background:#f1f5f9;padding:2px 6px;border-radius:4px}
   </style>
 </head>
 <body>
 
 <header>
   <div>
-    <h1>📊 Microsoft Clarity — All Projects</h1>
-    <div class="meta">Last 30 days &nbsp;·&nbsp; Feb 16 – Mar 18, 2026</div>
+    <h1>&#x1F4CA; 3Advance Analytics Dashboard</h1>
+    <div class="meta">Last 30 days &nbsp;&middot;&nbsp; Feb 16 – Mar 18, 2026</div>
   </div>
-  <div class="meta">Generated Mar 19, 2026 at 12:20 AM</div>
+  <div class="meta">Generated Mar 19, 2026 at 12:36 AM</div>
 </header>
 
 <div class="summary">
@@ -223,53 +100,136 @@
   </div>
   <div class="summary-item">
     <div class="summary-value">16</div>
-    <div class="summary-label">Total Platforms</div>
+    <div class="summary-label">Platforms</div>
   </div>
   <div class="summary-item">
-    <div class="summary-value">5,110</div>
+    <div class="summary-value">5,266</div>
     <div class="summary-label">Total Sessions</div>
   </div>
   <div class="summary-item">
-    <div class="summary-value">5,132</div>
+    <div class="summary-value">5,268</div>
     <div class="summary-label">Total Users</div>
   </div>
-  <div class="summary-item">
-    <div class="summary-value">6/6</div>
-    <div class="summary-label">Apps with Data</div>
+  <div class="summary-item"><div class="summary-value">$432</div><div class="summary-label">Total MRR</div></div><div class="summary-item"><div class="summary-value">$464</div><div class="summary-label">Total Revenue</div></div>
+</div>
+
+<div class="tabs-nav">
+<button class="tab-btn active" id="btn-tab-overview" onclick="showTab('tab-overview')">Overview</button>
+<button class="tab-btn" id="btn-tab-shift" onclick="showTab('tab-shift')">Shift</button>
+<button class="tab-btn" id="btn-tab-today-s-front-pages" onclick="showTab('tab-today-s-front-pages')">Today's Front Pages</button>
+<button class="tab-btn" id="btn-tab-quiet-collection" onclick="showTab('tab-quiet-collection')">Quiet Collection</button>
+<button class="tab-btn" id="btn-tab-p3" onclick="showTab('tab-p3')">P3</button>
+<button class="tab-btn" id="btn-tab-self-speak" onclick="showTab('tab-self-speak')">Self Speak</button>
+<button class="tab-btn" id="btn-tab-footsteps-with-jesus" onclick="showTab('tab-footsteps-with-jesus')">Footsteps with Jesus</button>
+
+</div>
+
+
+<div id="tab-overview" class="tab-pane">
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">Combined Daily Sessions</div>
+      <canvas id="chart-ov-sessions"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Combined Daily Users</div>
+      <canvas id="chart-ov-users"></canvas>
+    </div>
+  </div>
+  <div class="ov-grid">
+      <div class="ov-card" onclick="showTab('tab-shift')" style="--accent:#3b82f6">
+        <div class="ov-name" style="color:#3b82f6">Shift</div>
+        <div class="ov-stats">
+          <div><b>159</b><span class="ov-sub"> sessions</span></div>
+          <div><b>110</b><span class="ov-sub"> users</span></div>
+          <div><span style='color:#94a3b8;font-size:0.75em'>⏳ initializing</span></div>
+        </div>
+        <div class='ov-rc'>$371 MRR &nbsp;·&nbsp; 46 subs</div>
+        <canvas id="spark-tab-shift" height="44" style="margin-top:8px;width:100%"></canvas>
+        <div class="ov-tap">tap to explore &rarr;</div>
+      </div>
+      <div class="ov-card" onclick="showTab('tab-today-s-front-pages')" style="--accent:#10b981">
+        <div class="ov-name" style="color:#10b981">Today's Front Pages</div>
+        <div class="ov-stats">
+          <div><b>4,014</b><span class="ov-sub"> sessions</span></div>
+          <div><b>4,123</b><span class="ov-sub"> users</span></div>
+          <div><span style='color:#94a3b8;font-size:0.75em'>⏳ initializing</span></div>
+        </div>
+        
+        <canvas id="spark-tab-today-s-front-pages" height="44" style="margin-top:8px;width:100%"></canvas>
+        <div class="ov-tap">tap to explore &rarr;</div>
+      </div>
+      <div class="ov-card" onclick="showTab('tab-quiet-collection')" style="--accent:#8b5cf6">
+        <div class="ov-name" style="color:#8b5cf6">Quiet Collection</div>
+        <div class="ov-stats">
+          <div><b>1,056</b><span class="ov-sub"> sessions</span></div>
+          <div><b>1,005</b><span class="ov-sub"> users</span></div>
+          
+        </div>
+        
+        <canvas id="spark-tab-quiet-collection" height="44" style="margin-top:8px;width:100%"></canvas>
+        <div class="ov-tap">tap to explore &rarr;</div>
+      </div>
+      <div class="ov-card" onclick="showTab('tab-p3')" style="--accent:#f59e0b">
+        <div class="ov-name" style="color:#f59e0b">P3</div>
+        <div class="ov-stats">
+          <div><b>8</b><span class="ov-sub"> sessions</span></div>
+          <div><b>6</b><span class="ov-sub"> users</span></div>
+          <div><span style='color:#94a3b8;font-size:0.75em'>⏳ initializing</span></div>
+        </div>
+        
+        <canvas id="spark-tab-p3" height="44" style="margin-top:8px;width:100%"></canvas>
+        <div class="ov-tap">tap to explore &rarr;</div>
+      </div>
+      <div class="ov-card" onclick="showTab('tab-self-speak')" style="--accent:#ef4444">
+        <div class="ov-name" style="color:#ef4444">Self Speak</div>
+        <div class="ov-stats">
+          <div><b>14</b><span class="ov-sub"> sessions</span></div>
+          <div><b>13</b><span class="ov-sub"> users</span></div>
+          
+        </div>
+        <div class='ov-rc'>$61 MRR &nbsp;·&nbsp; 18 subs</div>
+        <canvas id="spark-tab-self-speak" height="44" style="margin-top:8px;width:100%"></canvas>
+        <div class="ov-tap">tap to explore &rarr;</div>
+      </div>
+      <div class="ov-card" onclick="showTab('tab-footsteps-with-jesus')" style="--accent:#ec4899">
+        <div class="ov-name" style="color:#ec4899">Footsteps with Jesus</div>
+        <div class="ov-stats">
+          <div><b>15</b><span class="ov-sub"> sessions</span></div>
+          <div><b>11</b><span class="ov-sub"> users</span></div>
+          
+        </div>
+        
+        <canvas id="spark-tab-footsteps-with-jesus" height="44" style="margin-top:8px;width:100%"></canvas>
+        <div class="ov-tap">tap to explore &rarr;</div>
+      </div>
+  </div>
+</div>
+<div id="tab-shift" class="tab-pane hidden">
+  <div class="client-kpi-bar" style="border-top:3px solid #3b82f6">
+    <div class="kpi"><div class="kpi-val">159</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">110</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">⏳</div><div class="kpi-lbl">iOS (initializing)</div></div><div class="kpi"><div class="kpi-val">$371</div><div class="kpi-lbl">MRR</div></div><div class="kpi"><div class="kpi-val">$420.00</div><div class="kpi-lbl">Revenue</div></div><div class="kpi"><div class="kpi-val">46</div><div class="kpi-lbl">Subscribers</div></div><div class="kpi"><div class="kpi-val">114</div><div class="kpi-lbl">Trials</div></div>
   </div>
   
-  <div class="summary-item">
-    <div class="summary-value">$432</div>
-    <div class="summary-label">Total MRR</div>
-  </div>
-  <div class="summary-item">
-    <div class="summary-value">$464</div>
-    <div class="summary-label">Total Revenue</div>
-  </div>
-</div>
-
-<div class="legend">
-  <span style="color:#94a3b8;font-size:0.75rem;">PLATFORMS:</span>
-  <div class="legend-item"><div class="legend-dot" style="background:#007aff"></div> iOS</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#3ddc84"></div> Android</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Website</div>
-</div>
-
-<div class="grid">
-
-      <div class="card">
-        <div class="card-header">
-          <span class="project-name">Shift</span>
-          <span class="platform-count">2 platforms</span>
-        </div>
-        
-        <div class="combined-total">
-          <span class="combined-label">Combined</span>
-          <span class="combined-stat">162 sessions</span>
-          <span class="combined-sep">·</span>
-          <span class="combined-stat">112 users</span>
-        </div>
-        
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Daily Sessions &amp; Users</div>
+        <canvas id="chart-tab-shift-sessions"></canvas>
+      </div>
+    </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-header">
+        <span class="project-name">Shift</span>
+        <span class="platform-count">2 platforms</span>
+      </div>
+      
+          <div class="combined-total">
+            <span class="combined-label">Combined</span>
+            <span class="combined-stat">159 sessions</span>
+            <span class="combined-sep">&middot;</span>
+            <span class="combined-stat">110 users</span>
+          </div>
+      
       <div class="platform-row" style="border-left:3px solid #007aff">
         <div class="platform-header">
           <span class="badge" style="background:#007aff">iOS</span>
@@ -277,15 +237,15 @@
         </div>
         <div class="metrics">
           <div class="metric">
-              <div class="metric-value">133</div>
+              <div class="metric-value">130</div>
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">92</div>
+              <div class="metric-value">90</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
-              <div class="metric-value">4.1</div>
+              <div class="metric-value">4.2</div>
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
@@ -293,17 +253,17 @@
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
-        <div class="device-row"><span class="device-pill">📱 Mobile <strong>131</strong> <span class="device-pct">(98.5%)</span></span><span class="device-pill">⬛ Tablet <strong>2</strong> <span class="device-pct">(1.5%)</span></span></div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>128</strong> <span class="device-pct">(98.5%)</span></span><span class="device-pill">⬛ Tablet <strong>2</strong> <span class="device-pct">(1.5%)</span></span></div>
         <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
   {
     "metricName": "DeadTapCount",
     "information": [
       {
-        "sessionsCount": "133",
-        "sessionsWithMetricPercentage": 42.11,
-        "sessionsWithoutMetricPercentage": 57.89,
-        "screensViews": "126",
-        "subTotal": "263"
+        "sessionsCount": "130",
+        "sessionsWithMetricPercentage": 42.31,
+        "sessionsWithoutMetricPercentage": 57.69,
+        "screensViews": "125",
+        "subTotal": "262"
       }
     ]
   },
@@ -311,7 +271,7 @@
     "metricName": "RageTapCount",
     "information": [
       {
-        "sessionsCount": "133",
+        "sessionsCount": "130",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "screensViews": "0",
@@ -323,7 +283,7 @@
     "metricName": "ApplicationErrorCount",
     "information": [
       {
-        "sessionsCount": "133",
+        "sessionsCount": "130",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "screensViews": "0",
@@ -335,10 +295,10 @@
     "metricName": "Traffic",
     "information": [
       {
-        "totalSessionCount": "133",
+        "totalSessionCount": "130",
         "totalBotSessionCount": "0",
-        "distinctUserCount": "92",
-        "screensPerSessionPercentage": 4.133333333333334
+        "distinctUserCount": "90",
+        "screensPerSessionPercentage": 4.204545454545454
       }
     ]
   },
@@ -356,7 +316,7 @@
     "information": [
       {
         "name": "Mobile",
-        "sessionsCount": "131"
+        "sessionsCount": "128"
       },
       {
         "name": "Tablet",
@@ -369,7 +329,7 @@
     "information": [
       {
         "name": "IOS",
-        "sessionsCount": "133"
+        "sessionsCount": "130"
       }
     ]
   },
@@ -378,7 +338,7 @@
     "information": [
       {
         "name": "United States",
-        "sessionsCount": "98"
+        "sessionsCount": "95"
       },
       {
         "name": "United Kingdom",
@@ -395,7 +355,7 @@
     "information": [
       {
         "name": "UIViewController",
-        "sessionsCount": "133"
+        "sessionsCount": "130"
       },
       {
         "name": "RCTFabricModalHostViewController",
@@ -568,22 +528,36 @@
   }
 ]</pre>
       </div>
-        <div class="rc-block"><span class="rc-title">💰 Revenue (last 30 days)</span><div class="rc-metrics"><div class="rc-metric"><div class="rc-value">$371.00</div><div class="rc-label">MRR</div></div><div class="rc-metric"><div class="rc-value">$420.00</div><div class="rc-label">Revenue</div></div><div class="rc-metric"><div class="rc-value">46</div><div class="rc-label">Subscribers</div></div><div class="rc-metric"><div class="rc-value">114</div><div class="rc-label">Trials</div></div></div></div>
-        <div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Data initializing — check back tomorrow</div></div>
+      <div class="rc-block"><span class="rc-title">💰 Revenue (last 30 days)</span><div class="rc-metrics"><div class="rc-metric"><div class="rc-value">$371.00</div><div class="rc-label">MRR</div></div><div class="rc-metric"><div class="rc-value">$420.00</div><div class="rc-label">Revenue</div></div><div class="rc-metric"><div class="rc-value">46</div><div class="rc-label">Subscribers</div></div><div class="rc-metric"><div class="rc-value">114</div><div class="rc-label">Trials</div></div></div></div>
+      <div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Data initializing — check back tomorrow</div></div>
+    </div>
+  </div>
+</div>
+<div id="tab-today-s-front-pages" class="tab-pane hidden">
+  <div class="client-kpi-bar" style="border-top:3px solid #10b981">
+    <div class="kpi"><div class="kpi-val">4,014</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">4,123</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">⏳</div><div class="kpi-lbl">iOS (initializing)</div></div>
+  </div>
+  
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Daily Sessions &amp; Users</div>
+        <canvas id="chart-tab-today-s-front-pages-sessions"></canvas>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <span class="project-name">Today's Front Pages</span>
-          <span class="platform-count">3 platforms</span>
-        </div>
-        
-        <div class="combined-total">
-          <span class="combined-label">Combined</span>
-          <span class="combined-stat">3,886 sessions</span>
-          <span class="combined-sep">·</span>
-          <span class="combined-stat">4,008 users</span>
-        </div>
-        
+    </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-header">
+        <span class="project-name">Today's Front Pages</span>
+        <span class="platform-count">3 platforms</span>
+      </div>
+      
+          <div class="combined-total">
+            <span class="combined-label">Combined</span>
+            <span class="combined-stat">4,014 sessions</span>
+            <span class="combined-sep">&middot;</span>
+            <span class="combined-stat">4,123 users</span>
+          </div>
+      
       <div class="platform-row" style="border-left:3px solid #007aff">
         <div class="platform-header">
           <span class="badge" style="background:#007aff">iOS</span>
@@ -591,11 +565,11 @@
         </div>
         <div class="metrics">
           <div class="metric">
-              <div class="metric-value">286</div>
+              <div class="metric-value">297</div>
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">241</div>
+              <div class="metric-value">251</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
@@ -603,21 +577,21 @@
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
-              <div class="metric-value">5.0m</div>
+              <div class="metric-value">4.9m</div>
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
-        <div class="device-row"><span class="device-pill">📱 Mobile <strong>179</strong> <span class="device-pct">(62.6%)</span></span><span class="device-pill">⬛ Tablet <strong>116</strong> <span class="device-pct">(40.6%)</span></span></div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>182</strong> <span class="device-pct">(61.3%)</span></span><span class="device-pill">⬛ Tablet <strong>115</strong> <span class="device-pct">(38.7%)</span></span></div>
         <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
   {
     "metricName": "DeadTapCount",
     "information": [
       {
-        "sessionsCount": "295",
-        "sessionsWithMetricPercentage": 48.47,
-        "sessionsWithoutMetricPercentage": 51.53,
-        "screensViews": "289",
-        "subTotal": "541"
+        "sessionsCount": "297",
+        "sessionsWithMetricPercentage": 48.48,
+        "sessionsWithoutMetricPercentage": 51.52,
+        "screensViews": "291",
+        "subTotal": "543"
       }
     ]
   },
@@ -625,9 +599,9 @@
     "metricName": "RageTapCount",
     "information": [
       {
-        "sessionsCount": "286",
-        "sessionsWithMetricPercentage": 0.35,
-        "sessionsWithoutMetricPercentage": 99.65,
+        "sessionsCount": "297",
+        "sessionsWithMetricPercentage": 0.34,
+        "sessionsWithoutMetricPercentage": 99.66,
         "screensViews": "1",
         "subTotal": "3"
       }
@@ -637,7 +611,7 @@
     "metricName": "ApplicationErrorCount",
     "information": [
       {
-        "sessionsCount": "295",
+        "sessionsCount": "297",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "screensViews": "0",
@@ -649,10 +623,10 @@
     "metricName": "Traffic",
     "information": [
       {
-        "totalSessionCount": "286",
+        "totalSessionCount": "297",
         "totalBotSessionCount": "0",
-        "distinctUserCount": "241",
-        "screensPerSessionPercentage": 4.696551724137931
+        "distinctUserCount": "251",
+        "screensPerSessionPercentage": 4.710963455149502
       }
     ]
   },
@@ -660,8 +634,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "297",
-        "activeTime": "297"
+        "totalTime": "292",
+        "activeTime": "292"
       }
     ]
   },
@@ -670,11 +644,11 @@
     "information": [
       {
         "name": "Mobile",
-        "sessionsCount": "179"
+        "sessionsCount": "182"
       },
       {
         "name": "Tablet",
-        "sessionsCount": "116"
+        "sessionsCount": "115"
       }
     ]
   },
@@ -683,7 +657,7 @@
     "information": [
       {
         "name": "IOS",
-        "sessionsCount": "295"
+        "sessionsCount": "297"
       }
     ]
   },
@@ -692,7 +666,7 @@
     "information": [
       {
         "name": "United States",
-        "sessionsCount": "252"
+        "sessionsCount": "253"
       },
       {
         "name": "Canada",
@@ -737,27 +711,27 @@
     "information": [
       {
         "name": "Home",
-        "sessionsCount": "263"
+        "sessionsCount": "273"
       },
       {
         "name": "Newspaper Detail",
-        "sessionsCount": "224"
+        "sessionsCount": "231"
       },
       {
         "name": "Favorites",
-        "sessionsCount": "166"
+        "sessionsCount": "171"
       },
       {
         "name": "Gallery",
-        "sessionsCount": "44"
+        "sessionsCount": "47"
       },
       {
         "name": "Search",
-        "sessionsCount": "30"
+        "sessionsCount": "31"
       },
       {
         "name": "UIViewController",
-        "sessionsCount": "16"
+        "sessionsCount": "17"
       },
       {
         "name": "Profile",
@@ -781,11 +755,11 @@
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
-              <div class="metric-value">7.0</div>
+              <div class="metric-value">6.9</div>
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
-              <div class="metric-value">5.8m</div>
+              <div class="metric-value">5.7m</div>
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
@@ -796,10 +770,10 @@
     "information": [
       {
         "sessionsCount": "48",
-        "sessionsWithMetricPercentage": 45.83,
-        "sessionsWithoutMetricPercentage": 54.17,
-        "screensViews": "43",
-        "subTotal": "260"
+        "sessionsWithMetricPercentage": 43.75,
+        "sessionsWithoutMetricPercentage": 56.25,
+        "screensViews": "42",
+        "subTotal": "248"
       }
     ]
   },
@@ -834,7 +808,7 @@
         "totalSessionCount": "48",
         "totalBotSessionCount": "0",
         "distinctUserCount": "43",
-        "screensPerSessionPercentage": 6.958333333333333
+        "screensPerSessionPercentage": 6.895833333333333
       }
     ]
   },
@@ -842,8 +816,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "345",
-        "activeTime": "236"
+        "totalTime": "341",
+        "activeTime": "232"
       }
     ]
   },
@@ -923,14 +897,14 @@
       },
       {
         "name": "Newspaper Detail",
-        "sessionsCount": "31"
-      },
-      {
-        "name": "Favorites",
-        "sessionsCount": "24"
+        "sessionsCount": "30"
       },
       {
         "name": "MainActivity",
+        "sessionsCount": "23"
+      },
+      {
+        "name": "Favorites",
         "sessionsCount": "23"
       },
       {
@@ -955,11 +929,11 @@
         </div>
         <div class="metrics">
           <div class="metric">
-              <div class="metric-value">3,552</div>
+              <div class="metric-value">3,669</div>
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">3,724</div>
+              <div class="metric-value">3,829</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
@@ -971,17 +945,17 @@
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
-        <div class="device-row"><span class="device-pill">📱 Mobile <strong>948</strong> <span class="device-pct">(26.7%)</span></span><span class="device-pill">⬛ Tablet <strong>271</strong> <span class="device-pct">(7.6%)</span></span><span class="device-pill">🖥 PC <strong>2,436</strong> <span class="device-pct">(68.6%)</span></span></div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>958</strong> <span class="device-pct">(26.1%)</span></span><span class="device-pill">⬛ Tablet <strong>273</strong> <span class="device-pct">(7.4%)</span></span><span class="device-pill">🖥 PC <strong>2,438</strong> <span class="device-pct">(66.4%)</span></span></div>
         <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
   {
     "metricName": "DeadClickCount",
     "information": [
       {
-        "sessionsCount": "3545",
-        "sessionsWithMetricPercentage": 10.69,
-        "sessionsWithoutMetricPercentage": 89.31,
-        "pagesViews": "600",
-        "subTotal": "1033"
+        "sessionsCount": "3660",
+        "sessionsWithMetricPercentage": 10.74,
+        "sessionsWithoutMetricPercentage": 89.26,
+        "pagesViews": "627",
+        "subTotal": "1100"
       }
     ]
   },
@@ -989,7 +963,7 @@
     "metricName": "ExcessiveScroll",
     "information": [
       {
-        "sessionsCount": "3647",
+        "sessionsCount": "3660",
         "sessionsWithMetricPercentage": 0.03,
         "sessionsWithoutMetricPercentage": 99.97,
         "pagesViews": "1",
@@ -1001,11 +975,11 @@
     "metricName": "RageClickCount",
     "information": [
       {
-        "sessionsCount": "3545",
-        "sessionsWithMetricPercentage": 0.25,
-        "sessionsWithoutMetricPercentage": 99.75,
-        "pagesViews": "9",
-        "subTotal": "14"
+        "sessionsCount": "3660",
+        "sessionsWithMetricPercentage": 0.27,
+        "sessionsWithoutMetricPercentage": 99.73,
+        "pagesViews": "11",
+        "subTotal": "23"
       }
     ]
   },
@@ -1013,11 +987,11 @@
     "metricName": "QuickbackClick",
     "information": [
       {
-        "sessionsCount": "3545",
-        "sessionsWithMetricPercentage": 13.31,
-        "sessionsWithoutMetricPercentage": 86.69,
-        "pagesViews": "2211",
-        "subTotal": "2211"
+        "sessionsCount": "3660",
+        "sessionsWithMetricPercentage": 13.33,
+        "sessionsWithoutMetricPercentage": 86.67,
+        "pagesViews": "2274",
+        "subTotal": "2274"
       }
     ]
   },
@@ -1025,7 +999,7 @@
     "metricName": "ScriptErrorCount",
     "information": [
       {
-        "sessionsCount": "3647",
+        "sessionsCount": "3660",
         "sessionsWithMetricPercentage": 0.19,
         "sessionsWithoutMetricPercentage": 99.81,
         "pagesViews": "7",
@@ -1037,7 +1011,7 @@
     "metricName": "ErrorClickCount",
     "information": [
       {
-        "sessionsCount": "3647",
+        "sessionsCount": "3660",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "pagesViews": "0",
@@ -1049,7 +1023,7 @@
     "metricName": "ScrollDepth",
     "information": [
       {
-        "averageScrollDepth": 55.96
+        "averageScrollDepth": 55.68
       }
     ]
   },
@@ -1057,10 +1031,10 @@
     "metricName": "Traffic",
     "information": [
       {
-        "totalSessionCount": "3552",
-        "totalBotSessionCount": "333",
-        "distinctUserCount": "3724",
-        "pagesPerSessionPercentage": 4.1313131313131315
+        "totalSessionCount": "3669",
+        "totalBotSessionCount": "344",
+        "distinctUserCount": "3829",
+        "pagesPerSessionPercentage": 4.109572690379566
       }
     ]
   },
@@ -1068,8 +1042,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "196",
-        "activeTime": "86"
+        "totalTime": "197",
+        "activeTime": "88"
       }
     ]
   },
@@ -1078,7 +1052,7 @@
     "information": [
       {
         "name": "Chrome",
-        "sessionsCount": "1297"
+        "sessionsCount": "1300"
       },
       {
         "name": "Firefox",
@@ -1086,11 +1060,11 @@
       },
       {
         "name": "MobileSafari",
-        "sessionsCount": "402"
+        "sessionsCount": "404"
       },
       {
         "name": "FacebookApp",
-        "sessionsCount": "312"
+        "sessionsCount": "319"
       },
       {
         "name": "Opera",
@@ -1098,11 +1072,11 @@
       },
       {
         "name": "Edge",
-        "sessionsCount": "278"
+        "sessionsCount": "277"
       },
       {
         "name": "ChromeMobile",
-        "sessionsCount": "210"
+        "sessionsCount": "213"
       },
       {
         "name": "SamsungInternet",
@@ -1121,22 +1095,36 @@
   {
     "metricName": "Device",</pre>
       </div>
-        
-        <div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Data initializing — check back tomorrow</div></div>
+      
+      <div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Data initializing — check back tomorrow</div></div>
+    </div>
+  </div>
+</div>
+<div id="tab-quiet-collection" class="tab-pane hidden">
+  <div class="client-kpi-bar" style="border-top:3px solid #8b5cf6">
+    <div class="kpi"><div class="kpi-val">1,056</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">1,005</div><div class="kpi-lbl">Users</div></div>
+  </div>
+  
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Daily Sessions &amp; Users</div>
+        <canvas id="chart-tab-quiet-collection-sessions"></canvas>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <span class="project-name">Quiet Collection</span>
-          <span class="platform-count">2 platforms</span>
-        </div>
-        
-        <div class="combined-total">
-          <span class="combined-label">Combined</span>
-          <span class="combined-stat">1,025 sessions</span>
-          <span class="combined-sep">·</span>
-          <span class="combined-stat">982 users</span>
-        </div>
-        
+    </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-header">
+        <span class="project-name">Quiet Collection</span>
+        <span class="platform-count">2 platforms</span>
+      </div>
+      
+          <div class="combined-total">
+            <span class="combined-label">Combined</span>
+            <span class="combined-stat">1,056 sessions</span>
+            <span class="combined-sep">&middot;</span>
+            <span class="combined-stat">1,005 users</span>
+          </div>
+      
       <div class="platform-row" style="border-left:3px solid #007aff">
         <div class="platform-header">
           <span class="badge" style="background:#007aff">iOS</span>
@@ -1144,11 +1132,11 @@
         </div>
         <div class="metrics">
           <div class="metric">
-              <div class="metric-value">888</div>
+              <div class="metric-value">919</div>
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">845</div>
+              <div class="metric-value">868</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
@@ -1156,19 +1144,19 @@
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
-              <div class="metric-value">7.5m</div>
+              <div class="metric-value">7.4m</div>
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
-        <div class="device-row"><span class="device-pill">📱 Mobile <strong>891</strong> <span class="device-pct">(100.3%)</span></span><span class="device-pill">⬛ Tablet <strong>26</strong> <span class="device-pct">(2.9%)</span></span></div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>893</strong> <span class="device-pct">(97.2%)</span></span><span class="device-pill">⬛ Tablet <strong>26</strong> <span class="device-pct">(2.8%)</span></span></div>
         <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
   {
     "metricName": "DeadTapCount",
     "information": [
       {
-        "sessionsCount": "917",
-        "sessionsWithMetricPercentage": 10.47,
-        "sessionsWithoutMetricPercentage": 89.53,
+        "sessionsCount": "919",
+        "sessionsWithMetricPercentage": 10.45,
+        "sessionsWithoutMetricPercentage": 89.55,
         "screensViews": "99",
         "subTotal": "165"
       }
@@ -1178,9 +1166,9 @@
     "metricName": "RageTapCount",
     "information": [
       {
-        "sessionsCount": "888",
-        "sessionsWithMetricPercentage": 0.45,
-        "sessionsWithoutMetricPercentage": 99.55,
+        "sessionsCount": "919",
+        "sessionsWithMetricPercentage": 0.44,
+        "sessionsWithoutMetricPercentage": 99.56,
         "screensViews": "4",
         "subTotal": "9"
       }
@@ -1190,7 +1178,7 @@
     "metricName": "ApplicationErrorCount",
     "information": [
       {
-        "sessionsCount": "917",
+        "sessionsCount": "919",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "screensViews": "0",
@@ -1202,10 +1190,10 @@
     "metricName": "Traffic",
     "information": [
       {
-        "totalSessionCount": "888",
+        "totalSessionCount": "919",
         "totalBotSessionCount": "0",
-        "distinctUserCount": "845",
-        "screensPerSessionPercentage": 1.194078947368421
+        "distinctUserCount": "868",
+        "screensPerSessionPercentage": 1.1910828025477707
       }
     ]
   },
@@ -1213,8 +1201,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "449",
-        "activeTime": "449"
+        "totalTime": "446",
+        "activeTime": "446"
       }
     ]
   },
@@ -1223,7 +1211,7 @@
     "information": [
       {
         "name": "Mobile",
-        "sessionsCount": "891"
+        "sessionsCount": "893"
       },
       {
         "name": "Tablet",
@@ -1236,7 +1224,7 @@
     "information": [
       {
         "name": "IOS",
-        "sessionsCount": "888"
+        "sessionsCount": "919"
       }
     ]
   },
@@ -1245,11 +1233,11 @@
     "information": [
       {
         "name": "United States",
-        "sessionsCount": "810"
+        "sessionsCount": "839"
       },
       {
         "name": "Canada",
-        "sessionsCount": "29"
+        "sessionsCount": "30"
       },
       {
         "name": "United Kingdom",
@@ -1264,15 +1252,15 @@
         "sessionsCount": "5"
       },
       {
+        "name": "Spain",
+        "sessionsCount": "4"
+      },
+      {
         "name": "New Zealand",
         "sessionsCount": "4"
       },
       {
         "name": "India",
-        "sessionsCount": "3"
-      },
-      {
-        "name": "Spain",
         "sessionsCount": "3"
       },
       {
@@ -1290,7 +1278,7 @@
     "information": [
       {
         "name": "UIViewController",
-        "sessionsCount": "917"
+        "sessionsCount": "919"
       },
       {
         "name": "Error",
@@ -1475,22 +1463,36 @@
   }
 ]</pre>
       </div>
-        
-        
+      
+      
+    </div>
+  </div>
+</div>
+<div id="tab-p3" class="tab-pane hidden">
+  <div class="client-kpi-bar" style="border-top:3px solid #f59e0b">
+    <div class="kpi"><div class="kpi-val">8</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">6</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">⏳</div><div class="kpi-lbl">iOS (initializing)</div></div>
+  </div>
+  
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Daily Sessions &amp; Users</div>
+        <canvas id="chart-tab-p3-sessions"></canvas>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <span class="project-name">P3</span>
-          <span class="platform-count">2 platforms</span>
-        </div>
-        
-        <div class="combined-total">
-          <span class="combined-label">Combined</span>
-          <span class="combined-stat">8 sessions</span>
-          <span class="combined-sep">·</span>
-          <span class="combined-stat">6 users</span>
-        </div>
-        
+    </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-header">
+        <span class="project-name">P3</span>
+        <span class="platform-count">2 platforms</span>
+      </div>
+      
+          <div class="combined-total">
+            <span class="combined-label">Combined</span>
+            <span class="combined-stat">8 sessions</span>
+            <span class="combined-sep">&middot;</span>
+            <span class="combined-stat">6 users</span>
+          </div>
+      
       <div class="platform-row" style="border-left:3px solid #007aff">
         <div class="platform-header">
           <span class="badge" style="background:#007aff">iOS</span>
@@ -1737,22 +1739,36 @@
   }
 ]</pre>
       </div>
-        
-        <div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Data initializing — check back tomorrow</div></div>
+      
+      <div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Data initializing — check back tomorrow</div></div>
+    </div>
+  </div>
+</div>
+<div id="tab-self-speak" class="tab-pane hidden">
+  <div class="client-kpi-bar" style="border-top:3px solid #ef4444">
+    <div class="kpi"><div class="kpi-val">14</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">13</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">$61</div><div class="kpi-lbl">MRR</div></div><div class="kpi"><div class="kpi-val">$44.00</div><div class="kpi-lbl">Revenue</div></div><div class="kpi"><div class="kpi-val">18</div><div class="kpi-lbl">Subscribers</div></div><div class="kpi"><div class="kpi-val">4</div><div class="kpi-lbl">Trials</div></div>
+  </div>
+  
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Daily Sessions &amp; Users</div>
+        <canvas id="chart-tab-self-speak-sessions"></canvas>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <span class="project-name">Self Speak</span>
-          <span class="platform-count">2 platforms</span>
-        </div>
-        
-        <div class="combined-total">
-          <span class="combined-label">Combined</span>
-          <span class="combined-stat">14 sessions</span>
-          <span class="combined-sep">·</span>
-          <span class="combined-stat">13 users</span>
-        </div>
-        
+    </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-header">
+        <span class="project-name">Self Speak</span>
+        <span class="platform-count">2 platforms</span>
+      </div>
+      
+          <div class="combined-total">
+            <span class="combined-label">Combined</span>
+            <span class="combined-stat">14 sessions</span>
+            <span class="combined-sep">&middot;</span>
+            <span class="combined-stat">13 users</span>
+          </div>
+      
       <div class="platform-row" style="border-left:3px solid #007aff">
         <div class="platform-header">
           <span class="badge" style="background:#007aff">iOS</span>
@@ -2007,22 +2023,36 @@
   }
 ]</pre>
       </div>
-        <div class="rc-block"><span class="rc-title">💰 Revenue (last 30 days)</span><div class="rc-metrics"><div class="rc-metric"><div class="rc-value">$61.00</div><div class="rc-label">MRR</div></div><div class="rc-metric"><div class="rc-value">$44.00</div><div class="rc-label">Revenue</div></div><div class="rc-metric"><div class="rc-value">18</div><div class="rc-label">Subscribers</div></div><div class="rc-metric"><div class="rc-value">4</div><div class="rc-label">Trials</div></div></div></div>
-        
+      <div class="rc-block"><span class="rc-title">💰 Revenue (last 30 days)</span><div class="rc-metrics"><div class="rc-metric"><div class="rc-value">$61.00</div><div class="rc-label">MRR</div></div><div class="rc-metric"><div class="rc-value">$44.00</div><div class="rc-label">Revenue</div></div><div class="rc-metric"><div class="rc-value">18</div><div class="rc-label">Subscribers</div></div><div class="rc-metric"><div class="rc-value">4</div><div class="rc-label">Trials</div></div></div></div>
+      
+    </div>
+  </div>
+</div>
+<div id="tab-footsteps-with-jesus" class="tab-pane hidden">
+  <div class="client-kpi-bar" style="border-top:3px solid #ec4899">
+    <div class="kpi"><div class="kpi-val">15</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">11</div><div class="kpi-lbl">Users</div></div>
+  </div>
+  
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Daily Sessions &amp; Users</div>
+        <canvas id="chart-tab-footsteps-with-jesus-sessions"></canvas>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <span class="project-name">Footsteps with Jesus</span>
-          <span class="platform-count">2 platforms</span>
-        </div>
-        
-        <div class="combined-total">
-          <span class="combined-label">Combined</span>
-          <span class="combined-stat">15 sessions</span>
-          <span class="combined-sep">·</span>
-          <span class="combined-stat">11 users</span>
-        </div>
-        
+    </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-header">
+        <span class="project-name">Footsteps with Jesus</span>
+        <span class="platform-count">2 platforms</span>
+      </div>
+      
+          <div class="combined-total">
+            <span class="combined-label">Combined</span>
+            <span class="combined-stat">15 sessions</span>
+            <span class="combined-sep">&middot;</span>
+            <span class="combined-stat">11 users</span>
+          </div>
+      
       <div class="platform-row" style="border-left:3px solid #007aff">
         <div class="platform-header">
           <span class="badge" style="background:#007aff">iOS</span>
@@ -2269,14 +2299,100 @@
   }
 ]</pre>
       </div>
-        
-        
-      </div>
+      
+      
+    </div>
+  </div>
 </div>
 
-<footer>Clarity Dashboard · Refresh by running <code>python3 clarity_dashboard.py</code> again</footer>
+<footer>3Advance Analytics &middot; Auto-updated weekly via GitHub Actions</footer>
 
 <script>
+const CD = {"Shift": {"sessions": {"dates": [], "values": []}, "users": {"dates": [], "values": []}, "installs": {"dates": [], "values": []}, "color": "#3b82f6"}, "Today's Front Pages": {"sessions": {"dates": [], "values": []}, "users": {"dates": [], "values": []}, "installs": {"dates": [], "values": []}, "color": "#10b981"}, "Quiet Collection": {"sessions": {"dates": [], "values": []}, "users": {"dates": [], "values": []}, "installs": {"dates": [], "values": []}, "color": "#8b5cf6"}, "P3": {"sessions": {"dates": [], "values": []}, "users": {"dates": [], "values": []}, "installs": {"dates": [], "values": []}, "color": "#f59e0b"}, "Self Speak": {"sessions": {"dates": [], "values": []}, "users": {"dates": [], "values": []}, "installs": {"dates": [], "values": []}, "color": "#ef4444"}, "Footsteps with Jesus": {"sessions": {"dates": [], "values": []}, "users": {"dates": [], "values": []}, "installs": {"dates": [], "values": []}, "color": "#ec4899"}, "_overview": {"sessions": {"dates": [], "values": []}, "users": {"dates": [], "values": []}}};
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+function makeLineChart(canvasId, labels, datasets, opts) {
+  const el = document.getElementById(canvasId);
+  if (!el || !labels.length) return null;
+  const ctx = el.getContext('2d');
+  const dsets = datasets.map(d => ({
+    label: d.label,
+    data: d.values,
+    borderColor: d.color,
+    backgroundColor: `rgba(${hexToRgb(d.color)},0.12)`,
+    borderWidth: 2,
+    pointRadius: labels.length > 20 ? 0 : 3,
+    pointHoverRadius: 5,
+    fill: true,
+    tension: 0.35,
+  }));
+  return new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets: dsets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: opts && opts.spark ? false : true,
+      plugins: {
+        legend: { display: dsets.length > 1, labels: { boxWidth: 10, font: { size: 11 } } },
+        tooltip: { mode: 'index', intersect: false },
+      },
+      scales: opts && opts.spark ? { x: { display:false }, y: { display:false } } : {
+        x: { ticks: { maxTicksLimit: 8, font: { size: 11 } }, grid: { display: false } },
+        y: { ticks: { font: { size: 11 } }, beginAtZero: true },
+      },
+      interaction: { mode: 'nearest', axis: 'x', intersect: false },
+    },
+  });
+}
+
+function initCharts() {
+  const ov = CD['_overview'] || {};
+  makeLineChart('chart-ov-sessions', ov.sessions ? ov.sessions.dates : [], [
+    { label:'Sessions', values: ov.sessions ? ov.sessions.values : [], color:'#3b82f6' }
+  ]);
+  makeLineChart('chart-ov-users', ov.users ? ov.users.dates : [], [
+    { label:'Users', values: ov.users ? ov.users.values : [], color:'#10b981' }
+  ]);
+
+  for (const [gname, gd] of Object.entries(CD)) {
+    if (gname.startsWith('_')) continue;
+    const tabId  = 'tab-' + gname.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g,'');
+    const color  = gd.color || '#6b7280';
+    // Spark (overview card)
+    const sparkId = 'spark-' + tabId;
+    if (gd.sessions && gd.sessions.dates.length)
+      makeLineChart(sparkId, gd.sessions.dates, [
+        { label:'Sessions', values: gd.sessions.values, color }
+      ], { spark: true });
+    // Sessions + Users dual line
+    const sessId = `chart-${tabId}-sessions`;
+    if (gd.sessions && gd.sessions.dates.length)
+      makeLineChart(sessId, gd.sessions.dates, [
+        { label:'Sessions', values: gd.sessions.values, color },
+        { label:'Users',    values: (gd.users||{values:[]}).values, color:'#94a3b8' },
+      ]);
+    // Installs
+    const instId = `chart-${tabId}-installs`;
+    if (gd.installs && gd.installs.dates.length)
+      makeLineChart(instId, gd.installs.dates, [
+        { label:'Downloads', values: gd.installs.values, color:'#f59e0b' }
+      ]);
+  }
+}
+
+function showTab(tabId) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const pane = document.getElementById(tabId);
+  const btn  = document.getElementById('btn-' + tabId);
+  if (pane) pane.classList.remove('hidden');
+  if (btn)  btn.classList.add('active');
+}
+
 function toggleRaw(el) {
   const pre = el.nextElementSibling;
   if (pre.style.display === 'none') {
@@ -2284,9 +2400,11 @@ function toggleRaw(el) {
     el.textContent = '▼ Hide raw response';
   } else {
     pre.style.display = 'none';
-    el.textContent = '▶ Show raw response';
+    el.textContent = '► Show raw response';
   }
 }
+
+window.addEventListener('DOMContentLoaded', initCharts);
 </script>
 </body>
 </html>
