@@ -1,0 +1,58 @@
+{
+  "clarity": {
+    "Footsteps with Jesus": {
+      "2026-03-19": {
+        "sessions": 3,
+        "users": 2
+      }
+    },
+    "P3": {
+      "2026-03-19": {
+        "sessions": 9,
+        "users": 9
+      }
+    },
+    "Quiet Collection": {
+      "2026-03-19": {
+        "sessions": 1013,
+        "users": 946
+      }
+    },
+    "Self Speak": {
+      "2026-03-19": {
+        "sessions": 10,
+        "users": 10
+      }
+    },
+    "Shift": {
+      "2026-03-19": {
+        "sessions": 161,
+        "users": 112
+      }
+    },
+    "Today's Front Pages": {
+      "2026-03-19": {
+        "sessions": 3757,
+        "users": 3721
+      }
+    }
+  },
+  "revenuecat": {
+    "Self Speak": {
+      "2026-03-19": {
+        "mrr": 61.0,
+        "revenue": 44.0,
+        "subscribers": 18,
+        "trials": 3
+      }
+    },
+    "Shift": {
+      "2026-03-19": {
+        "mrr": 371.0,
+        "revenue": 420.0,
+        "subscribers": 46,
+        "trials": 114
+      }
+    }
+  }
+}
