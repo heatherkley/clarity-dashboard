@@ -8,32 +8,32 @@
     },
     "P3": {
       "2026-03-19": {
-        "sessions": 9,
-        "users": 9
-      }
-    },
-    "Quiet Collection": {
-      "2026-03-19": {
-        "sessions": 1013,
-        "users": 946
-      }
-    },
-    "Self Speak": {
-      "2026-03-19": {
         "sessions": 10,
         "users": 10
       }
     },
+    "Quiet Collection": {
+      "2026-03-19": {
+        "sessions": 1016,
+        "users": 947
+      }
+    },
+    "Self Speak": {
+      "2026-03-19": {
+        "sessions": 11,
+        "users": 11
+      }
+    },
     "Shift": {
       "2026-03-19": {
-        "sessions": 161,
-        "users": 112
+        "sessions": 158,
+        "users": 109
       }
     },
     "Today's Front Pages": {
       "2026-03-19": {
-        "sessions": 3757,
-        "users": 3721
+        "sessions": 3628,
+        "users": 3603
       }
     }
   },
@@ -51,7 +51,7 @@
         "mrr": 371.0,
         "revenue": 420.0,
         "subscribers": 46,
-        "trials": 114
+        "trials": 113
       }
     }
   }
