@@ -8,12 +8,10 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh}
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     /* ── Base ── */
     body{font-family:'Inter',system-ui,sans-serif;background:#060d1a;color:#e2e8f0;min-height:100vh;position:relative}
     body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(56,189,248,0.04) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0}
-    *>*{position:relative;z-index:1}
+    canvas{background:transparent!important} header,.summary,.tabs-nav,.tab-pane,.grid,.charts-row,.ov-grid,.client-kpi-bar,footer{position:relative;z-index:1}
     /* ── Header ── */
     header{background:linear-gradient(135deg,#070e1c 0%,#0c1a35 60%,#070e1c 100%);border-bottom:1px solid rgba(56,189,248,0.12);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:relative;overflow:hidden}
     header::after{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(56,189,248,0.6),transparent)}
