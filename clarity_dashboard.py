@@ -139,10 +139,16 @@ def extract_clarity_daily(raw):
     for item in raw:
         if item.get("metricName") != "Traffic":
             continue
-        for info in item.get("information", []):
-            # Clarity may return startDate, date, or timePeriod
+        info_items = item.get("information", [])
+        # Debug: print keys of first info item so we can see the actual structure
+        if info_items:
+            print(f"    [Clarity daily] Traffic info[0] keys: {list(info_items[0].keys())}")
+            print(f"    [Clarity daily] {len(info_items)} info items")
+        for info in info_items:
+            # Try all known Clarity date field names
             date_raw = (info.get("startDate") or info.get("date") or
-                        info.get("timePeriod") or "")
+                        info.get("timePeriod") or info.get("timestamp") or
+                        info.get("period") or info.get("dateRange") or "")
             if not date_raw:
                 continue
             try:
