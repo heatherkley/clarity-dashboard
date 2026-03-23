@@ -549,20 +549,10 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
                 print(f"— {r3.text[:120]}")
 
         if not reports:
-            if result.get("pending"):
-                # Newly created — just wait
-                print(f"    [ASC] No reports yet (new request — check back in 24–48h)")
-            else:
-                # Old request but no reports — delete and recreate
-                print(f"    [ASC] No reports under existing request — resetting...")
-                requests.delete(f"{ASC_BASE}/analyticsReportRequests/{ongoing_id}",
-                                headers=hdrs, timeout=20)
-                cache.pop(cache_key, None)
-                new_id, _ = _asc_create_request(apple_id, hdrs)
-                if new_id:
-                    cache[cache_key] = new_id
-                _asc_cache_save(cache)
-                print(f"    [ASC] Fresh request created — check back in 24–48h")
+            # No reports yet — Apple needs up to 72h to generate data for a new request.
+            # IMPORTANT: do NOT delete and recreate here — that resets the clock every run.
+            # Just wait; the next run will find reports once Apple has generated them.
+            print(f"    [ASC] No reports yet for request {ongoing_id} — still waiting on Apple (up to 72h)")
             result["pending"] = True
             return result
 
@@ -643,7 +633,8 @@ def appstore_block(asc_data):
             '<div class="rc-block">'
             '<span class="rc-title">🍎 App Store</span>'
             '<div style="color:#94a3b8;font-size:0.8em;padding:4px 0">'
-            'Data initializing — check back tomorrow</div></div>'
+            'Apple is generating reports (can take up to 72h for a new request). '
+            'Data will appear on the next dashboard run once ready.</div></div>'
         )
     installs = asc_data.get("installs")
     if installs is None:
@@ -839,7 +830,7 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
 
         inst_str = ""
         if pending:
-            inst_str = "<span style='color:#94a3b8;font-size:0.75em'>⏳ initializing</span>"
+            inst_str = "<span style='color:#64748b;font-size:0.72em'>⏳ iOS pending (up to 72h)</span>"
         elif installs is not None:
             inst_str = f"<b>{int(installs):,}</b> <span class='ov-sub'>iOS installs</span>"
 
@@ -880,16 +871,6 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
     tabs_nav_html  = '<button class="tab-btn active" id="btn-tab-overview" onclick="showTab(\'tab-overview\')">Overview</button>\n'
     tabs_body_html = f"""
 <div id="tab-overview" class="tab-pane">
-  <div class="charts-row">
-    <div class="chart-card">
-      <div class="chart-title">Combined Daily Sessions</div>
-      <canvas id="chart-ov-sessions"></canvas>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Combined Daily Users</div>
-      <canvas id="chart-ov-users"></canvas>
-    </div>
-  </div>
   <div class="ov-grid">{overview_cards_html}
   </div>
 </div>"""
