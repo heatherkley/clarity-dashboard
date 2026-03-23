@@ -279,6 +279,84 @@
   },
   "revenuecat": {
     "Self Speak": {
+      "2026-02-21": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
+      "2026-02-22": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
+      "2026-02-23": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
+      "2026-02-24": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
+      "2026-02-25": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
+      "2026-02-26": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
+      "2026-02-27": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
+      "2026-02-28": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
+      "2026-03-01": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
+      "2026-03-02": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
+      "2026-03-03": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
+      "2026-03-04": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
+      "2026-03-05": {
+        "mrr": 68.0,
+        "revenue": 51.0,
+        "subscribers": 19,
+        "trials": 2
+      },
       "2026-03-06": {
         "mrr": 68.0,
         "revenue": 51.0,
@@ -389,6 +467,84 @@
       }
     },
     "Shift": {
+      "2026-02-21": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
+      "2026-02-22": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
+      "2026-02-23": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
+      "2026-02-24": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
+      "2026-02-25": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
+      "2026-02-26": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
+      "2026-02-27": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
+      "2026-02-28": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
+      "2026-03-01": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
+      "2026-03-02": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
+      "2026-03-03": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
+      "2026-03-04": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
+      "2026-03-05": {
+        "mrr": 411.0,
+        "revenue": 460.0,
+        "subscribers": 49,
+        "trials": 108
+      },
       "2026-03-06": {
         "mrr": 411.0,
         "revenue": 460.0,
@@ -495,7 +651,7 @@
         "mrr": 411.0,
         "revenue": 460.0,
         "subscribers": 49,
-        "trials": 107
+        "trials": 108
       }
     }
   }
