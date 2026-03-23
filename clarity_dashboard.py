@@ -326,23 +326,93 @@ def _history_save(history):
     except Exception as e:
         print(f"    ⚠️  Could not save history: {e}")
 
-def _history_append_clarity(history, group_name, sessions, users):
-    """Append today's Clarity aggregate for a group into the history."""
-    today = datetime.now().strftime("%Y-%m-%d")
-    history.setdefault("clarity", {}).setdefault(group_name, {})[today] = {
-        "sessions": int(sessions),
-        "users":    int(users),
-    }
-
-def _history_append_revenuecat(history, group_name, metrics):
-    """Append today's RevenueCat metrics for a group into the history."""
-    today = datetime.now().strftime("%Y-%m-%d")
-    history.setdefault("revenuecat", {}).setdefault(group_name, {})[today] = {
+def _history_append_revenuecat(history, group_name, metrics, date_key=None):
+    """Append RevenueCat metrics for a group into the history (defaults to today)."""
+    key = date_key or datetime.now().strftime("%Y-%m-%d")
+    history.setdefault("revenuecat", {}).setdefault(group_name, {})[key] = {
         "mrr":         round(metrics.get("mrr",         0), 2),
         "revenue":     round(metrics.get("revenue",     0), 2),
         "subscribers": int(metrics.get("subscribers",   0)),
         "trials":      int(metrics.get("trials",        0)),
     }
+
+
+def _history_append_clarity(history, group_name, sessions, users, date_key=None):
+    """Append Clarity aggregate for a group into the history (defaults to today)."""
+    key = date_key or datetime.now().strftime("%Y-%m-%d")
+    history.setdefault("clarity", {}).setdefault(group_name, {})[key] = {
+        "sessions": int(sessions),
+        "users":    int(users),
+    }
+
+
+def _backfill_history(history, projects, rc_apps, days=30):
+    """Back-fill up to `days` of daily data for any group missing history.
+
+    Calls the Clarity and RevenueCat APIs once per day per group for each
+    missing date.  This is a one-time catch-up that turns the dashboard into
+    a real 30-day trend chart on first run.
+    """
+    today = datetime.now().date()
+
+    # ── Clarity backfill ────────────────────────────────────────────────────────
+    # Group projects by group name so we can aggregate per day
+    groups_map = defaultdict(list)
+    for proj in projects:
+        token = proj.get("api_token", "").strip()
+        if token and not token.startswith("PASTE_"):
+            groups_map[proj.get("group", proj.get("name", ""))].append(proj)
+
+    for gname, members in groups_map.items():
+        existing = history.get("clarity", {}).get(gname, {})
+        missing_days = []
+        for offset in range(1, days + 1):          # yesterday → 30 days ago
+            d = today - timedelta(days=offset)
+            if d.strftime("%Y-%m-%d") not in existing:
+                missing_days.append(d)
+
+        if not missing_days:
+            continue
+
+        print(f"  📅 Clarity backfill for '{gname}': {len(missing_days)} days missing...")
+        for day in missing_days:
+            day_dt   = datetime(day.year, day.month, day.day)
+            g_sess = g_users = 0
+            for proj in members:
+                raw = fetch_project(proj["name"], proj["api_token"], day_dt, day_dt)
+                if raw:
+                    m      = extract_clarity_metrics(raw)
+                    g_sess += m.get("sessions", 0)
+                    g_users += m.get("users",   0)
+            if g_sess > 0 or g_users > 0:
+                _history_append_clarity(history, gname, g_sess, g_users,
+                                        date_key=day.strftime("%Y-%m-%d"))
+
+    # ── RevenueCat backfill ──────────────────────────────────────────────────────
+    for app in rc_apps:
+        gname  = app.get("group", "")
+        rc_key = app.get("api_key", "").strip()
+        if not rc_key or rc_key.startswith("PASTE_"):
+            continue
+        existing = history.get("revenuecat", {}).get(gname, {})
+        missing_days = []
+        for offset in range(1, days + 1):
+            d = today - timedelta(days=offset)
+            if d.strftime("%Y-%m-%d") not in existing:
+                missing_days.append(d)
+
+        if not missing_days:
+            continue
+
+        print(f"  💰 RevenueCat backfill for '{gname}': {len(missing_days)} days missing...")
+        for day in missing_days:
+            day_dt = datetime(day.year, day.month, day.day)
+            rc_raw = fetch_revenuecat(rc_key, day_dt, day_dt)
+            if rc_raw:
+                rc_m = rc_raw.get("_metrics") or extract_revenuecat_metrics(rc_raw)
+                if rc_m.get("mrr") or rc_m.get("subscribers"):
+                    _history_append_revenuecat(history, gname, rc_m,
+                                               date_key=day.strftime("%Y-%m-%d"))
 
 
 def _asc_create_request(apple_id, hdrs):
@@ -735,20 +805,9 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         }
 
     ov_dates = sorted(all_sessions_by_date.keys())
-    # Per-group current values for bar charts (always available, no history needed)
-    _bar_sess, _bar_users, _bar_colors = [], [], []
-    for _gn in sorted_group_names:
-        _ms = groups[_gn]
-        _bar_sess.append(int(sum(extract_clarity_metrics(r["raw"]).get("sessions", 0) for r in _ms)))
-        _bar_users.append(int(sum(extract_clarity_metrics(r["raw"]).get("users",    0) for r in _ms)))
-        _bar_colors.append(gcolor(_gn))
     chart_data["_overview"] = {
-        "sessions":      {"dates": ov_dates, "values": [int(all_sessions_by_date[d]) for d in ov_dates]},
-        "users":         {"dates": ov_dates, "values": [int(all_users_by_date[d])    for d in ov_dates]},
-        "group_labels":  sorted_group_names,
-        "group_sessions": _bar_sess,
-        "group_users":   _bar_users,
-        "group_colors":  _bar_colors,
+        "sessions": {"dates": ov_dates, "values": [int(all_sessions_by_date[d]) for d in ov_dates]},
+        "users":    {"dates": ov_dates, "values": [int(all_users_by_date[d])    for d in ov_dates]},
     }
     chart_data_json = json.dumps(chart_data)
 
@@ -1171,10 +1230,28 @@ function makeLineChart(canvasId, labels, datasets, opts) {{
 
 function initCharts() {{
   const ov = CD['_overview'] || {{}};
-  // Overview: bar charts by group (always available from today's data)
-  if (ov.group_labels && ov.group_labels.length) {{
-    makeBarChart('chart-ov-sessions', ov.group_labels, ov.group_sessions, ov.group_colors, 'Sessions');
-    makeBarChart('chart-ov-users',    ov.group_labels, ov.group_users,    ov.group_colors, 'Users');
+  // Overview: per-group colored lines — real 30-day daily data from backfill
+  const ovGroups = Object.keys(CD).filter(k => !k.startsWith('_'));
+  if (ovGroups.length) {{
+    const sessDsets = ovGroups
+      .filter(g => CD[g].sessions && CD[g].sessions.dates.length > 0)
+      .map(g => ({{ label: g, values: CD[g].sessions.values, color: CD[g].color || '#6b7280' }}));
+    const userDsets = ovGroups
+      .filter(g => CD[g].users && CD[g].users.dates.length > 0)
+      .map(g => ({{ label: g, values: CD[g].users.values,    color: CD[g].color || '#6b7280' }}));
+    // All groups share the same date labels (union, sorted)
+    const allDates = [...new Set(ovGroups.flatMap(g => (CD[g].sessions||{{}}).dates||[]))].sort();
+    // Align each group's values to allDates (null for missing days)
+    function alignToAllDates(g, field) {{
+      const map = {{}};
+      const series = CD[g][field] || {{}};
+      (series.dates||[]).forEach((d,i) => {{ map[d] = series.values[i]; }});
+      return allDates.map(d => map[d] !== undefined ? map[d] : null);
+    }}
+    const sessDs = ovGroups.map(g => ({{ label:g, values: alignToAllDates(g,'sessions'), color: CD[g].color||'#6b7280' }}));
+    const userDs = ovGroups.map(g => ({{ label:g, values: alignToAllDates(g,'users'),    color: CD[g].color||'#6b7280' }}));
+    makeLineChart('chart-ov-sessions', allDates, sessDs);
+    makeLineChart('chart-ov-users',    allDates, userDs);
   }}
 
   for (const [gname, gd] of Object.entries(CD)) {{
@@ -1475,6 +1552,17 @@ def main():
     history = _history_load()
     print(f"   History : {sum(len(v) for v in history.get('clarity',{}).values())} clarity snapshots, "
           f"{sum(len(v) for v in history.get('revenuecat',{}).values())} RC snapshots\n")
+
+    # One-time 30-day backfill so trend charts show real history on first run
+    _total_clarity_days = sum(len(v) for v in history.get("clarity", {}).values())
+    rc_apps_cfg = config.get("revenuecat", {}).get("apps", [])
+    if _total_clarity_days < len(projects) * 5:   # less than ~5 days per project → backfill
+        print("⏳ First run detected — back-filling 30 days of daily history...\n")
+        _backfill_history(history, projects, rc_apps_cfg, days=30)
+        _history_save(history)
+        print(f"\n   History after backfill: "
+              f"{sum(len(v) for v in history.get('clarity',{}).values())} clarity, "
+              f"{sum(len(v) for v in history.get('revenuecat',{}).values())} RC snapshots\n")
 
     groups = defaultdict(list)
 
