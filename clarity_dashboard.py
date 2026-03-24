@@ -688,15 +688,15 @@ def fetch_google_play(package_name, account_id, sa_json_str):
                          params={"prefix": prefix}, timeout=30)
         if r.status_code == 403:
             print(f"    ⚠️  Google Play: 403 — service account lacks access to bucket {bucket}")
-            return None
+            return {"error": f"403 forbidden on {bucket}"}
         if r.status_code != 200:
             print(f"    ⚠️  Google Play GCS list HTTP {r.status_code}: {r.text[:200]}")
-            return None
+            return {"error": f"http_{r.status_code} on {bucket}: {r.text[:100]}"}
 
         items = sorted(r.json().get("items", []), key=lambda x: x.get("name", ""))
         if not items:
             print(f"    ⚠️  Google Play: no install stat files found for {package_name}")
-            return None
+            return {"error": f"no files in {bucket} with prefix {prefix}"}
 
         # Download the last 2 months of stats files
         daily_installs = {}
@@ -731,10 +731,9 @@ def fetch_google_play(package_name, account_id, sa_json_str):
                     if count >= 0:
                         daily_installs[date] = daily_installs.get(date, 0) + count
                 except (ValueError, TypeError):
-                    pass
-
-        total = sum(daily_installs.values())
-        return {"installs": total, "daily_installs": dict(sorted(daily_installs.items()))}
+                       except Exception as e:
+        print(f"    ⚠️  Google Play error: {e}")
+        return {"error": str(e)}nstalls": dict(sorted(daily_installs.items()))}
 
     except Exception as e:
         print(f"    ⚠️  Google Play error: {e}")
@@ -1799,7 +1798,10 @@ def main():
             if gp_data and gp_data.get("installs") is not None:
                 print(f"✅ {int(gp_data['installs']):,} installs")
                 gp_by_group[group_name] = gp_data
-                gp_debug["apps"].append({"group": group_name, "status": "ok", "installs": gp_data.get("installs"), "days": len(gp_data.get("daily_installs", {}))})
+                   else:
+                err = gp_data.get("error", "returned None") if gp_data else "returned None"
+                print(f"❌ no data: {err}")
+                gp_debug["apps"].append({"group": group_name, "status": "no_data", "error": err})ly_installs", {}))})
             else:
                 print("❌ no data")
                 gp_debug["apps"].append({"group": group_name, "status": "no_data"})
