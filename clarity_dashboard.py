@@ -654,7 +654,7 @@ def fetch_google_play(package_name, account_id, sa_json_str):
     """Fetch Android install stats from Google Play via GCS stats CSV files.
 
     The Play Console stores daily install stats in a GCS bucket named
-    pubsite_prod_rev_{account_id}.  A service account with Storage Object Viewer
+    pubsite_prod_{account_id}.  A service account with Storage Object Viewer
     permission on that bucket can download the CSV files directly.
 
     Returns {"installs": int, "daily_installs": {date: count}} or None.
@@ -679,7 +679,7 @@ def fetch_google_play(package_name, account_id, sa_json_str):
         credentials.refresh(auth_req)
         headers = {"Authorization": f"Bearer {credentials.token}"}
 
-        bucket  = f"pubsite_prod_rev_{account_id}"
+        bucket  = f"pubsite_prod_{account_id}"
         prefix  = f"stats/installs/installs_{package_name}_"
 
         # List matching objects
