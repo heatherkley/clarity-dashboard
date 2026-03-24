@@ -1,0 +1,30 @@
+{
+  "key_present": true,
+  "key_length": 2393,
+  "apps": [
+    {
+      "group": "Shift",
+      "status": "no_data"
+    },
+    {
+      "group": "Today's Front Pages",
+      "status": "no_data"
+    },
+    {
+      "group": "P3",
+      "status": "no_data"
+    },
+    {
+      "group": "Quiet Collection",
+      "status": "no_data"
+    },
+    {
+      "group": "Self Speak",
+      "status": "no_data"
+    },
+    {
+      "group": "Footsteps with Jesus",
+      "status": "no_data"
+    }
+  ]
+}
