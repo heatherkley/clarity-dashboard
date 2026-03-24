@@ -731,13 +731,15 @@ def fetch_google_play(package_name, account_id, sa_json_str):
                     if count >= 0:
                         daily_installs[date] = daily_installs.get(date, 0) + count
                 except (ValueError, TypeError):
-                       except Exception as e:
-        print(f"    ⚠️  Google Play error: {e}")
-        return {"error": str(e)}nstalls": dict(sorted(daily_installs.items()))}
+                    pass
+
+        total = sum(daily_installs.values())
+        return {"installs": total, "daily_installs": dict(sorted(daily_installs.items()))}
 
     except Exception as e:
-        print(f"    ⚠️  Google Play error: {e}")
-        return None
+        err_msg = str(e)
+        print(f"    ⚠️  Google Play error: {err_msg}")
+        return {"error": err_msg}
 
 
 def googleplay_block(gp_data):
@@ -1804,7 +1806,7 @@ def main():
                 gp_debug["apps"].append({"group": group_name, "status": "no_data", "error": err})ly_installs", {}))})
             else:
                 print("❌ no data")
-                gp_debug["apps"].append({"group": group_name, "status": "no_data"})
+                gp_debug["apps"].append({"group": group_name, "status": "no_data", "error": err})
     elif gp_apps and not gp_key_json:
         print("\n🤖 Google Play: skipped (GOOGLE_PLAY_KEY_JSON not set)")
         gp_debug["skip_reason"] = "no key"
