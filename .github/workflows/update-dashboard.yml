@@ -1,9 +1,9 @@
 name: Update Clarity Dashboard
 
 on:
-  # Run automatically every Monday at 7am UTC
+  # Run every day at 7am UTC so trend charts accumulate daily data points
   schedule:
-    - cron: "0 7 * * 1"
+    - cron: "0 7 * * *"
   # Allow manual trigger from the GitHub Actions tab
   workflow_dispatch:
 
