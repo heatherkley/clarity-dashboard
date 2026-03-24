@@ -838,15 +838,7 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         if mrr:
             rc_line = f"<div class='ov-rc'>${mrr:,.0f} MRR &nbsp;·&nbsp; {int(subs):,} subs</div>"
 
-        # Show a thin proportion bar — simple, always works, no chart.js needed
-        _pct = int(g_sessions / max(total_sessions, 1) * 100)
-        spark_el = (
-            f'<div style="margin-top:10px">'
-            f'<div style="height:3px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden">'
-            f'<div style="width:{_pct}%;height:100%;background:{color};border-radius:2px"></div>'
-            f'</div>'
-            f'</div>'
-        )
+        spark_el = ""  # no charts/bars on overview — numbers only
 
         overview_cards_html += f"""
       <div class="ov-card" onclick="showTab('{tab_target}')" style="--accent:{color}">
