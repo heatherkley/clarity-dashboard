@@ -25,7 +25,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests PyJWT cryptography weasyprint
+          pip install requests PyJWT cryptography weasyprint google-auth
 
       - name: Run dashboard generator
         env:
@@ -35,6 +35,8 @@ jobs:
           ASC_KEY_SHIFT: ${{ secrets.ASC_KEY_SHIFT }}
           ASC_KEY_TODAYS_FRONT_PAGES: ${{ secrets.ASC_KEY_TODAYS_FRONT_PAGES }}
           ASC_KEY_P3: ${{ secrets.ASC_KEY_P3 }}
+          # Google Play service account JSON (for Android download stats via GCS)
+          GOOGLE_PLAY_KEY_JSON: ${{ secrets.GOOGLE_PLAY_KEY_JSON }}
         run: |
           python clarity_dashboard.py
 

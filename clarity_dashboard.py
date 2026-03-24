@@ -648,6 +648,117 @@ def appstore_block(asc_data):
         '</div></div>'
     )
 
+# ── Google Play Fetching ────────────────────────────────────────────────────────
+
+def fetch_google_play(package_name, account_id, sa_json_str):
+    """Fetch Android install stats from Google Play via GCS stats CSV files.
+
+    The Play Console stores daily install stats in a GCS bucket named
+    pubsite_prod_rev_{account_id}.  A service account with Storage Object Viewer
+    permission on that bucket can download the CSV files directly.
+
+    Returns {"installs": int, "daily_installs": {date: count}} or None.
+    """
+    try:
+        # Install google-auth if needed
+        try:
+            import google.oauth2.service_account as _sa
+            import google.auth.transport.requests as _ga_req
+        except ImportError:
+            print("    Installing google-auth...")
+            os.system("pip3 install google-auth --break-system-packages -q")
+            import google.oauth2.service_account as _sa
+            import google.auth.transport.requests as _ga_req
+
+        sa_info = json.loads(sa_json_str) if isinstance(sa_json_str, str) else sa_json_str
+        credentials = _sa.Credentials.from_service_account_info(
+            sa_info,
+            scopes=["https://www.googleapis.com/auth/devstorage.read_only"],
+        )
+        auth_req = _ga_req.Request()
+        credentials.refresh(auth_req)
+        headers = {"Authorization": f"Bearer {credentials.token}"}
+
+        bucket  = f"pubsite_prod_rev_{account_id}"
+        prefix  = f"stats/installs/installs_{package_name}_"
+
+        # List matching objects
+        list_url = "https://storage.googleapis.com/storage/v1/b/{}/o".format(bucket)
+        r = requests.get(list_url, headers=headers,
+                         params={"prefix": prefix}, timeout=30)
+        if r.status_code == 403:
+            print(f"    ⚠️  Google Play: 403 — service account lacks access to bucket {bucket}")
+            return None
+        if r.status_code != 200:
+            print(f"    ⚠️  Google Play GCS list HTTP {r.status_code}: {r.text[:200]}")
+            return None
+
+        items = sorted(r.json().get("items", []), key=lambda x: x.get("name", ""))
+        if not items:
+            print(f"    ⚠️  Google Play: no install stat files found for {package_name}")
+            return None
+
+        # Download the last 2 months of stats files
+        daily_installs = {}
+        today = datetime.now().date()
+        cutoff = (today - timedelta(days=60)).strftime("%Y-%m-%d")
+
+        for item in items[-2:]:
+            dl_url = (
+                "https://storage.googleapis.com/storage/v1/b/{}/o/{}?alt=media"
+                .format(bucket, requests.utils.quote(item["name"], safe=""))
+            )
+            r2 = requests.get(dl_url, headers=headers, timeout=60)
+            if r2.status_code != 200:
+                continue
+            # Play Console CSVs are UTF-16 LE with BOM
+            try:
+                content = r2.content.decode("utf-16")
+            except Exception:
+                content = r2.content.decode("utf-8", errors="replace")
+
+            reader = csv.DictReader(io.StringIO(content))
+            for row in reader:
+                date = (row.get("Date") or row.get("date") or "").strip()[:10]
+                if not date or date < cutoff:
+                    continue
+                val = (row.get("Daily Device Installs") or
+                       row.get("Daily Package Installs") or
+                       row.get("Total installs") or
+                       row.get("Installs") or 0)
+                try:
+                    count = int(float(str(val).replace(",", "") or 0))
+                    if count >= 0:
+                        daily_installs[date] = daily_installs.get(date, 0) + count
+                except (ValueError, TypeError):
+                    pass
+
+        total = sum(daily_installs.values())
+        return {"installs": total, "daily_installs": dict(sorted(daily_installs.items()))}
+
+    except Exception as e:
+        print(f"    ⚠️  Google Play error: {e}")
+        return None
+
+
+def googleplay_block(gp_data):
+    """Build the Android downloads HTML block for a card."""
+    if not gp_data:
+        return ""
+    installs = gp_data.get("installs")
+    if installs is None:
+        return ""
+    return (
+        '<div class="rc-block" style="background:rgba(61,220,132,0.05);border-color:rgba(61,220,132,0.15)">'
+        '<span class="rc-title" style="color:#3ddc84">🤖 Google Play (Android)</span>'
+        '<div class="rc-metrics">'
+        f'<div class="rc-metric" style="border-color:rgba(61,220,132,0.1)">'
+        f'<div class="rc-value" style="color:#3ddc84">{int(installs):,}</div>'
+        '<div class="rc-label">Downloads</div></div>'
+        '</div></div>'
+    )
+
+
 # ── HTML Helpers ────────────────────────────────────────────────────────────────
 
 def platform_badge(platform):
@@ -734,10 +845,11 @@ def platform_row(platform, data, raw):
 
 # ── HTML Generation ─────────────────────────────────────────────────────────────
 
-def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end_dt, history=None):
+def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end_dt, history=None, gp_by_group=None):
     date_range = f"{start_dt.strftime('%b %d')} \u2013 {end_dt.strftime('%b %d, %Y')}"
     generated  = datetime.now().strftime("%b %d, %Y at %I:%M %p")
-    history    = history or {}
+    history      = history or {}
+    gp_by_group  = gp_by_group or {}
 
     GROUP_ORDER = ["Shift", "Today's Front Pages", "Quiet Collection",
                    "P3", "Self Speak", "Footsteps with Jesus"]
@@ -777,22 +889,28 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
             all_sessions_by_date[d] = all_sessions_by_date.get(d, 0) + g_clarity[d].get("sessions", 0)
             all_users_by_date[d]    = all_users_by_date.get(d, 0)    + g_clarity[d].get("users",    0)
 
-        # ASC daily installs (from TSV — already per-day)
+        # ASC daily installs (iOS, from TSV — already per-day)
         asc_g      = asc_by_group.get(gname) or {}
         di         = asc_g.get("daily_installs") or {}
         inst_dates = sorted(di.keys())
+
+        # Google Play daily installs (Android)
+        gp_g       = gp_by_group.get(gname) or {}
+        gp_di      = gp_g.get("daily_installs") or {}
+        gp_dates   = sorted(gp_di.keys())
 
         # RevenueCat history
         g_rc       = rc_history.get(gname, {})
         rc_dates   = sorted(g_rc.keys())
 
         chart_data[gname] = {
-            "sessions":    {"dates": sess_dates,  "values": [g_clarity[d].get("sessions", 0) for d in sess_dates]},
-            "users":       {"dates": sess_dates,  "values": [g_clarity[d].get("users",    0) for d in sess_dates]},
-            "installs":    {"dates": inst_dates,  "values": [int(di[d])                       for d in inst_dates]},
-            "mrr":         {"dates": rc_dates,    "values": [g_rc[d].get("mrr",         0)   for d in rc_dates]},
-            "subscribers": {"dates": rc_dates,    "values": [g_rc[d].get("subscribers", 0)   for d in rc_dates]},
-            "color":       gcolor(gname),
+            "sessions":         {"dates": sess_dates,  "values": [g_clarity[d].get("sessions", 0) for d in sess_dates]},
+            "users":            {"dates": sess_dates,  "values": [g_clarity[d].get("users",    0) for d in sess_dates]},
+            "installs":         {"dates": inst_dates,  "values": [int(di[d])                       for d in inst_dates]},
+            "android_installs": {"dates": gp_dates,    "values": [int(gp_di[d])                    for d in gp_dates]},
+            "mrr":              {"dates": rc_dates,    "values": [g_rc[d].get("mrr",         0)   for d in rc_dates]},
+            "subscribers":      {"dates": rc_dates,    "values": [g_rc[d].get("subscribers", 0)   for d in rc_dates]},
+            "color":            gcolor(gname),
         }
 
     ov_dates = sorted(all_sessions_by_date.keys())
@@ -821,6 +939,8 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         asc_g      = asc_by_group.get(gname) or {}
         installs   = asc_g.get("installs")
         pending    = asc_g.get("pending", False)
+        gp_g       = gp_by_group.get(gname) or {}
+        gp_installs= gp_g.get("installs")
         rc         = rc_by_group.get(gname)
         rc_m       = (rc.get("_metrics") or extract_revenuecat_metrics(rc)) if rc else {}
         mrr        = rc_m.get("mrr", 0)
@@ -832,7 +952,11 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         if pending:
             inst_str = "<span style='color:#64748b;font-size:0.72em'>⏳ iOS pending (up to 72h)</span>"
         elif installs is not None:
-            inst_str = f"<b>{int(installs):,}</b> <span class='ov-sub'>iOS installs</span>"
+            inst_str = f"<b>{int(installs):,}</b> <span class='ov-sub'>iOS dl</span>"
+
+        gp_str = ""
+        if gp_installs is not None:
+            gp_str = f"<b>{int(gp_installs):,}</b> <span class='ov-sub'>Android dl</span>"
 
         rc_line = ""
         if mrr:
@@ -847,6 +971,7 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
           <div><b>{int(g_sessions):,}</b><span class="ov-sub"> sessions</span></div>
           <div><b>{int(g_users):,}</b><span class="ov-sub"> users</span></div>
           {"<div>" + inst_str + "</div>" if inst_str else ""}
+          {"<div>" + gp_str + "</div>" if gp_str else ""}
         </div>
         {rc_line}
         {spark_el}
@@ -867,19 +992,22 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         color      = gcolor(gname)
         g_sessions = sum(extract_clarity_metrics(r["raw"]).get("sessions", 0) for r in members)
         g_users    = sum(extract_clarity_metrics(r["raw"]).get("users",    0) for r in members)
-        asc_g      = asc_by_group.get(gname) or {}
-        installs   = asc_g.get("installs")
-        pending    = asc_g.get("pending", False)
-        rc         = rc_by_group.get(gname)
-        rc_m       = (rc.get("_metrics") or extract_revenuecat_metrics(rc)) if rc else {}
-        mrr        = rc_m.get("mrr", 0)
-        revenue    = rc_m.get("revenue", 0)
-        subs       = rc_m.get("subscribers", 0)
-        trials     = rc_m.get("trials", 0)
-        gcd          = chart_data.get(gname, {})
-        has_sessions = bool(gcd.get("sessions", {}).get("dates"))
-        has_installs = bool(gcd.get("installs", {}).get("dates"))
-        has_rc_trend = bool(gcd.get("mrr",      {}).get("dates"))
+        asc_g        = asc_by_group.get(gname) or {}
+        installs     = asc_g.get("installs")
+        pending      = asc_g.get("pending", False)
+        gp_g         = gp_by_group.get(gname) or {}
+        gp_installs  = gp_g.get("installs")
+        rc           = rc_by_group.get(gname)
+        rc_m         = (rc.get("_metrics") or extract_revenuecat_metrics(rc)) if rc else {}
+        mrr          = rc_m.get("mrr", 0)
+        revenue      = rc_m.get("revenue", 0)
+        subs         = rc_m.get("subscribers", 0)
+        trials       = rc_m.get("trials", 0)
+        gcd               = chart_data.get(gname, {})
+        has_sessions      = bool(gcd.get("sessions",         {}).get("dates"))
+        has_installs      = bool(gcd.get("installs",         {}).get("dates"))
+        has_android_inst  = bool(gcd.get("android_installs", {}).get("dates"))
+        has_rc_trend      = bool(gcd.get("mrr",              {}).get("dates"))
 
         tabs_nav_html += f'<button class="tab-btn" id="btn-{t_id}" onclick="showTab(\'{t_id}\')">{gname}</button>\n'
 
@@ -891,7 +1019,9 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         if pending:
             kpi_items.append(("⏳", "iOS (initializing)"))
         elif installs is not None:
-            kpi_items.append((f"{int(installs):,}", "iOS Installs"))
+            kpi_items.append((f"{int(installs):,}", "iOS Downloads"))
+        if gp_installs is not None:
+            kpi_items.append((f"{int(gp_installs):,}", "Android Downloads"))
         if mrr:     kpi_items.append((f"${mrr:,.0f}",    "MRR"))
         if revenue: kpi_items.append((f"${revenue:,.2f}", "Revenue"))
         if subs:    kpi_items.append((f"{int(subs):,}",  "Subscribers"))
@@ -914,13 +1044,17 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         {no_data_note}
         <canvas id="chart-{t_id}-sessions" {"style='display:none'" if not has_sessions else ""}></canvas>
       </div>"""
-        if has_installs or asc_g.get("pending"):
-            inst_note = '<div class="chart-no-data">iOS download trend — initializing first report</div>' if not has_installs else ""
+        if has_installs or has_android_inst or asc_g.get("pending") or gp_installs is not None:
+            inst_note = ""
+            if not has_installs and not has_android_inst:
+                inst_note = '<div class="chart-no-data">Download trend — initializing (iOS up to 72h, Android builds over time)</div>'
+            elif asc_g.get("pending") and not has_installs:
+                inst_note = '<div class="chart-no-data">iOS download trend — initializing first report</div>'
             charts_row += f"""
       <div class="chart-card">
-        <div class="chart-title">Daily iOS Downloads</div>
+        <div class="chart-title">Daily Downloads (iOS &amp; Android)</div>
         {inst_note}
-        <canvas id="chart-{t_id}-installs" {"style='display:none'" if not has_installs else ""}></canvas>
+        <canvas id="chart-{t_id}-installs" {"style='display:none'" if not has_installs and not has_android_inst else ""}></canvas>
       </div>"""
         if has_rc_trend or mrr:
             rc_note = '<div class="chart-no-data">Revenue trend \u2014 grows with each weekly run</div>' if not has_rc_trend else ""
@@ -949,6 +1083,7 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
 
         rc_html_block  = revenuecat_block(rc)
         asc_html_block = appstore_block(asc_g)
+        gp_html_block  = googleplay_block(gp_g)
 
         tabs_body_html += f"""
 <div id="{t_id}" class="tab-pane hidden">
@@ -966,6 +1101,7 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
       {platform_rows_html}
       {rc_html_block}
       {asc_html_block}
+      {gp_html_block}
     </div>
   </div>
 </div>"""
@@ -1238,14 +1374,27 @@ function initCharts() {{
         {{ label:'Sessions', values: gd.sessions.values, color }},
         {{ label:'Users',    values: (gd.users||{{values:[]}}).values, color:'#94a3b8' }},
       ]);
-    // Installs
+    // Installs (iOS + Android combined on one chart)
     const instId = `chart-${{tabId}}-installs`;
-    if (gd.installs && gd.installs.dates.length) {{
+    const hasIos     = gd.installs         && gd.installs.dates.length > 0;
+    const hasAndroid = gd.android_installs && gd.android_installs.dates.length > 0;
+    if (hasIos || hasAndroid) {{
       const el = document.getElementById(instId);
       if (el) el.style.display = '';
-      makeLineChart(instId, gd.installs.dates, [
-        {{ label:'Downloads', values: gd.installs.values, color:'#f59e0b' }}
-      ]);
+      // Build a unified date axis
+      const allInstDates = [...new Set([
+        ...(hasIos     ? gd.installs.dates         : []),
+        ...(hasAndroid ? gd.android_installs.dates  : []),
+      ])].sort();
+      function alignInstalls(series) {{
+        const map = {{}};
+        (series.dates||[]).forEach((d,i) => {{ map[d] = series.values[i]; }});
+        return allInstDates.map(d => map[d] !== undefined ? map[d] : null);
+      }}
+      const instDatasets = [];
+      if (hasIos)     instDatasets.push({{ label:'iOS',     values: alignInstalls(gd.installs),         color:'#f59e0b' }});
+      if (hasAndroid) instDatasets.push({{ label:'Android', values: alignInstalls(gd.android_installs), color:'#3ddc84' }});
+      makeLineChart(instId, allInstDates, instDatasets);
     }}
     // MRR + Subscribers (dual axis via two datasets)
     const revId = `chart-${{tabId}}-revenue`;
@@ -1628,11 +1777,38 @@ def main():
     else:
         print("\n🍎 App Store Connect: skipped (no apps configured)")
 
+    # ── Google Play ──────────────────────────────────────────────────────────────
+    gp_by_group = {}
+    gp_config   = config.get("google_play", {})
+    gp_apps     = gp_config.get("apps", [])
+    gp_key_json = os.environ.get("GOOGLE_PLAY_KEY_JSON", "").strip()
+
+    if gp_apps and gp_key_json:
+        print(f"\n🤖 Fetching Google Play data ({len(gp_apps)} apps)...\n")
+        for app in gp_apps:
+            group_name = app.get("group", "")
+            package    = app.get("package", "").strip()
+            account_id = app.get("account_id", "").strip()
+            print(f"  → {group_name} ({package}) ...", end=" ", flush=True)
+            if not package or not account_id or account_id == "FIND_ACCOUNT_ID":
+                print("⏭  skipped (no package or account_id)")
+                continue
+            gp_data = fetch_google_play(package, account_id, gp_key_json)
+            if gp_data and gp_data.get("installs") is not None:
+                print(f"✅ {int(gp_data['installs']):,} installs")
+                gp_by_group[group_name] = gp_data
+            else:
+                print("❌ no data")
+    elif gp_apps and not gp_key_json:
+        print("\n🤖 Google Play: skipped (GOOGLE_PLAY_KEY_JSON not set)")
+    else:
+        print("\n🤖 Google Play: skipped (no apps configured)")
+
     # Save accumulated history so next run builds on it
     _history_save(history)
     print(f"📅 History saved → {HISTORY_FILE}")
 
-    html = render_html(groups, rc_by_group, asc_by_group, len(projects), start_dt, end_dt, history=history)
+    html = render_html(groups, rc_by_group, asc_by_group, len(projects), start_dt, end_dt, history=history, gp_by_group=gp_by_group)
 
     with open(OUTPUT_FILE, "w") as f:
         f.write(html)
