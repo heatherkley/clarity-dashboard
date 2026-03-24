@@ -4,27 +4,33 @@
   "apps": [
     {
       "group": "Shift",
-      "status": "no_data"
+      "status": "no_data",
+      "error": "403 forbidden on pubsite_prod_4654236168842299132"
     },
     {
       "group": "Today's Front Pages",
-      "status": "no_data"
+      "status": "no_data",
+      "error": "403 forbidden on pubsite_prod_7846546922361551874"
     },
     {
       "group": "P3",
-      "status": "no_data"
+      "status": "no_data",
+      "error": "403 forbidden on pubsite_prod_8310915490843818744"
     },
     {
       "group": "Quiet Collection",
-      "status": "no_data"
+      "status": "no_data",
+      "error": "403 forbidden on pubsite_prod_6895695345736157748"
     },
     {
       "group": "Self Speak",
-      "status": "no_data"
+      "status": "no_data",
+      "error": "403 forbidden on pubsite_prod_9005754792638624266"
     },
     {
       "group": "Footsteps with Jesus",
-      "status": "no_data"
+      "status": "no_data",
+      "error": "403 forbidden on pubsite_prod_8627774139374330501"
     }
   ]
 }
