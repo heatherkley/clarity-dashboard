@@ -838,21 +838,15 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         if mrr:
             rc_line = f"<div class='ov-rc'>${mrr:,.0f} MRR &nbsp;·&nbsp; {int(subs):,} subs</div>"
 
-        # Only render sparkline canvas when we have ≥2 history points to draw a meaningful line
-        _g_hist = clarity_history.get(gname, {})
-        if len(_g_hist) >= 2:
-            spark_el = f'<canvas id="spark-{tab_target}" height="44" style="margin-top:10px;width:100%;display:block"></canvas>'
-        else:
-            # Show a proportion bar as a placeholder while history accumulates
-            _pct = int(g_sessions / max(total_sessions, 1) * 100)
-            spark_el = (
-                f'<div style="margin-top:10px">'
-                f'<div style="height:3px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden">'
-                f'<div style="width:{_pct}%;height:100%;background:{color};border-radius:2px"></div>'
-                f'</div>'
-                f'<div style="font-size:0.65rem;color:#334155;margin-top:5px">{_pct}% of total sessions</div>'
-                f'</div>'
-            )
+        # Show a thin proportion bar — simple, always works, no chart.js needed
+        _pct = int(g_sessions / max(total_sessions, 1) * 100)
+        spark_el = (
+            f'<div style="margin-top:10px">'
+            f'<div style="height:3px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden">'
+            f'<div style="width:{_pct}%;height:100%;background:{color};border-radius:2px"></div>'
+            f'</div>'
+            f'</div>'
+        )
 
         overview_cards_html += f"""
       <div class="ov-card" onclick="showTab('{tab_target}')" style="--accent:{color}">
@@ -1534,16 +1528,8 @@ def main():
     print(f"   History : {sum(len(v) for v in history.get('clarity',{}).values())} clarity snapshots, "
           f"{sum(len(v) for v in history.get('revenuecat',{}).values())} RC snapshots\n")
 
-    # One-time 30-day backfill so trend charts show real history on first run
-    _total_clarity_days = sum(len(v) for v in history.get("clarity", {}).values())
-    rc_apps_cfg = config.get("revenuecat", {}).get("apps", [])
-    if _total_clarity_days < len(projects) * 5:   # less than ~5 days per project → backfill
-        print("⏳ First run detected — back-filling 30 days of daily history...\n")
-        _backfill_history(history, projects, rc_apps_cfg, days=30)
-        _history_save(history)
-        print(f"\n   History after backfill: "
-              f"{sum(len(v) for v in history.get('clarity',{}).values())} clarity, "
-              f"{sum(len(v) for v in history.get('revenuecat',{}).values())} RC snapshots\n")
+    # Note: Clarity's API returns rolling totals regardless of date range — backfill
+    # doesn't produce useful daily data. History grows one real snapshot per weekly run.
 
     groups = defaultdict(list)
 

@@ -1,45 +1,9 @@
 {
   "clarity": {
     "Footsteps with Jesus": {
-      "2026-03-13": {
-        "sessions": 21,
-        "users": 13
-      },
-      "2026-03-14": {
-        "sessions": 21,
-        "users": 13
-      },
-      "2026-03-15": {
-        "sessions": 21,
-        "users": 13
-      },
-      "2026-03-16": {
-        "sessions": 21,
-        "users": 13
-      },
-      "2026-03-17": {
-        "sessions": 21,
-        "users": 13
-      },
-      "2026-03-18": {
-        "sessions": 21,
-        "users": 13
-      },
       "2026-03-19": {
         "sessions": 3,
         "users": 2
-      },
-      "2026-03-20": {
-        "sessions": 21,
-        "users": 13
-      },
-      "2026-03-21": {
-        "sessions": 21,
-        "users": 13
-      },
-      "2026-03-22": {
-        "sessions": 21,
-        "users": 13
       },
       "2026-03-23": {
         "sessions": 7,
@@ -47,44 +11,8 @@
       }
     },
     "P3": {
-      "2026-03-13": {
-        "sessions": 11,
-        "users": 10
-      },
-      "2026-03-14": {
-        "sessions": 11,
-        "users": 10
-      },
-      "2026-03-15": {
-        "sessions": 11,
-        "users": 10
-      },
-      "2026-03-16": {
-        "sessions": 11,
-        "users": 10
-      },
-      "2026-03-17": {
-        "sessions": 11,
-        "users": 10
-      },
-      "2026-03-18": {
-        "sessions": 11,
-        "users": 10
-      },
       "2026-03-19": {
         "sessions": 10,
-        "users": 10
-      },
-      "2026-03-20": {
-        "sessions": 11,
-        "users": 10
-      },
-      "2026-03-21": {
-        "sessions": 11,
-        "users": 10
-      },
-      "2026-03-22": {
-        "sessions": 11,
         "users": 10
       },
       "2026-03-23": {
@@ -93,45 +21,9 @@
       }
     },
     "Quiet Collection": {
-      "2026-03-13": {
-        "sessions": 919,
-        "users": 826
-      },
-      "2026-03-14": {
-        "sessions": 919,
-        "users": 826
-      },
-      "2026-03-15": {
-        "sessions": 919,
-        "users": 826
-      },
-      "2026-03-16": {
-        "sessions": 919,
-        "users": 826
-      },
-      "2026-03-17": {
-        "sessions": 919,
-        "users": 826
-      },
-      "2026-03-18": {
-        "sessions": 919,
-        "users": 826
-      },
       "2026-03-19": {
         "sessions": 1016,
         "users": 947
-      },
-      "2026-03-20": {
-        "sessions": 918,
-        "users": 826
-      },
-      "2026-03-21": {
-        "sessions": 918,
-        "users": 826
-      },
-      "2026-03-22": {
-        "sessions": 918,
-        "users": 826
       },
       "2026-03-23": {
         "sessions": 101,
@@ -139,45 +31,9 @@
       }
     },
     "Self Speak": {
-      "2026-03-13": {
-        "sessions": 13,
-        "users": 9
-      },
-      "2026-03-14": {
-        "sessions": 13,
-        "users": 9
-      },
-      "2026-03-15": {
-        "sessions": 13,
-        "users": 9
-      },
-      "2026-03-16": {
-        "sessions": 13,
-        "users": 9
-      },
-      "2026-03-17": {
-        "sessions": 13,
-        "users": 9
-      },
-      "2026-03-18": {
-        "sessions": 13,
-        "users": 9
-      },
       "2026-03-19": {
         "sessions": 11,
         "users": 11
-      },
-      "2026-03-20": {
-        "sessions": 13,
-        "users": 9
-      },
-      "2026-03-21": {
-        "sessions": 13,
-        "users": 9
-      },
-      "2026-03-22": {
-        "sessions": 13,
-        "users": 9
       },
       "2026-03-23": {
         "sessions": 16,
@@ -185,45 +41,9 @@
       }
     },
     "Shift": {
-      "2026-03-13": {
-        "sessions": 174,
-        "users": 103
-      },
-      "2026-03-14": {
-        "sessions": 174,
-        "users": 103
-      },
-      "2026-03-15": {
-        "sessions": 174,
-        "users": 103
-      },
-      "2026-03-16": {
-        "sessions": 174,
-        "users": 103
-      },
-      "2026-03-17": {
-        "sessions": 174,
-        "users": 103
-      },
-      "2026-03-18": {
-        "sessions": 174,
-        "users": 103
-      },
       "2026-03-19": {
         "sessions": 158,
         "users": 109
-      },
-      "2026-03-20": {
-        "sessions": 174,
-        "users": 103
-      },
-      "2026-03-21": {
-        "sessions": 174,
-        "users": 103
-      },
-      "2026-03-22": {
-        "sessions": 174,
-        "users": 103
       },
       "2026-03-23": {
         "sessions": 163,
@@ -231,45 +51,9 @@
       }
     },
     "Today's Front Pages": {
-      "2026-03-13": {
-        "sessions": 3444,
-        "users": 3561
-      },
-      "2026-03-14": {
-        "sessions": 3444,
-        "users": 3561
-      },
-      "2026-03-15": {
-        "sessions": 3444,
-        "users": 3561
-      },
-      "2026-03-16": {
-        "sessions": 3444,
-        "users": 3561
-      },
-      "2026-03-17": {
-        "sessions": 3165,
-        "users": 3335
-      },
-      "2026-03-18": {
-        "sessions": 3446,
-        "users": 3563
-      },
       "2026-03-19": {
         "sessions": 3628,
         "users": 3603
-      },
-      "2026-03-20": {
-        "sessions": 3444,
-        "users": 3562
-      },
-      "2026-03-21": {
-        "sessions": 3444,
-        "users": 3562
-      },
-      "2026-03-22": {
-        "sessions": 3444,
-        "users": 3562
       },
       "2026-03-23": {
         "sessions": 3393,
@@ -279,185 +63,11 @@
   },
   "revenuecat": {
     "Self Speak": {
-      "2026-02-21": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-02-22": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-02-23": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-02-24": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-02-25": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-02-26": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-02-27": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-02-28": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-01": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-02": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-03": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-04": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-05": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-06": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-07": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-08": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-09": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-10": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-11": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-12": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-13": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-14": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-15": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-16": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-17": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-18": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
       "2026-03-19": {
         "mrr": 61.0,
         "revenue": 44.0,
         "subscribers": 18,
         "trials": 3
-      },
-      "2026-03-20": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-21": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
-      },
-      "2026-03-22": {
-        "mrr": 68.0,
-        "revenue": 51.0,
-        "subscribers": 19,
-        "trials": 2
       },
       "2026-03-23": {
         "mrr": 68.0,
@@ -467,185 +77,11 @@
       }
     },
     "Shift": {
-      "2026-02-21": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-02-22": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-02-23": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-02-24": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-02-25": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-02-26": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-02-27": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-02-28": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-01": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-02": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-03": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-04": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-05": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-06": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-07": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-08": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-09": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-10": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-11": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-12": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-13": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-14": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-15": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-16": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-17": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-18": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
       "2026-03-19": {
         "mrr": 371.0,
         "revenue": 420.0,
         "subscribers": 46,
         "trials": 113
-      },
-      "2026-03-20": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-21": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
-      },
-      "2026-03-22": {
-        "mrr": 411.0,
-        "revenue": 460.0,
-        "subscribers": 49,
-        "trials": 108
       },
       "2026-03-23": {
         "mrr": 411.0,
