@@ -1783,6 +1783,7 @@ def main():
     gp_apps     = gp_config.get("apps", [])
     gp_key_json = os.environ.get("GOOGLE_PLAY_KEY_JSON", "").strip()
 
+    gp_debug = {"key_present": bool(gp_key_json), "key_length": len(gp_key_json), "apps": []}
     if gp_apps and gp_key_json:
         print(f"\n🤖 Fetching Google Play data ({len(gp_apps)} apps)...\n")
         for app in gp_apps:
@@ -1792,17 +1793,25 @@ def main():
             print(f"  → {group_name} ({package}) ...", end=" ", flush=True)
             if not package or not account_id or account_id == "FIND_ACCOUNT_ID":
                 print("⏭  skipped (no package or account_id)")
+                gp_debug["apps"].append({"group": group_name, "status": "skipped"})
                 continue
             gp_data = fetch_google_play(package, account_id, gp_key_json)
             if gp_data and gp_data.get("installs") is not None:
                 print(f"✅ {int(gp_data['installs']):,} installs")
                 gp_by_group[group_name] = gp_data
+                gp_debug["apps"].append({"group": group_name, "status": "ok", "installs": gp_data.get("installs"), "days": len(gp_data.get("daily_installs", {}))})
             else:
                 print("❌ no data")
+                gp_debug["apps"].append({"group": group_name, "status": "no_data"})
     elif gp_apps and not gp_key_json:
         print("\n🤖 Google Play: skipped (GOOGLE_PLAY_KEY_JSON not set)")
+        gp_debug["skip_reason"] = "no key"
     else:
         print("\n🤖 Google Play: skipped (no apps configured)")
+        gp_debug["skip_reason"] = "no apps"
+    with open("gp_debug.json", "w") as _f:
+        json.dump(gp_debug, _f, indent=2)
+    print(f"🔍 GP debug → gp_debug.json")
 
     # Save accumulated history so next run builds on it
     _history_save(history)
