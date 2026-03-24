@@ -1800,12 +1800,10 @@ def main():
             if gp_data and gp_data.get("installs") is not None:
                 print(f"✅ {int(gp_data['installs']):,} installs")
                 gp_by_group[group_name] = gp_data
-                   else:
+                gp_debug["apps"].append({"group": group_name, "status": "ok", "installs": gp_data.get("installs"), "days": len(gp_data.get("daily_installs", {}))})
+            else:
                 err = gp_data.get("error", "returned None") if gp_data else "returned None"
                 print(f"❌ no data: {err}")
-                gp_debug["apps"].append({"group": group_name, "status": "no_data", "error": err})ly_installs", {}))})
-            else:
-                print("❌ no data")
                 gp_debug["apps"].append({"group": group_name, "status": "no_data", "error": err})
     elif gp_apps and not gp_key_json:
         print("\n🤖 Google Play: skipped (GOOGLE_PLAY_KEY_JSON not set)")
