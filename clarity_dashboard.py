@@ -212,6 +212,8 @@ def extract_revenuecat_metrics(raw):
             "revenue":     mv("revenue") or mv("total_revenue"),
             "subscribers": mv("active_subscriptions") or mv("active_subscribers"),
             "trials":      mv("active_trials"),
+            "churn_rate":  mv("churn_rate") or mv("subscription_churn_rate"),
+            "churned":     mv("churned_subscriptions"),
         }
 
     # Flat dict fallback (v1 style)
@@ -222,6 +224,8 @@ def extract_revenuecat_metrics(raw):
             "revenue":     safe_float(metrics.get("revenue",              metrics.get("total_revenue",   0))),
             "subscribers": safe_float(metrics.get("active_subscriptions", metrics.get("active_subscribers", 0))),
             "trials":      safe_float(metrics.get("active_trials",        0)),
+            "churn_rate":  safe_float(metrics.get("churn_rate",           metrics.get("subscription_churn_rate", 0))),
+            "churned":     safe_float(metrics.get("churned_subscriptions", 0)),
         }
     return {}
 
@@ -238,6 +242,8 @@ def revenuecat_block(rc_data):
     revenue     = m.get("revenue", 0)
     subscribers = m.get("subscribers", 0)
     trials      = m.get("trials", 0)
+    churn_rate  = m.get("churn_rate", 0)
+    churned     = m.get("churned", 0)
 
     # If we got nothing meaningful, show raw for debugging
     if mrr == 0 and revenue == 0 and subscribers == 0:
@@ -253,7 +259,14 @@ def revenuecat_block(rc_data):
     mrr_str  = "${:,.2f}".format(mrr)
     rev_str  = "${:,.2f}".format(revenue)
     subs_str = "{:,}".format(int(subscribers))
-    trial_str= "{:,}".format(int(trials))
+    trial_str  = "{:,}".format(int(trials))
+    if churn_rate > 0:
+        churn_disp = "{:.1f}%".format(churn_rate * 100) if churn_rate < 1 else "{:.1f}%".format(churn_rate)
+        churn_block = '<div class="rc-metric"><div class="rc-value" style="color:#f87171">' + churn_disp + '</div><div class="rc-label">Monthly Churn</div></div>'
+    elif churned > 0:
+        churn_block = '<div class="rc-metric"><div class="rc-value" style="color:#f87171">' + "{:,}".format(int(churned)) + '</div><div class="rc-label">Churned</div></div>'
+    else:
+        churn_block = ""
 
     return (
         '<div class="rc-block">'
@@ -263,6 +276,7 @@ def revenuecat_block(rc_data):
         '<div class="rc-metric"><div class="rc-value">' + rev_str  + '</div><div class="rc-label">Revenue</div></div>'
         '<div class="rc-metric"><div class="rc-value">' + subs_str + '</div><div class="rc-label">Subscribers</div></div>'
         '<div class="rc-metric"><div class="rc-value">' + trial_str+ '</div><div class="rc-label">Trials</div></div>'
+        + churn_block +
         "</div></div>"
     )
 
@@ -334,6 +348,8 @@ def _history_append_revenuecat(history, group_name, metrics, date_key=None):
         "revenue":     round(metrics.get("revenue",     0), 2),
         "subscribers": int(metrics.get("subscribers",   0)),
         "trials":      int(metrics.get("trials",        0)),
+        "churn_rate":  round(metrics.get("churn_rate",  0), 4),
+        "churned":     int(metrics.get("churned",       0)),
     }
 
 
@@ -1004,6 +1020,7 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         revenue      = rc_m.get("revenue", 0)
         subs         = rc_m.get("subscribers", 0)
         trials       = rc_m.get("trials", 0)
+        churn        = rc_m.get("churn_rate", 0)
         gcd               = chart_data.get(gname, {})
         has_sessions      = bool(gcd.get("sessions",         {}).get("dates"))
         has_installs      = bool(gcd.get("installs",         {}).get("dates"))
@@ -1027,6 +1044,9 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         if revenue: kpi_items.append((f"${revenue:,.2f}", "Revenue"))
         if subs:    kpi_items.append((f"{int(subs):,}",  "Subscribers"))
         if trials:  kpi_items.append((f"{int(trials):,}", "Trials"))
+        if churn:
+            churn_disp = "{:.1f}%".format(churn * 100) if churn < 1 else "{:.1f}%".format(churn)
+            kpi_items.append((churn_disp, "Monthly Churn"))
 
         kpi_html = "".join(
             f'<div class="kpi"><div class="kpi-val">{v}</div><div class="kpi-lbl">{l}</div></div>'
