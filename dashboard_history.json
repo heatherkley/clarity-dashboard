@@ -14,8 +14,8 @@
         "users": 15
       },
       "2026-03-25": {
-        "sessions": 30,
-        "users": 15
+        "sessions": 28,
+        "users": 14
       }
     },
     "P3": {
@@ -68,8 +68,8 @@
         "users": 25
       },
       "2026-03-25": {
-        "sessions": 25,
-        "users": 20
+        "sessions": 23,
+        "users": 18
       }
     },
     "Shift": {
@@ -87,7 +87,7 @@
       },
       "2026-03-25": {
         "sessions": 233,
-        "users": 147
+        "users": 144
       }
     },
     "Today's Front Pages": {
@@ -104,8 +104,8 @@
         "users": 3348
       },
       "2026-03-25": {
-        "sessions": 3332,
-        "users": 3458
+        "sessions": 3185,
+        "users": 3321
       }
     }
   },

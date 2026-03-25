@@ -41,6 +41,10 @@
     .kpi-val{font-size:2rem;font-weight:700;color:white;letter-spacing:-0.02em}
     .kpi-lbl{font-size:0.65rem;color:#475569;text-transform:uppercase;letter-spacing:0.07em;margin-top:4px}
     /* ── Charts ── */
+    .highlights-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;padding:20px 32px 0}
+    .highlights-row .rc-block{margin-top:0;padding:18px 22px}
+    .highlights-row .rc-value{font-size:1.4rem;font-weight:700}
+    .highlights-row .rc-title{font-size:0.75rem;margin-bottom:10px}
     .charts-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;padding:20px 32px 0}
     .chart-card{background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:20px 22px;backdrop-filter:blur(8px);transition:border-color 0.2s,box-shadow 0.2s}
     .chart-card:hover{border-color:rgba(56,189,248,0.2);box-shadow:0 0 32px rgba(56,189,248,0.06)}
@@ -101,7 +105,7 @@
     <h1>&#x1F4CA; 3Advance <span>Analytics</span></h1>
     <div class="meta">Last 30 days &nbsp;&middot;&nbsp; Feb 22 – Mar 24, 2026</div>
   </div>
-  <div class="meta" style="text-align:right">Generated Mar 25, 2026 at 11:35 AM<br><span style="color:#1e3a4a;font-size:0.75rem">Auto-updates every Monday</span></div>
+  <div class="meta" style="text-align:right">Generated Mar 25, 2026 at 12:23 PM<br><span style="color:#1e3a4a;font-size:0.75rem">Auto-updates every Monday</span></div>
 </header>
 
 <div class="summary">
@@ -114,11 +118,11 @@
     <div class="summary-label">Platforms</div>
   </div>
   <div class="summary-item">
-    <div class="summary-value">4,530</div>
+    <div class="summary-value">4,379</div>
     <div class="summary-label">Total Sessions</div>
   </div>
   <div class="summary-item">
-    <div class="summary-value">4,493</div>
+    <div class="summary-value">4,350</div>
     <div class="summary-label">Total Users</div>
   </div>
   <div class="summary-item"><div class="summary-value">$515</div><div class="summary-label">Total MRR</div></div><div class="summary-item"><div class="summary-value">$571</div><div class="summary-label">Total Revenue</div></div>
@@ -142,7 +146,7 @@
         <div class="ov-name" style="color:#3b82f6">Shift</div>
         <div class="ov-stats">
           <div><b>233</b><span class="ov-sub"> sessions</span></div>
-          <div><b>147</b><span class="ov-sub"> users</span></div>
+          <div><b>144</b><span class="ov-sub"> users</span></div>
           <div><span style='color:#64748b;font-size:0.72em'>⏳ iOS pending (up to 72h)</span></div>
           
         </div>
@@ -153,8 +157,8 @@
       <div class="ov-card" onclick="showTab('tab-today-s-front-pages')" style="--accent:#10b981">
         <div class="ov-name" style="color:#10b981">Today's Front Pages</div>
         <div class="ov-stats">
-          <div><b>3,332</b><span class="ov-sub"> sessions</span></div>
-          <div><b>3,458</b><span class="ov-sub"> users</span></div>
+          <div><b>3,185</b><span class="ov-sub"> sessions</span></div>
+          <div><b>3,321</b><span class="ov-sub"> users</span></div>
           <div><span style='color:#64748b;font-size:0.72em'>⏳ iOS pending (up to 72h)</span></div>
           
         </div>
@@ -189,8 +193,8 @@
       <div class="ov-card" onclick="showTab('tab-self-speak')" style="--accent:#ef4444">
         <div class="ov-name" style="color:#ef4444">Self Speak</div>
         <div class="ov-stats">
-          <div><b>25</b><span class="ov-sub"> sessions</span></div>
-          <div><b>20</b><span class="ov-sub"> users</span></div>
+          <div><b>23</b><span class="ov-sub"> sessions</span></div>
+          <div><b>18</b><span class="ov-sub"> users</span></div>
           
           
         </div>
@@ -201,8 +205,8 @@
       <div class="ov-card" onclick="showTab('tab-footsteps-with-jesus')" style="--accent:#ec4899">
         <div class="ov-name" style="color:#ec4899">Footsteps with Jesus</div>
         <div class="ov-stats">
-          <div><b>30</b><span class="ov-sub"> sessions</span></div>
-          <div><b>15</b><span class="ov-sub"> users</span></div>
+          <div><b>28</b><span class="ov-sub"> sessions</span></div>
+          <div><b>14</b><span class="ov-sub"> users</span></div>
           
           <div><b>184</b> <span class='ov-sub'>Android dl</span></div>
         </div>
@@ -214,19 +218,15 @@
 </div>
 <div id="tab-shift" class="tab-pane hidden">
   <div class="client-kpi-bar" style="border-top:3px solid #3b82f6">
-    <div class="kpi"><div class="kpi-val">233</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">147</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">⏳</div><div class="kpi-lbl">iOS (initializing)</div></div><div class="kpi"><div class="kpi-val">$447</div><div class="kpi-lbl">MRR</div></div><div class="kpi"><div class="kpi-val">$520.00</div><div class="kpi-lbl">Revenue</div></div><div class="kpi"><div class="kpi-val">52</div><div class="kpi-lbl">Subscribers</div></div><div class="kpi"><div class="kpi-val">109</div><div class="kpi-lbl">Trials</div></div>
+    <div class="kpi"><div class="kpi-val">233</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">144</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">⏳</div><div class="kpi-lbl">iOS (initializing)</div></div><div class="kpi"><div class="kpi-val">$447</div><div class="kpi-lbl">MRR</div></div><div class="kpi"><div class="kpi-val">$520.00</div><div class="kpi-lbl">Revenue</div></div><div class="kpi"><div class="kpi-val">52</div><div class="kpi-lbl">Subscribers</div></div><div class="kpi"><div class="kpi-val">109</div><div class="kpi-lbl">Trials</div></div>
   </div>
+  <div class="highlights-row"><div class="rc-block"><span class="rc-title">💰 Revenue (last 30 days)</span><div class="rc-metrics"><div class="rc-metric"><div class="rc-value">$447.00</div><div class="rc-label">MRR</div></div><div class="rc-metric"><div class="rc-value">$520.00</div><div class="rc-label">Revenue</div></div><div class="rc-metric"><div class="rc-value">52</div><div class="rc-label">Subscribers</div></div><div class="rc-metric"><div class="rc-value">109</div><div class="rc-label">Trials</div></div></div></div><div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Apple is generating reports (can take up to 72h for a new request). Data will appear on the next dashboard run once ready.</div></div></div>
   
     <div class="charts-row">
       <div class="chart-card">
         <div class="chart-title">Sessions &amp; Users Over Time</div>
         
         <canvas id="chart-tab-shift-sessions" ></canvas>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">Daily Downloads (iOS &amp; Android)</div>
-        <div class="chart-no-data">Download trend — initializing (iOS up to 72h, Android builds over time)</div>
-        <canvas id="chart-tab-shift-installs" style='display:none'></canvas>
       </div>
       <div class="chart-card">
         <div class="chart-title">MRR &amp; Subscribers Over Time</div>
@@ -245,7 +245,7 @@
             <span class="combined-label">Combined</span>
             <span class="combined-stat">233 sessions</span>
             <span class="combined-sep">&middot;</span>
-            <span class="combined-stat">147 users</span>
+            <span class="combined-stat">144 users</span>
           </div>
       
       <div class="platform-row" style="border-left:3px solid #007aff">
@@ -259,7 +259,7 @@
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">111</div>
+              <div class="metric-value">110</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
@@ -278,10 +278,10 @@
     "information": [
       {
         "sessionsCount": "181",
-        "sessionsWithMetricPercentage": 49.17,
-        "sessionsWithoutMetricPercentage": 50.83,
-        "screensViews": "181",
-        "subTotal": "324"
+        "sessionsWithMetricPercentage": 49.72,
+        "sessionsWithoutMetricPercentage": 50.28,
+        "screensViews": "180",
+        "subTotal": "322"
       }
     ]
   },
@@ -315,8 +315,8 @@
       {
         "totalSessionCount": "181",
         "totalBotSessionCount": "0",
-        "distinctUserCount": "111",
-        "screensPerSessionPercentage": 3.875
+        "distinctUserCount": "110",
+        "screensPerSessionPercentage": 3.912568306010929
       }
     ]
   },
@@ -324,8 +324,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "337",
-        "activeTime": "337"
+        "totalTime": "338",
+        "activeTime": "338"
       }
     ]
   },
@@ -360,11 +360,11 @@
       },
       {
         "name": "Ireland",
-        "sessionsCount": "19"
+        "sessionsCount": "18"
       },
       {
         "name": "United Kingdom",
-        "sessionsCount": "11"
+        "sessionsCount": "12"
       }
     ]
   },
@@ -404,7 +404,7 @@
         "sessionsCount": "4"
       },
       {
-        "name": "UIImagePickerController",
+        "name": "Are you absolutely sure?",
         "sessionsCount": "3"
       },
       {
@@ -426,15 +426,15 @@
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">36</div>
+              <div class="metric-value">34</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
-              <div class="metric-value">2.2</div>
+              <div class="metric-value">1.9</div>
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
-              <div class="metric-value">4.9m</div>
+              <div class="metric-value">4.7m</div>
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
@@ -445,10 +445,10 @@
     "information": [
       {
         "sessionsCount": "52",
-        "sessionsWithMetricPercentage": 34.62,
-        "sessionsWithoutMetricPercentage": 65.38,
-        "screensViews": "22",
-        "subTotal": "56"
+        "sessionsWithMetricPercentage": 30.77,
+        "sessionsWithoutMetricPercentage": 69.23,
+        "screensViews": "19",
+        "subTotal": "48"
       }
     ]
   },
@@ -482,8 +482,8 @@
       {
         "totalSessionCount": "52",
         "totalBotSessionCount": "0",
-        "distinctUserCount": "36",
-        "screensPerSessionPercentage": 2.188679245283019
+        "distinctUserCount": "34",
+        "screensPerSessionPercentage": 1.8679245283018868
       }
     ]
   },
@@ -491,8 +491,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "296",
-        "activeTime": "144"
+        "totalTime": "279",
+        "activeTime": "134"
       }
     ]
   },
@@ -519,15 +519,15 @@
     "information": [
       {
         "name": "United States",
-        "sessionsCount": "34"
+        "sessionsCount": "33"
       },
       {
         "name": "Ireland",
-        "sessionsCount": "15"
+        "sessionsCount": "17"
       },
       {
         "name": "United Kingdom",
-        "sessionsCount": "3"
+        "sessionsCount": "2"
       }
     ]
   },
@@ -540,7 +540,7 @@
       },
       {
         "name": "PaywallActivity",
-        "sessionsCount": "7"
+        "sessionsCount": "6"
       },
       {
         "name": "IntercomRootActivity",
@@ -550,27 +550,20 @@
   }
 ]</pre>
       </div>
-      <div class="rc-block"><span class="rc-title">💰 Revenue (last 30 days)</span><div class="rc-metrics"><div class="rc-metric"><div class="rc-value">$447.00</div><div class="rc-label">MRR</div></div><div class="rc-metric"><div class="rc-value">$520.00</div><div class="rc-label">Revenue</div></div><div class="rc-metric"><div class="rc-value">52</div><div class="rc-label">Subscribers</div></div><div class="rc-metric"><div class="rc-value">109</div><div class="rc-label">Trials</div></div></div></div>
-      <div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Apple is generating reports (can take up to 72h for a new request). Data will appear on the next dashboard run once ready.</div></div>
-      
     </div>
   </div>
 </div>
 <div id="tab-today-s-front-pages" class="tab-pane hidden">
   <div class="client-kpi-bar" style="border-top:3px solid #10b981">
-    <div class="kpi"><div class="kpi-val">3,332</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">3,458</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">⏳</div><div class="kpi-lbl">iOS (initializing)</div></div>
+    <div class="kpi"><div class="kpi-val">3,185</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">3,321</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">⏳</div><div class="kpi-lbl">iOS (initializing)</div></div>
   </div>
+  <div class="highlights-row"><div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Apple is generating reports (can take up to 72h for a new request). Data will appear on the next dashboard run once ready.</div></div></div>
   
     <div class="charts-row">
       <div class="chart-card">
         <div class="chart-title">Sessions &amp; Users Over Time</div>
         
         <canvas id="chart-tab-today-s-front-pages-sessions" ></canvas>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">Daily Downloads (iOS &amp; Android)</div>
-        <div class="chart-no-data">Download trend — initializing (iOS up to 72h, Android builds over time)</div>
-        <canvas id="chart-tab-today-s-front-pages-installs" style='display:none'></canvas>
       </div>
     </div>
   <div class="grid">
@@ -582,9 +575,9 @@
       
           <div class="combined-total">
             <span class="combined-label">Combined</span>
-            <span class="combined-stat">3,332 sessions</span>
+            <span class="combined-stat">3,185 sessions</span>
             <span class="combined-sep">&middot;</span>
-            <span class="combined-stat">3,458 users</span>
+            <span class="combined-stat">3,321 users</span>
           </div>
       
       <div class="platform-row" style="border-left:3px solid #007aff">
@@ -594,33 +587,33 @@
         </div>
         <div class="metrics">
           <div class="metric">
-              <div class="metric-value">260</div>
+              <div class="metric-value">246</div>
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">227</div>
+              <div class="metric-value">211</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
-              <div class="metric-value">4.8</div>
+              <div class="metric-value">4.7</div>
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
-              <div class="metric-value">5.3m</div>
+              <div class="metric-value">5.0m</div>
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
-        <div class="device-row"><span class="device-pill">📱 Mobile <strong>171</strong> <span class="device-pct">(65.8%)</span></span><span class="device-pill">⬛ Tablet <strong>89</strong> <span class="device-pct">(34.2%)</span></span></div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>158</strong> <span class="device-pct">(64.2%)</span></span><span class="device-pill">⬛ Tablet <strong>88</strong> <span class="device-pct">(35.8%)</span></span></div>
         <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
   {
     "metricName": "DeadTapCount",
     "information": [
       {
-        "sessionsCount": "260",
-        "sessionsWithMetricPercentage": 51.54,
-        "sessionsWithoutMetricPercentage": 48.46,
-        "screensViews": "277",
-        "subTotal": "452"
+        "sessionsCount": "246",
+        "sessionsWithMetricPercentage": 50.41,
+        "sessionsWithoutMetricPercentage": 49.59,
+        "screensViews": "265",
+        "subTotal": "392"
       }
     ]
   },
@@ -628,7 +621,7 @@
     "metricName": "RageTapCount",
     "information": [
       {
-        "sessionsCount": "260",
+        "sessionsCount": "246",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "screensViews": "0",
@@ -640,7 +633,7 @@
     "metricName": "ApplicationErrorCount",
     "information": [
       {
-        "sessionsCount": "260",
+        "sessionsCount": "246",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "screensViews": "0",
@@ -652,10 +645,10 @@
     "metricName": "Traffic",
     "information": [
       {
-        "totalSessionCount": "260",
+        "totalSessionCount": "246",
         "totalBotSessionCount": "0",
-        "distinctUserCount": "227",
-        "screensPerSessionPercentage": 4.819548872180451
+        "distinctUserCount": "211",
+        "screensPerSessionPercentage": 4.746031746031746
       }
     ]
   },
@@ -663,8 +656,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "320",
-        "activeTime": "320"
+        "totalTime": "301",
+        "activeTime": "301"
       }
     ]
   },
@@ -673,11 +666,11 @@
     "information": [
       {
         "name": "Mobile",
-        "sessionsCount": "171"
+        "sessionsCount": "158"
       },
       {
         "name": "Tablet",
-        "sessionsCount": "89"
+        "sessionsCount": "88"
       }
     ]
   },
@@ -686,7 +679,7 @@
     "information": [
       {
         "name": "IOS",
-        "sessionsCount": "260"
+        "sessionsCount": "246"
       }
     ]
   },
@@ -695,7 +688,7 @@
     "information": [
       {
         "name": "United States",
-        "sessionsCount": "229"
+        "sessionsCount": "214"
       },
       {
         "name": "Canada",
@@ -710,15 +703,15 @@
         "sessionsCount": "3"
       },
       {
-        "name": "United Kingdom",
+        "name": "France",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Thailand",
         "sessionsCount": "2"
       },
       {
         "name": "China",
-        "sessionsCount": "2"
-      },
-      {
-        "name": "France",
         "sessionsCount": "2"
       },
       {
@@ -730,7 +723,7 @@
         "sessionsCount": "1"
       },
       {
-        "name": "Thailand",
+        "name": "United Kingdom",
         "sessionsCount": "1"
       }
     ]
@@ -740,35 +733,35 @@
     "information": [
       {
         "name": "Home",
-        "sessionsCount": "232"
+        "sessionsCount": "215"
       },
       {
         "name": "Newspaper Detail",
-        "sessionsCount": "207"
+        "sessionsCount": "193"
       },
       {
         "name": "Favorites",
-        "sessionsCount": "145"
+        "sessionsCount": "134"
       },
       {
         "name": "Gallery",
-        "sessionsCount": "45"
+        "sessionsCount": "40"
       },
       {
         "name": "Search",
-        "sessionsCount": "30"
+        "sessionsCount": "29"
       },
       {
         "name": "UIViewController",
-        "sessionsCount": "11"
+        "sessionsCount": "13"
       },
       {
         "name": "Onboarding",
-        "sessionsCount": "10"
+        "sessionsCount": "9"
       },
       {
         "name": "Profile",
-        "sessionsCount": "</pre>
+        "sessionsCount": "5</pre>
       </div>
       <div class="platform-row" style="border-left:3px solid #3ddc84">
         <div class="platform-header">
@@ -785,7 +778,7 @@
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
-              <div class="metric-value">9.5</div>
+              <div class="metric-value">9.0</div>
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
@@ -800,10 +793,10 @@
     "information": [
       {
         "sessionsCount": "42",
-        "sessionsWithMetricPercentage": 54.76,
-        "sessionsWithoutMetricPercentage": 45.24,
-        "screensViews": "51",
-        "subTotal": "350"
+        "sessionsWithMetricPercentage": 52.38,
+        "sessionsWithoutMetricPercentage": 47.62,
+        "screensViews": "49",
+        "subTotal": "338"
       }
     ]
   },
@@ -838,7 +831,7 @@
         "totalSessionCount": "42",
         "totalBotSessionCount": "0",
         "distinctUserCount": "37",
-        "screensPerSessionPercentage": 9.523809523809524
+        "screensPerSessionPercentage": 9.047619047619047
       }
     ]
   },
@@ -846,8 +839,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "551",
-        "activeTime": "406"
+        "totalTime": "554",
+        "activeTime": "375"
       }
     ]
   },
@@ -878,26 +871,22 @@
     "information": [
       {
         "name": "United States",
-        "sessionsCount": "25"
+        "sessionsCount": "26"
       },
       {
         "name": "Netherlands",
         "sessionsCount": "3"
       },
       {
-        "name": "Colombia",
-        "sessionsCount": "2"
-      },
-      {
         "name": "United Kingdom",
         "sessionsCount": "2"
       },
       {
-        "name": "India",
+        "name": "Turkey",
         "sessionsCount": "2"
       },
       {
-        "name": "Turkey",
+        "name": "India",
         "sessionsCount": "2"
       },
       {
@@ -913,7 +902,11 @@
         "sessionsCount": "1"
       },
       {
-        "name": "Cyprus",
+        "name": "Nigeria",
+        "sessionsCount": "1"
+      },
+      {
+        "name": "Colombia",
         "sessionsCount": "1"
       }
     ]
@@ -939,7 +932,7 @@
       },
       {
         "name": "Gallery",
-        "sessionsCount": "14"
+        "sessionsCount": "13"
       },
       {
         "name": "Onboarding",
@@ -950,7 +943,7 @@
         "sessionsCount": "3"
       },
       {
-        "name": "Profil</pre>
+        "name": "Profi</pre>
       </div>
       <div class="platform-row" style="border-left:3px solid #f59e0b">
         <div class="platform-header">
@@ -959,11 +952,11 @@
         </div>
         <div class="metrics">
           <div class="metric">
-              <div class="metric-value">3,030</div>
+              <div class="metric-value">2,897</div>
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">3,194</div>
+              <div class="metric-value">3,073</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
@@ -975,17 +968,17 @@
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
-        <div class="device-row"><span class="device-pill">📱 Mobile <strong>1,033</strong> <span class="device-pct">(34.1%)</span></span><span class="device-pill">⬛ Tablet <strong>192</strong> <span class="device-pct">(6.3%)</span></span><span class="device-pill">🖥 PC <strong>1,804</strong> <span class="device-pct">(59.5%)</span></span></div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>1,002</strong> <span class="device-pct">(34.6%)</span></span><span class="device-pill">⬛ Tablet <strong>188</strong> <span class="device-pct">(6.5%)</span></span><span class="device-pill">🖥 PC <strong>1,706</strong> <span class="device-pct">(58.9%)</span></span></div>
         <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
   {
     "metricName": "DeadClickCount",
     "information": [
       {
-        "sessionsCount": "2956",
-        "sessionsWithMetricPercentage": 12.55,
-        "sessionsWithoutMetricPercentage": 87.45,
-        "pagesViews": "643",
-        "subTotal": "1233"
+        "sessionsCount": "2896",
+        "sessionsWithMetricPercentage": 12.57,
+        "sessionsWithoutMetricPercentage": 87.43,
+        "pagesViews": "620",
+        "subTotal": "1188"
       }
     ]
   },
@@ -993,7 +986,7 @@
     "metricName": "ExcessiveScroll",
     "information": [
       {
-        "sessionsCount": "2956",
+        "sessionsCount": "2896",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "pagesViews": "0",
@@ -1005,9 +998,9 @@
     "metricName": "RageClickCount",
     "information": [
       {
-        "sessionsCount": "2956",
-        "sessionsWithMetricPercentage": 0.2,
-        "sessionsWithoutMetricPercentage": 99.8,
+        "sessionsCount": "2896",
+        "sessionsWithMetricPercentage": 0.21,
+        "sessionsWithoutMetricPercentage": 99.79,
         "pagesViews": "7",
         "subTotal": "37"
       }
@@ -1017,11 +1010,11 @@
     "metricName": "QuickbackClick",
     "information": [
       {
-        "sessionsCount": "2956",
-        "sessionsWithMetricPercentage": 16.47,
-        "sessionsWithoutMetricPercentage": 83.53,
-        "pagesViews": "2509",
-        "subTotal": "2509"
+        "sessionsCount": "2896",
+        "sessionsWithMetricPercentage": 16.54,
+        "sessionsWithoutMetricPercentage": 83.46000000000001,
+        "pagesViews": "2424",
+        "subTotal": "2424"
       }
     ]
   },
@@ -1029,11 +1022,11 @@
     "metricName": "ScriptErrorCount",
     "information": [
       {
-        "sessionsCount": "2956",
-        "sessionsWithMetricPercentage": 0.24,
-        "sessionsWithoutMetricPercentage": 99.76,
-        "pagesViews": "8",
-        "subTotal": "14"
+        "sessionsCount": "2896",
+        "sessionsWithMetricPercentage": 0.28,
+        "sessionsWithoutMetricPercentage": 99.72,
+        "pagesViews": "10",
+        "subTotal": "17"
       }
     ]
   },
@@ -1041,7 +1034,7 @@
     "metricName": "ErrorClickCount",
     "information": [
       {
-        "sessionsCount": "2956",
+        "sessionsCount": "2896",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "pagesViews": "0",
@@ -1053,7 +1046,7 @@
     "metricName": "ScrollDepth",
     "information": [
       {
-        "averageScrollDepth": 55.91
+        "averageScrollDepth": 56.02
       }
     ]
   },
@@ -1061,10 +1054,10 @@
     "metricName": "Traffic",
     "information": [
       {
-        "totalSessionCount": "3030",
-        "totalBotSessionCount": "328",
-        "distinctUserCount": "3194",
-        "pagesPerSessionPercentage": 4.754263349175287
+        "totalSessionCount": "2897",
+        "totalBotSessionCount": "331",
+        "distinctUserCount": "3073",
+        "pagesPerSessionPercentage": 4.782192575406032
       }
     ]
   },
@@ -1073,7 +1066,7 @@
     "information": [
       {
         "totalTime": "245",
-        "activeTime": "110"
+        "activeTime": "112"
       }
     ]
   },
@@ -1082,53 +1075,49 @@
     "information": [
       {
         "name": "Chrome",
-        "sessionsCount": "1088"
+        "sessionsCount": "1084"
       },
       {
         "name": "MobileSafari",
-        "sessionsCount": "439"
+        "sessionsCount": "433"
       },
       {
         "name": "Opera",
         "sessionsCount": "311"
       },
       {
-        "name": "Firefox",
-        "sessionsCount": "253"
-      },
-      {
         "name": "Edge",
-        "sessionsCount": "243"
-      },
-      {
-        "name": "SamsungInternet",
-        "sessionsCount": "232"
+        "sessionsCount": "238"
       },
       {
         "name": "ChromeMobile",
-        "sessionsCount": "164"
+        "sessionsCount": "196"
+      },
+      {
+        "name": "SamsungInternet",
+        "sessionsCount": "172"
+      },
+      {
+        "name": "Firefox",
+        "sessionsCount": "171"
       },
       {
         "name": "FacebookApp",
-        "sessionsCount": "148"
+        "sessionsCount": "149"
       },
       {
         "name": "Safari",
-        "sessionsCount": "117"
+        "sessionsCount": "111"
       },
       {
         "name": "GoogleApp",
-        "sessionsCount": "16"
+        "sessionsCount": "17"
       }
     ]
   },
   {
-    "metricName": "Device",
-    "i</pre>
+    "metricName": "</pre>
       </div>
-      
-      <div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Apple is generating reports (can take up to 72h for a new request). Data will appear on the next dashboard run once ready.</div></div>
-      
     </div>
   </div>
 </div>
@@ -1136,6 +1125,7 @@
   <div class="client-kpi-bar" style="border-top:3px solid #8b5cf6">
     <div class="kpi"><div class="kpi-val">887</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">834</div><div class="kpi-lbl">Users</div></div>
   </div>
+  
   
     <div class="charts-row">
       <div class="chart-card">
@@ -1165,11 +1155,11 @@
         </div>
         <div class="metrics">
           <div class="metric">
-              <div class="metric-value">756</div>
+              <div class="metric-value">761</div>
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">710</div>
+              <div class="metric-value">715</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
@@ -1177,21 +1167,21 @@
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
-              <div class="metric-value">7.3m</div>
+              <div class="metric-value">7.4m</div>
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
-        <div class="device-row"><span class="device-pill">📱 Mobile <strong>727</strong> <span class="device-pct">(96.2%)</span></span><span class="device-pill">⬛ Tablet <strong>29</strong> <span class="device-pct">(3.8%)</span></span></div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>734</strong> <span class="device-pct">(96.5%)</span></span><span class="device-pill">⬛ Tablet <strong>27</strong> <span class="device-pct">(3.5%)</span></span></div>
         <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
   {
     "metricName": "DeadTapCount",
     "information": [
       {
-        "sessionsCount": "756",
-        "sessionsWithMetricPercentage": 10.19,
-        "sessionsWithoutMetricPercentage": 89.81,
-        "screensViews": "77",
-        "subTotal": "136"
+        "sessionsCount": "761",
+        "sessionsWithMetricPercentage": 9.99,
+        "sessionsWithoutMetricPercentage": 90.01,
+        "screensViews": "76",
+        "subTotal": "134"
       }
     ]
   },
@@ -1199,7 +1189,7 @@
     "metricName": "RageTapCount",
     "information": [
       {
-        "sessionsCount": "756",
+        "sessionsCount": "761",
         "sessionsWithMetricPercentage": 0.26,
         "sessionsWithoutMetricPercentage": 99.74,
         "screensViews": "2",
@@ -1211,7 +1201,7 @@
     "metricName": "ApplicationErrorCount",
     "information": [
       {
-        "sessionsCount": "756",
+        "sessionsCount": "761",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "screensViews": "0",
@@ -1223,10 +1213,10 @@
     "metricName": "Traffic",
     "information": [
       {
-        "totalSessionCount": "756",
+        "totalSessionCount": "761",
         "totalBotSessionCount": "0",
-        "distinctUserCount": "710",
-        "screensPerSessionPercentage": 1.1099744245524297
+        "distinctUserCount": "715",
+        "screensPerSessionPercentage": 1.1177215189873417
       }
     ]
   },
@@ -1234,8 +1224,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "441",
-        "activeTime": "441"
+        "totalTime": "444",
+        "activeTime": "444"
       }
     ]
   },
@@ -1244,11 +1234,11 @@
     "information": [
       {
         "name": "Mobile",
-        "sessionsCount": "727"
+        "sessionsCount": "734"
       },
       {
         "name": "Tablet",
-        "sessionsCount": "29"
+        "sessionsCount": "27"
       }
     ]
   },
@@ -1257,7 +1247,7 @@
     "information": [
       {
         "name": "IOS",
-        "sessionsCount": "756"
+        "sessionsCount": "761"
       }
     ]
   },
@@ -1266,7 +1256,7 @@
     "information": [
       {
         "name": "United States",
-        "sessionsCount": "685"
+        "sessionsCount": "689"
       },
       {
         "name": "Canada",
@@ -1293,15 +1283,15 @@
         "sessionsCount": "3"
       },
       {
-        "name": "Tanzania, United Republic of",
-        "sessionsCount": "2"
-      },
-      {
         "name": "Spain",
         "sessionsCount": "2"
       },
       {
         "name": "France",
+        "sessionsCount": "2"
+      },
+      {
+        "name": "Tanzania, United Republic of",
         "sessionsCount": "2"
       }
     ]
@@ -1311,15 +1301,19 @@
     "information": [
       {
         "name": "UIViewController",
-        "sessionsCount": "756"
+        "sessionsCount": "761"
+      },
+      {
+        "name": "Gift Purchase Successful",
+        "sessionsCount": "3"
       },
       {
         "name": "MFMessageComposeViewController",
         "sessionsCount": "3"
       },
       {
-        "name": "Gift Purchase Successful",
-        "sessionsCount": "2"
+        "name": "Error",
+        "sessionsCount": "1"
       },
       {
         "name": "Restore Purchases Error",
@@ -1340,11 +1334,11 @@
         </div>
         <div class="metrics">
           <div class="metric">
-              <div class="metric-value">131</div>
+              <div class="metric-value">126</div>
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">124</div>
+              <div class="metric-value">119</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
@@ -1352,21 +1346,21 @@
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
-              <div class="metric-value">10.1m</div>
+              <div class="metric-value">10.2m</div>
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
-        <div class="device-row"><span class="device-pill">📱 Mobile <strong>127</strong> <span class="device-pct">(96.9%)</span></span><span class="device-pill">⬛ Tablet <strong>4</strong> <span class="device-pct">(3.1%)</span></span></div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>122</strong> <span class="device-pct">(96.8%)</span></span><span class="device-pill">⬛ Tablet <strong>4</strong> <span class="device-pct">(3.2%)</span></span></div>
         <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
   {
     "metricName": "DeadTapCount",
     "information": [
       {
-        "sessionsCount": "131",
-        "sessionsWithMetricPercentage": 24.43,
-        "sessionsWithoutMetricPercentage": 75.57,
+        "sessionsCount": "126",
+        "sessionsWithMetricPercentage": 25.4,
+        "sessionsWithoutMetricPercentage": 74.6,
         "screensViews": "34",
-        "subTotal": "62"
+        "subTotal": "61"
       }
     ]
   },
@@ -1374,7 +1368,7 @@
     "metricName": "RageTapCount",
     "information": [
       {
-        "sessionsCount": "131",
+        "sessionsCount": "126",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "screensViews": "0",
@@ -1386,7 +1380,7 @@
     "metricName": "ApplicationErrorCount",
     "information": [
       {
-        "sessionsCount": "131",
+        "sessionsCount": "126",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "screensViews": "0",
@@ -1398,10 +1392,10 @@
     "metricName": "Traffic",
     "information": [
       {
-        "totalSessionCount": "131",
+        "totalSessionCount": "126",
         "totalBotSessionCount": "0",
-        "distinctUserCount": "124",
-        "screensPerSessionPercentage": 1.0298507462686568
+        "distinctUserCount": "119",
+        "screensPerSessionPercentage": 1.03125
       }
     ]
   },
@@ -1409,7 +1403,7 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "606",
+        "totalTime": "614",
         "activeTime": "201"
       }
     ]
@@ -1419,7 +1413,7 @@
     "information": [
       {
         "name": "Mobile",
-        "sessionsCount": "127"
+        "sessionsCount": "122"
       },
       {
         "name": "Tablet",
@@ -1432,7 +1426,7 @@
     "information": [
       {
         "name": "Android",
-        "sessionsCount": "131"
+        "sessionsCount": "126"
       }
     ]
   },
@@ -1441,11 +1435,11 @@
     "information": [
       {
         "name": "United States",
-        "sessionsCount": "102"
+        "sessionsCount": "98"
       },
       {
         "name": "Canada",
-        "sessionsCount": "12"
+        "sessionsCount": "11"
       },
       {
         "name": "United Kingdom",
@@ -1486,15 +1480,12 @@
     "information": [
       {
         "name": "MainActivity",
-        "sessionsCount": "131"
+        "sessionsCount": "126"
       }
     ]
   }
 ]</pre>
       </div>
-      
-      
-      
     </div>
   </div>
 </div>
@@ -1502,6 +1493,7 @@
   <div class="client-kpi-bar" style="border-top:3px solid #f59e0b">
     <div class="kpi"><div class="kpi-val">23</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">19</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">⏳</div><div class="kpi-lbl">iOS (initializing)</div></div><div class="kpi"><div class="kpi-val">8</div><div class="kpi-lbl">Android Downloads</div></div>
   </div>
+  <div class="highlights-row"><div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Apple is generating reports (can take up to 72h for a new request). Data will appear on the next dashboard run once ready.</div></div><div class="rc-block" style="background:rgba(61,220,132,0.05);border-color:rgba(61,220,132,0.15)"><span class="rc-title" style="color:#3ddc84">🤖 Google Play (Android)</span><div class="rc-metrics"><div class="rc-metric" style="border-color:rgba(61,220,132,0.1)"><div class="rc-value" style="color:#3ddc84">8</div><div class="rc-label">Downloads</div></div></div></div></div>
   
     <div class="charts-row">
       <div class="chart-card">
@@ -1511,8 +1503,7 @@
       </div>
       <div class="chart-card">
         <div class="chart-title">Daily Downloads (iOS &amp; Android)</div>
-        <div class="chart-no-data">iOS download trend — initializing first report</div>
-        <canvas id="chart-tab-p3-installs" ></canvas>
+        <canvas id="chart-tab-p3-installs"></canvas>
       </div>
     </div>
   <div class="grid">
@@ -1799,16 +1790,14 @@
   }
 ]</pre>
       </div>
-      
-      <div class="rc-block"><span class="rc-title">🍎 App Store</span><div style="color:#94a3b8;font-size:0.8em;padding:4px 0">Apple is generating reports (can take up to 72h for a new request). Data will appear on the next dashboard run once ready.</div></div>
-      <div class="rc-block" style="background:rgba(61,220,132,0.05);border-color:rgba(61,220,132,0.15)"><span class="rc-title" style="color:#3ddc84">🤖 Google Play (Android)</span><div class="rc-metrics"><div class="rc-metric" style="border-color:rgba(61,220,132,0.1)"><div class="rc-value" style="color:#3ddc84">8</div><div class="rc-label">Downloads</div></div></div></div>
     </div>
   </div>
 </div>
 <div id="tab-self-speak" class="tab-pane hidden">
   <div class="client-kpi-bar" style="border-top:3px solid #ef4444">
-    <div class="kpi"><div class="kpi-val">25</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">20</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">$68</div><div class="kpi-lbl">MRR</div></div><div class="kpi"><div class="kpi-val">$51.00</div><div class="kpi-lbl">Revenue</div></div><div class="kpi"><div class="kpi-val">19</div><div class="kpi-lbl">Subscribers</div></div><div class="kpi"><div class="kpi-val">2</div><div class="kpi-lbl">Trials</div></div>
+    <div class="kpi"><div class="kpi-val">23</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">18</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">$68</div><div class="kpi-lbl">MRR</div></div><div class="kpi"><div class="kpi-val">$51.00</div><div class="kpi-lbl">Revenue</div></div><div class="kpi"><div class="kpi-val">19</div><div class="kpi-lbl">Subscribers</div></div><div class="kpi"><div class="kpi-val">2</div><div class="kpi-lbl">Trials</div></div>
   </div>
+  <div class="highlights-row"><div class="rc-block"><span class="rc-title">💰 Revenue (last 30 days)</span><div class="rc-metrics"><div class="rc-metric"><div class="rc-value">$68.00</div><div class="rc-label">MRR</div></div><div class="rc-metric"><div class="rc-value">$51.00</div><div class="rc-label">Revenue</div></div><div class="rc-metric"><div class="rc-value">19</div><div class="rc-label">Subscribers</div></div><div class="rc-metric"><div class="rc-value">2</div><div class="rc-label">Trials</div></div></div></div></div>
   
     <div class="charts-row">
       <div class="chart-card">
@@ -1831,9 +1820,9 @@
       
           <div class="combined-total">
             <span class="combined-label">Combined</span>
-            <span class="combined-stat">25 sessions</span>
+            <span class="combined-stat">23 sessions</span>
             <span class="combined-sep">&middot;</span>
-            <span class="combined-stat">20 users</span>
+            <span class="combined-stat">18 users</span>
           </div>
       
       <div class="platform-row" style="border-left:3px solid #007aff">
@@ -1843,31 +1832,31 @@
         </div>
         <div class="metrics">
           <div class="metric">
-              <div class="metric-value">7</div>
+              <div class="metric-value">6</div>
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">7</div>
+              <div class="metric-value">6</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
-              <div class="metric-value">1.4</div>
+              <div class="metric-value">1.3</div>
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
-              <div class="metric-value">4.8m</div>
+              <div class="metric-value">5.2m</div>
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
-        <div class="device-row"><span class="device-pill">📱 Mobile <strong>7</strong> <span class="device-pct">(100.0%)</span></span></div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>6</strong> <span class="device-pct">(100.0%)</span></span></div>
         <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
   {
     "metricName": "DeadTapCount",
     "information": [
       {
-        "sessionsCount": "7",
-        "sessionsWithMetricPercentage": 28.57,
-        "sessionsWithoutMetricPercentage": 71.43,
+        "sessionsCount": "6",
+        "sessionsWithMetricPercentage": 33.33,
+        "sessionsWithoutMetricPercentage": 66.67,
         "screensViews": "2",
         "subTotal": "5"
       }
@@ -1877,9 +1866,9 @@
     "metricName": "RageTapCount",
     "information": [
       {
-        "sessionsCount": "7",
-        "sessionsWithMetricPercentage": 14.29,
-        "sessionsWithoutMetricPercentage": 85.71000000000001,
+        "sessionsCount": "6",
+        "sessionsWithMetricPercentage": 16.67,
+        "sessionsWithoutMetricPercentage": 83.33,
         "screensViews": "1",
         "subTotal": "1"
       }
@@ -1889,7 +1878,7 @@
     "metricName": "ApplicationErrorCount",
     "information": [
       {
-        "sessionsCount": "7",
+        "sessionsCount": "6",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "screensViews": "0",
@@ -1901,10 +1890,10 @@
     "metricName": "Traffic",
     "information": [
       {
-        "totalSessionCount": "7",
+        "totalSessionCount": "6",
         "totalBotSessionCount": "0",
-        "distinctUserCount": "7",
-        "screensPerSessionPercentage": 1.4285714285714286
+        "distinctUserCount": "6",
+        "screensPerSessionPercentage": 1.3333333333333333
       }
     ]
   },
@@ -1912,8 +1901,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "287",
-        "activeTime": "287"
+        "totalTime": "313",
+        "activeTime": "313"
       }
     ]
   },
@@ -1922,7 +1911,7 @@
     "information": [
       {
         "name": "Mobile",
-        "sessionsCount": "7"
+        "sessionsCount": "6"
       }
     ]
   },
@@ -1931,7 +1920,7 @@
     "information": [
       {
         "name": "IOS",
-        "sessionsCount": "7"
+        "sessionsCount": "6"
       }
     ]
   },
@@ -1943,11 +1932,11 @@
         "sessionsCount": "4"
       },
       {
-        "name": "India",
-        "sessionsCount": "2"
+        "name": "Australia",
+        "sessionsCount": "1"
       },
       {
-        "name": "Australia",
+        "name": "India",
         "sessionsCount": "1"
       }
     ]
@@ -1957,7 +1946,7 @@
     "information": [
       {
         "name": "UIViewController",
-        "sessionsCount": "7"
+        "sessionsCount": "6"
       },
       {
         "name": "Permission Denied",
@@ -1974,11 +1963,11 @@
         </div>
         <div class="metrics">
           <div class="metric">
-              <div class="metric-value">18</div>
+              <div class="metric-value">17</div>
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">13</div>
+              <div class="metric-value">12</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
@@ -1986,21 +1975,21 @@
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
-              <div class="metric-value">6.0m</div>
+              <div class="metric-value">6.2m</div>
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
-        <div class="device-row"><span class="device-pill">📱 Mobile <strong>18</strong> <span class="device-pct">(100.0%)</span></span></div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>17</strong> <span class="device-pct">(100.0%)</span></span></div>
         <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
   {
     "metricName": "DeadTapCount",
     "information": [
       {
-        "sessionsCount": "18",
-        "sessionsWithMetricPercentage": 72.22,
-        "sessionsWithoutMetricPercentage": 27.78,
-        "screensViews": "14",
-        "subTotal": "125"
+        "sessionsCount": "17",
+        "sessionsWithMetricPercentage": 70.59,
+        "sessionsWithoutMetricPercentage": 29.409999999999997,
+        "screensViews": "13",
+        "subTotal": "124"
       }
     ]
   },
@@ -2008,9 +1997,9 @@
     "metricName": "RageTapCount",
     "information": [
       {
-        "sessionsCount": "18",
-        "sessionsWithMetricPercentage": 5.56,
-        "sessionsWithoutMetricPercentage": 94.44,
+        "sessionsCount": "17",
+        "sessionsWithMetricPercentage": 5.88,
+        "sessionsWithoutMetricPercentage": 94.12,
         "screensViews": "1",
         "subTotal": "1"
       }
@@ -2020,7 +2009,7 @@
     "metricName": "ApplicationErrorCount",
     "information": [
       {
-        "sessionsCount": "18",
+        "sessionsCount": "17",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "screensViews": "0",
@@ -2032,10 +2021,10 @@
     "metricName": "Traffic",
     "information": [
       {
-        "totalSessionCount": "18",
+        "totalSessionCount": "17",
         "totalBotSessionCount": "0",
-        "distinctUserCount": "13",
-        "screensPerSessionPercentage": 1.5
+        "distinctUserCount": "12",
+        "screensPerSessionPercentage": 1.4705882352941178
       }
     ]
   },
@@ -2043,8 +2032,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "358",
-        "activeTime": "266"
+        "totalTime": "374",
+        "activeTime": "276"
       }
     ]
   },
@@ -2053,7 +2042,7 @@
     "information": [
       {
         "name": "Mobile",
-        "sessionsCount": "18"
+        "sessionsCount": "17"
       }
     ]
   },
@@ -2062,7 +2051,7 @@
     "information": [
       {
         "name": "Android",
-        "sessionsCount": "18"
+        "sessionsCount": "17"
       }
     ]
   },
@@ -2072,10 +2061,6 @@
       {
         "name": "United States",
         "sessionsCount": "17"
-      },
-      {
-        "name": "India",
-        "sessionsCount": "1"
       }
     ]
   },
@@ -2084,22 +2069,20 @@
     "information": [
       {
         "name": "MainActivity",
-        "sessionsCount": "18"
+        "sessionsCount": "17"
       }
     ]
   }
 ]</pre>
       </div>
-      <div class="rc-block"><span class="rc-title">💰 Revenue (last 30 days)</span><div class="rc-metrics"><div class="rc-metric"><div class="rc-value">$68.00</div><div class="rc-label">MRR</div></div><div class="rc-metric"><div class="rc-value">$51.00</div><div class="rc-label">Revenue</div></div><div class="rc-metric"><div class="rc-value">19</div><div class="rc-label">Subscribers</div></div><div class="rc-metric"><div class="rc-value">2</div><div class="rc-label">Trials</div></div></div></div>
-      
-      
     </div>
   </div>
 </div>
 <div id="tab-footsteps-with-jesus" class="tab-pane hidden">
   <div class="client-kpi-bar" style="border-top:3px solid #ec4899">
-    <div class="kpi"><div class="kpi-val">30</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">15</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">184</div><div class="kpi-lbl">Android Downloads</div></div>
+    <div class="kpi"><div class="kpi-val">28</div><div class="kpi-lbl">Sessions</div></div><div class="kpi"><div class="kpi-val">14</div><div class="kpi-lbl">Users</div></div><div class="kpi"><div class="kpi-val">184</div><div class="kpi-lbl">Android Downloads</div></div>
   </div>
+  <div class="highlights-row"><div class="rc-block" style="background:rgba(61,220,132,0.05);border-color:rgba(61,220,132,0.15)"><span class="rc-title" style="color:#3ddc84">🤖 Google Play (Android)</span><div class="rc-metrics"><div class="rc-metric" style="border-color:rgba(61,220,132,0.1)"><div class="rc-value" style="color:#3ddc84">184</div><div class="rc-label">Downloads</div></div></div></div></div>
   
     <div class="charts-row">
       <div class="chart-card">
@@ -2109,8 +2092,7 @@
       </div>
       <div class="chart-card">
         <div class="chart-title">Daily Downloads (iOS &amp; Android)</div>
-        
-        <canvas id="chart-tab-footsteps-with-jesus-installs" ></canvas>
+        <canvas id="chart-tab-footsteps-with-jesus-installs"></canvas>
       </div>
     </div>
   <div class="grid">
@@ -2122,9 +2104,9 @@
       
           <div class="combined-total">
             <span class="combined-label">Combined</span>
-            <span class="combined-stat">30 sessions</span>
+            <span class="combined-stat">28 sessions</span>
             <span class="combined-sep">&middot;</span>
-            <span class="combined-stat">15 users</span>
+            <span class="combined-stat">14 users</span>
           </div>
       
       <div class="platform-row" style="border-left:3px solid #007aff">
@@ -2134,7 +2116,7 @@
         </div>
         <div class="metrics">
           <div class="metric">
-              <div class="metric-value">18</div>
+              <div class="metric-value">17</div>
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
@@ -2142,25 +2124,25 @@
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
-              <div class="metric-value">3.8</div>
+              <div class="metric-value">3.9</div>
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
-              <div class="metric-value">13.4m</div>
+              <div class="metric-value">13.7m</div>
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
-        <div class="device-row"><span class="device-pill">📱 Mobile <strong>18</strong> <span class="device-pct">(100.0%)</span></span></div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>17</strong> <span class="device-pct">(100.0%)</span></span></div>
         <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
   {
     "metricName": "DeadTapCount",
     "information": [
       {
-        "sessionsCount": "18",
-        "sessionsWithMetricPercentage": 77.78,
-        "sessionsWithoutMetricPercentage": 22.22,
-        "screensViews": "28",
-        "subTotal": "152"
+        "sessionsCount": "17",
+        "sessionsWithMetricPercentage": 76.47,
+        "sessionsWithoutMetricPercentage": 23.53,
+        "screensViews": "26",
+        "subTotal": "144"
       }
     ]
   },
@@ -2168,11 +2150,11 @@
     "metricName": "RageTapCount",
     "information": [
       {
-        "sessionsCount": "18",
-        "sessionsWithMetricPercentage": 33.33,
-        "sessionsWithoutMetricPercentage": 66.67,
-        "screensViews": "6",
-        "subTotal": "12"
+        "sessionsCount": "17",
+        "sessionsWithMetricPercentage": 29.41,
+        "sessionsWithoutMetricPercentage": 70.59,
+        "screensViews": "5",
+        "subTotal": "11"
       }
     ]
   },
@@ -2180,7 +2162,7 @@
     "metricName": "ApplicationErrorCount",
     "information": [
       {
-        "sessionsCount": "18",
+        "sessionsCount": "17",
         "sessionsWithMetricPercentage": 0,
         "sessionsWithoutMetricPercentage": 100,
         "screensViews": "0",
@@ -2192,10 +2174,10 @@
     "metricName": "Traffic",
     "information": [
       {
-        "totalSessionCount": "18",
+        "totalSessionCount": "17",
         "totalBotSessionCount": "0",
         "distinctUserCount": "7",
-        "screensPerSessionPercentage": 3.7777777777777777
+        "screensPerSessionPercentage": 3.8823529411764706
       }
     ]
   },
@@ -2203,8 +2185,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "803",
-        "activeTime": "803"
+        "totalTime": "824",
+        "activeTime": "824"
       }
     ]
   },
@@ -2213,7 +2195,7 @@
     "information": [
       {
         "name": "Mobile",
-        "sessionsCount": "18"
+        "sessionsCount": "17"
       }
     ]
   },
@@ -2222,7 +2204,7 @@
     "information": [
       {
         "name": "IOS",
-        "sessionsCount": "18"
+        "sessionsCount": "17"
       }
     ]
   },
@@ -2231,7 +2213,7 @@
     "information": [
       {
         "name": "India",
-        "sessionsCount": "10"
+        "sessionsCount": "9"
       },
       {
         "name": "United States",
@@ -2244,7 +2226,7 @@
     "information": [
       {
         "name": "UIViewController",
-        "sessionsCount": "18"
+        "sessionsCount": "17"
       },
       {
         "name": "Error",
@@ -2265,33 +2247,33 @@
         </div>
         <div class="metrics">
           <div class="metric">
-              <div class="metric-value">12</div>
+              <div class="metric-value">11</div>
               <div class="metric-label">Sessions</div>
             </div>
           <div class="metric">
-              <div class="metric-value">8</div>
+              <div class="metric-value">7</div>
               <div class="metric-label">Users</div>
             </div>
           <div class="metric">
-              <div class="metric-value">1.8</div>
+              <div class="metric-value">1.6</div>
               <div class="metric-label">Screens</div>
             </div>
           <div class="metric">
-              <div class="metric-value">11.9m</div>
+              <div class="metric-value">12.1m</div>
               <div class="metric-label">Eng. Time</div>
             </div>
         </div>
-        <div class="device-row"><span class="device-pill">📱 Mobile <strong>12</strong> <span class="device-pct">(100.0%)</span></span></div>
+        <div class="device-row"><span class="device-pill">📱 Mobile <strong>11</strong> <span class="device-pct">(100.0%)</span></span></div>
         <div class="raw-toggle" onclick="toggleRaw(this)">▶ Show raw response</div><pre class="raw-data" style="display:none">[
   {
     "metricName": "DeadTapCount",
     "information": [
       {
-        "sessionsCount": "12",
-        "sessionsWithMetricPercentage": 83.33,
-        "sessionsWithoutMetricPercentage": 16.67,
-        "screensViews": "19",
-        "subTotal": "127"
+        "sessionsCount": "11",
+        "sessionsWithMetricPercentage": 90.91,
+        "sessionsWithoutMetricPercentage": 9.090000000000003,
+        "screensViews": "17",
+        "subTotal": "112"
       }
     ]
   },
@@ -2299,11 +2281,11 @@
     "metricName": "RageTapCount",
     "information": [
       {
-        "sessionsCount": "12",
-        "sessionsWithMetricPercentage": 8.33,
-        "sessionsWithoutMetricPercentage": 91.67,
-        "screensViews": "2",
-        "subTotal": "2"
+        "sessionsCount": "11",
+        "sessionsWithMetricPercentage": 9.09,
+        "sessionsWithoutMetricPercentage": 90.91,
+        "screensViews": "1",
+        "subTotal": "1"
       }
     ]
   },
@@ -2311,11 +2293,11 @@
     "metricName": "ApplicationErrorCount",
     "information": [
       {
-        "sessionsCount": "12",
-        "sessionsWithMetricPercentage": 8.33,
-        "sessionsWithoutMetricPercentage": 91.67,
-        "screensViews": "2",
-        "subTotal": "2"
+        "sessionsCount": "11",
+        "sessionsWithMetricPercentage": 0,
+        "sessionsWithoutMetricPercentage": 100,
+        "screensViews": "0",
+        "subTotal": "0"
       }
     ]
   },
@@ -2323,10 +2305,10 @@
     "metricName": "Traffic",
     "information": [
       {
-        "totalSessionCount": "12",
+        "totalSessionCount": "11",
         "totalBotSessionCount": "0",
-        "distinctUserCount": "8",
-        "screensPerSessionPercentage": 1.75
+        "distinctUserCount": "7",
+        "screensPerSessionPercentage": 1.6363636363636365
       }
     ]
   },
@@ -2334,8 +2316,8 @@
     "metricName": "EngagementTime",
     "information": [
       {
-        "totalTime": "717",
-        "activeTime": "310"
+        "totalTime": "728",
+        "activeTime": "285"
       }
     ]
   },
@@ -2344,7 +2326,7 @@
     "information": [
       {
         "name": "Mobile",
-        "sessionsCount": "12"
+        "sessionsCount": "11"
       }
     ]
   },
@@ -2353,7 +2335,7 @@
     "information": [
       {
         "name": "Android",
-        "sessionsCount": "12"
+        "sessionsCount": "11"
       }
     ]
   },
@@ -2362,7 +2344,7 @@
     "information": [
       {
         "name": "India",
-        "sessionsCount": "10"
+        "sessionsCount": "9"
       },
       {
         "name": "United States",
@@ -2375,15 +2357,12 @@
     "information": [
       {
         "name": "MainActivity",
-        "sessionsCount": "12"
+        "sessionsCount": "11"
       }
     ]
   }
 ]</pre>
       </div>
-      
-      
-      <div class="rc-block" style="background:rgba(61,220,132,0.05);border-color:rgba(61,220,132,0.15)"><span class="rc-title" style="color:#3ddc84">🤖 Google Play (Android)</span><div class="rc-metrics"><div class="rc-metric" style="border-color:rgba(61,220,132,0.1)"><div class="rc-value" style="color:#3ddc84">184</div><div class="rc-label">Downloads</div></div></div></div>
     </div>
   </div>
 </div>
@@ -2391,7 +2370,7 @@
 <footer>3Advance Analytics &middot; Auto-updated weekly via GitHub Actions</footer>
 
 <script>
-const CD = {"Shift": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [158, 163, 209, 233]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [109, 101, 120, 147]}, "installs": {"dates": [], "values": []}, "android_installs": {"dates": [], "values": []}, "mrr": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [371.0, 411.0, 435.0, 447.0]}, "subscribers": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [46, 49, 51, 52]}, "color": "#3b82f6"}, "Today's Front Pages": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [3628, 3393, 3357, 3332]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [3603, 3537, 3348, 3458]}, "installs": {"dates": [], "values": []}, "android_installs": {"dates": [], "values": []}, "mrr": {"dates": [], "values": []}, "subscribers": {"dates": [], "values": []}, "color": "#10b981"}, "Quiet Collection": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [1016, 101, 953, 887]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [947, 99, 904, 834]}, "installs": {"dates": [], "values": []}, "android_installs": {"dates": [], "values": []}, "mrr": {"dates": [], "values": []}, "subscribers": {"dates": [], "values": []}, "color": "#8b5cf6"}, "P3": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [10, 11, 16, 23]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [10, 10, 15, 19]}, "installs": {"dates": [], "values": []}, "android_installs": {"dates": ["2026-03-01", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-07", "2026-03-08", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17"], "values": [0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 2, 0, 0, 2, 0, 0, 0]}, "mrr": {"dates": [], "values": []}, "subscribers": {"dates": [], "values": []}, "color": "#f59e0b"}, "Self Speak": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [11, 16, 27, 25]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [11, 10, 25, 20]}, "installs": {"dates": [], "values": []}, "android_installs": {"dates": [], "values": []}, "mrr": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [61.0, 68.0, 68.0, 68.0]}, "subscribers": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [18, 19, 19, 19]}, "color": "#ef4444"}, "Footsteps with Jesus": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [3, 7, 29, 30]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [2, 7, 15, 15]}, "installs": {"dates": [], "values": []}, "android_installs": {"dates": ["2026-03-01", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-07", "2026-03-08", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17"], "values": [18, 10, 0, 18, 4, 10, 6, 12, 10, 14, 10, 6, 14, 22, 14, 14, 2]}, "mrr": {"dates": [], "values": []}, "subscribers": {"dates": [], "values": []}, "color": "#ec4899"}, "_overview": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [4826, 3691, 4591, 4530]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [4682, 3764, 4427, 4493]}}};
+const CD = {"Shift": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [158, 163, 209, 233]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [109, 101, 120, 144]}, "installs": {"dates": [], "values": []}, "android_installs": {"dates": [], "values": []}, "mrr": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [371.0, 411.0, 435.0, 447.0]}, "subscribers": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [46, 49, 51, 52]}, "color": "#3b82f6"}, "Today's Front Pages": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [3628, 3393, 3357, 3185]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [3603, 3537, 3348, 3321]}, "installs": {"dates": [], "values": []}, "android_installs": {"dates": [], "values": []}, "mrr": {"dates": [], "values": []}, "subscribers": {"dates": [], "values": []}, "color": "#10b981"}, "Quiet Collection": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [1016, 101, 953, 887]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [947, 99, 904, 834]}, "installs": {"dates": [], "values": []}, "android_installs": {"dates": [], "values": []}, "mrr": {"dates": [], "values": []}, "subscribers": {"dates": [], "values": []}, "color": "#8b5cf6"}, "P3": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [10, 11, 16, 23]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [10, 10, 15, 19]}, "installs": {"dates": [], "values": []}, "android_installs": {"dates": ["2026-03-01", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-07", "2026-03-08", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17"], "values": [0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 2, 0, 0, 2, 0, 0, 0]}, "mrr": {"dates": [], "values": []}, "subscribers": {"dates": [], "values": []}, "color": "#f59e0b"}, "Self Speak": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [11, 16, 27, 23]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [11, 10, 25, 18]}, "installs": {"dates": [], "values": []}, "android_installs": {"dates": [], "values": []}, "mrr": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [61.0, 68.0, 68.0, 68.0]}, "subscribers": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [18, 19, 19, 19]}, "color": "#ef4444"}, "Footsteps with Jesus": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [3, 7, 29, 28]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [2, 7, 15, 14]}, "installs": {"dates": [], "values": []}, "android_installs": {"dates": ["2026-03-01", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-07", "2026-03-08", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17"], "values": [18, 10, 0, 18, 4, 10, 6, 12, 10, 14, 10, 6, 14, 22, 14, 14, 2]}, "mrr": {"dates": [], "values": []}, "subscribers": {"dates": [], "values": []}, "color": "#ec4899"}, "_overview": {"sessions": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [4826, 3691, 4591, 4379]}, "users": {"dates": ["2026-03-19", "2026-03-23", "2026-03-24", "2026-03-25"], "values": [4682, 3764, 4427, 4350]}}};
 
 function hexToRgb(hex) {
   const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
