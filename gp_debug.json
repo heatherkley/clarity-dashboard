@@ -14,8 +14,9 @@
     },
     {
       "group": "P3",
-      "status": "no_data",
-      "error": "403 forbidden on pubsite_prod_8310915490843818744"
+      "status": "ok",
+      "installs": 0,
+      "days": 8
     },
     {
       "group": "Quiet Collection",
