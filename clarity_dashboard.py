@@ -776,6 +776,45 @@ def googleplay_block(gp_data):
     )
 
 
+# ── Amplitude Fetching ─────────────────────────────────────────────────────────
+
+def fetch_amplitude_registrations(api_key, secret_key, mentor_screen, mentee_screen, days=30):
+    """Fetch daily new registrations from Amplitude via events/segmentation API."""
+    import base64
+    auth = base64.b64encode(f"{api_key}:{secret_key}".encode()).decode()
+    headers = {"Authorization": f"Basic {auth}"}
+    end_dt    = datetime.now() - timedelta(days=1)
+    start_dt  = end_dt - timedelta(days=days)
+    start_str = start_dt.strftime("%Y%m%d")
+    end_str   = end_dt.strftime("%Y%m%d")
+    daily = {}
+    for screen in [s for s in [mentor_screen, mentee_screen] if s]:
+        e_param = json.dumps([{
+            "event_type": "AppScreenViewed",
+            "filters": [{"subprop_key": "ScreenName", "subprop_op": "is",
+                         "subprop_value": [screen], "subprop_type": "event"}]
+        }])
+        params = {"e": e_param, "start": start_str, "end": end_str, "m": "uniques", "i": 1}
+        try:
+            r = requests.get("https://amplitude.com/api/2/events/segmentation",
+                             headers=headers, params=params, timeout=30)
+            if r.status_code == 200:
+                data   = r.json().get("data", {})
+                x_vals = data.get("xValues", [])
+                series = data.get("series", [[]])
+                vals   = series[0] if series else []
+                for i, date_str in enumerate(x_vals):
+                    date_key = str(date_str)[:10]
+                    v = vals[i] if i < len(vals) else 0
+                    daily[date_key] = daily.get(date_key, 0) + (int(v) if v else 0)
+            else:
+                print(f"    \u26a0\ufe0f  Amplitude HTTP {r.status_code}: {r.text[:200]}")
+        except Exception as e:
+            print(f"    \u26a0\ufe0f  Amplitude error: {e}")
+    total = sum(daily.values())
+    return {"daily_registrations": dict(sorted(daily.items())), "total_registrations": total}
+
+
 # ── HTML Helpers ────────────────────────────────────────────────────────────────
 
 def platform_badge(platform):
@@ -862,11 +901,12 @@ def platform_row(platform, data, raw):
 
 # ── HTML Generation ─────────────────────────────────────────────────────────────
 
-def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end_dt, history=None, gp_by_group=None):
+def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end_dt, history=None, gp_by_group=None, amp_by_group=None):
     date_range = f"{start_dt.strftime('%b %d')} \u2013 {end_dt.strftime('%b %d, %Y')}"
     generated  = datetime.now().strftime("%b %d, %Y at %I:%M %p")
     history      = history or {}
     gp_by_group  = gp_by_group or {}
+    amp_by_group = amp_by_group or {}
 
     GROUP_ORDER = ["Shift", "Today's Front Pages", "Quiet Collection",
                    "P3", "Self Speak", "Footsteps with Jesus"]
@@ -916,6 +956,11 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         gp_di      = gp_g.get("daily_installs") or {}
         gp_dates   = sorted(gp_di.keys())
 
+        # Amplitude daily registrations
+        amp_g      = amp_by_group.get(gname) or {}
+        amp_di     = amp_g.get("daily_registrations") or {}
+        amp_dates  = sorted(amp_di.keys())
+
         # RevenueCat history
         g_rc       = rc_history.get(gname, {})
         rc_dates   = sorted(g_rc.keys())
@@ -927,6 +972,7 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
             "android_installs": {"dates": gp_dates,    "values": [int(gp_di[d])                    for d in gp_dates]},
             "mrr":              {"dates": rc_dates,    "values": [g_rc[d].get("mrr",         0)   for d in rc_dates]},
             "subscribers":      {"dates": rc_dates,    "values": [g_rc[d].get("subscribers", 0)   for d in rc_dates]},
+            "registrations":    {"dates": amp_dates,   "values": [int(amp_di[d])                   for d in amp_dates]},
             "color":            gcolor(gname),
         }
 
@@ -1026,6 +1072,7 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         has_installs      = bool(gcd.get("installs",         {}).get("dates"))
         has_android_inst  = bool(gcd.get("android_installs", {}).get("dates"))
         has_rc_trend      = bool(gcd.get("mrr",              {}).get("dates"))
+        has_amp_reg       = bool(gcd.get("registrations",    {}).get("dates"))
 
         tabs_nav_html += f'<button class="tab-btn" id="btn-{t_id}" onclick="showTab(\'{t_id}\')">{gname}</button>\n'
 
@@ -1079,6 +1126,12 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         <div class="chart-title">MRR &amp; Subscribers Over Time</div>
         {rc_note}
         <canvas id="chart-{t_id}-revenue" {"style='display:none'" if not has_rc_trend else ""}></canvas>
+      </div>"""
+        if has_amp_reg:
+            charts_row += f"""
+      <div class="chart-card">
+        <div class="chart-title">Daily New Registrations</div>
+        <canvas id="chart-{t_id}-registrations"></canvas>
       </div>"""
         charts_row += "\n    </div>"
 
@@ -1426,6 +1479,15 @@ function initCharts() {{
       makeLineChart(revId, gd.mrr.dates, [
         {{ label:'MRR ($)',       values: gd.mrr.values,         color:'#10b981' }},
         {{ label:'Subscribers',   values: (gd.subscribers||{{values:[]}}).values, color:'#8b5cf6' }},
+      ]);
+    }}
+    // Amplitude daily registrations
+    const regId = `chart-${{tabId}}-registrations`;
+    if (gd.registrations && gd.registrations.dates.length) {{
+      const el = document.getElementById(regId);
+      if (el) el.style.display = '';
+      makeLineChart(regId, gd.registrations.dates, [
+        {{ label:'New Registrations', values: gd.registrations.values, color:'#f59e0b' }},
       ]);
     }}
     // Unhide sessions canvas if we have data
@@ -1836,11 +1898,38 @@ def main():
         json.dump(gp_debug, _f, indent=2)
     print(f"🔍 GP debug → gp_debug.json")
 
+    # ── Amplitude ────────────────────────────────────────────────────────────────
+    amp_by_group = {}
+    amp_config   = config.get("amplitude", {})
+    amp_apps     = amp_config.get("apps", [])
+    if amp_apps:
+        print(f"\n📈 Fetching Amplitude data ({len(amp_apps)} apps)...\n")
+        for app in amp_apps:
+            group_name    = app.get("group", "")
+            amp_key       = app.get("api_key", "").strip()
+            amp_secret    = app.get("secret_key", "").strip()
+            if not amp_secret:
+                env_name   = "AMPLITUDE_SECRET_" + re.sub(r"[^A-Z0-9]+", "_", group_name.upper()).strip("_")
+                amp_secret = os.environ.get(env_name, "").strip()
+            mentor_screen = app.get("mentor_screen", "OnboardingVideoPlayerScreen")
+            mentee_screen = app.get("mentee_screen", "OnboardingScreen")
+            print(f"  \u2192 {group_name} ...", end=" ", flush=True)
+            if not amp_key or not amp_secret:
+                print("\u23ed  skipped (no credentials)")
+                continue
+            amp_data = fetch_amplitude_registrations(amp_key, amp_secret, mentor_screen, mentee_screen)
+            total = amp_data.get("total_registrations", 0)
+            days_count = len(amp_data.get("daily_registrations", {}))
+            print(f"\u2705 {total:,} total registrations ({days_count} days)")
+            amp_by_group[group_name] = amp_data
+    else:
+        print("\n📈 Amplitude: skipped (no apps configured)")
+
     # Save accumulated history so next run builds on it
     _history_save(history)
     print(f"📅 History saved → {HISTORY_FILE}")
 
-    html = render_html(groups, rc_by_group, asc_by_group, len(projects), start_dt, end_dt, history=history, gp_by_group=gp_by_group)
+    html = render_html(groups, rc_by_group, asc_by_group, len(projects), start_dt, end_dt, history=history, gp_by_group=gp_by_group, amp_by_group=amp_by_group)
 
     with open(OUTPUT_FILE, "w") as f:
         f.write(html)
