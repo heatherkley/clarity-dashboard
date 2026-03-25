@@ -4,13 +4,15 @@
   "apps": [
     {
       "group": "Shift",
-      "status": "no_data",
-      "error": "403 forbidden on pubsite_prod_4654236168842299132"
+      "status": "ok",
+      "installs": 446,
+      "days": 17
     },
     {
       "group": "Today's Front Pages",
-      "status": "no_data",
-      "error": "403 forbidden on pubsite_prod_7846546922361551874"
+      "status": "ok",
+      "installs": 246,
+      "days": 21
     },
     {
       "group": "P3",
@@ -20,13 +22,15 @@
     },
     {
       "group": "Quiet Collection",
-      "status": "no_data",
-      "error": "403 forbidden on pubsite_prod_6895695345736157748"
+      "status": "ok",
+      "installs": 142,
+      "days": 21
     },
     {
       "group": "Self Speak",
-      "status": "no_data",
-      "error": "403 forbidden on pubsite_prod_9005754792638624266"
+      "status": "ok",
+      "installs": 84,
+      "days": 17
     },
     {
       "group": "Footsteps with Jesus",
