@@ -1045,17 +1045,12 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         {no_data_note}
         <canvas id="chart-{t_id}-sessions" {"style='display:none'" if not has_sessions else ""}></canvas>
       </div>"""
-        if has_installs or has_android_inst or asc_g.get("pending") or gp_installs is not None:
-            inst_note = ""
-            if not has_installs and not has_android_inst:
-                inst_note = '<div class="chart-no-data">Download trend — initializing (iOS up to 72h, Android builds over time)</div>'
-            elif asc_g.get("pending") and not has_installs:
-                inst_note = '<div class="chart-no-data">iOS download trend — initializing first report</div>'
+        if has_installs or has_android_inst:
+            # Only show the downloads chart once there is real trend data to plot
             charts_row += f"""
       <div class="chart-card">
         <div class="chart-title">Daily Downloads (iOS &amp; Android)</div>
-        {inst_note}
-        <canvas id="chart-{t_id}-installs" {"style='display:none'" if not has_installs and not has_android_inst else ""}></canvas>
+        <canvas id="chart-{t_id}-installs"></canvas>
       </div>"""
         if has_rc_trend or mrr:
             rc_note = '<div class="chart-no-data">Revenue trend \u2014 grows with each weekly run</div>' if not has_rc_trend else ""
@@ -1086,11 +1081,16 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         asc_html_block = appstore_block(asc_g)
         gp_html_block  = googleplay_block(gp_g)
 
+        # Business highlights — revenue + downloads shown prominently before charts
+        _highlights = "".join(x for x in [rc_html_block, asc_html_block, gp_html_block] if x)
+        highlights_row_html = f'<div class="highlights-row">{_highlights}</div>' if _highlights else ""
+
         tabs_body_html += f"""
 <div id="{t_id}" class="tab-pane hidden">
   <div class="client-kpi-bar" style="border-top:3px solid {color}">
     {kpi_html}
   </div>
+  {highlights_row_html}
   {charts_row}
   <div class="grid">
     <div class="card">
@@ -1100,9 +1100,6 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
       </div>
       {combined_block}
       {platform_rows_html}
-      {rc_html_block}
-      {asc_html_block}
-      {gp_html_block}
     </div>
   </div>
 </div>"""
@@ -1160,6 +1157,10 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
     .kpi-val{{font-size:2rem;font-weight:700;color:white;letter-spacing:-0.02em}}
     .kpi-lbl{{font-size:0.65rem;color:#475569;text-transform:uppercase;letter-spacing:0.07em;margin-top:4px}}
     /* ── Charts ── */
+    .highlights-row{{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;padding:20px 32px 0}}
+    .highlights-row .rc-block{{margin-top:0;padding:18px 22px}}
+    .highlights-row .rc-value{{font-size:1.4rem;font-weight:700}}
+    .highlights-row .rc-title{{font-size:0.75rem;margin-bottom:10px}}
     .charts-row{{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;padding:20px 32px 0}}
     .chart-card{{background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:20px 22px;backdrop-filter:blur(8px);transition:border-color 0.2s,box-shadow 0.2s}}
     .chart-card:hover{{border-color:rgba(56,189,248,0.2);box-shadow:0 0 32px rgba(56,189,248,0.06)}}
