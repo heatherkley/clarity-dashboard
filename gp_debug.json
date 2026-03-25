@@ -15,8 +15,8 @@
     {
       "group": "P3",
       "status": "ok",
-      "installs": 0,
-      "days": 8
+      "installs": 8,
+      "days": 17
     },
     {
       "group": "Quiet Collection",
@@ -30,8 +30,9 @@
     },
     {
       "group": "Footsteps with Jesus",
-      "status": "no_data",
-      "error": "403 forbidden on pubsite_prod_8627774139374330501"
+      "status": "ok",
+      "installs": 184,
+      "days": 17
     }
   ]
 }

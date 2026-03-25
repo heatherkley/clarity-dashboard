@@ -14,7 +14,7 @@
         "users": 15
       },
       "2026-03-25": {
-        "sessions": 26,
+        "sessions": 30,
         "users": 15
       }
     },
@@ -32,8 +32,8 @@
         "users": 15
       },
       "2026-03-25": {
-        "sessions": 22,
-        "users": 18
+        "sessions": 23,
+        "users": 19
       }
     },
     "Quiet Collection": {
@@ -50,8 +50,8 @@
         "users": 904
       },
       "2026-03-25": {
-        "sessions": 975,
-        "users": 933
+        "sessions": 887,
+        "users": 834
       }
     },
     "Self Speak": {
@@ -68,8 +68,8 @@
         "users": 25
       },
       "2026-03-25": {
-        "sessions": 26,
-        "users": 21
+        "sessions": 25,
+        "users": 20
       }
     },
     "Shift": {
@@ -86,8 +86,8 @@
         "users": 120
       },
       "2026-03-25": {
-        "sessions": 231,
-        "users": 146
+        "sessions": 233,
+        "users": 147
       }
     },
     "Today's Front Pages": {
@@ -104,8 +104,8 @@
         "users": 3348
       },
       "2026-03-25": {
-        "sessions": 3389,
-        "users": 3453
+        "sessions": 3332,
+        "users": 3458
       }
     }
   },
