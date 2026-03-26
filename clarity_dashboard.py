@@ -789,11 +789,11 @@ def fetch_amplitude_registrations(api_key, secret_key, mentor_screen, mentee_scr
     end_str   = end_dt.strftime("%Y%m%d")
     daily = {}
     for screen in [s for s in [mentor_screen, mentee_screen] if s]:
-        e_param = json.dumps([{
+        e_param = json.dumps({
             "event_type": "AppScreenViewed",
             "filters": [{"subprop_key": "ScreenName", "subprop_op": "is",
                          "subprop_value": [screen], "subprop_type": "event"}]
-        }])
+        })
         params = {"e": e_param, "start": start_str, "end": end_str, "m": "uniques", "i": 1}
         try:
             r = requests.get("https://amplitude.com/api/2/events/segmentation",
