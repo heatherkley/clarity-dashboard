@@ -52,6 +52,7 @@ jobs:
           git add .asc_cache.json 2>/dev/null || true
           git add dashboard_history.json 2>/dev/null || true
           git add gp_debug.json 2>/dev/null || true
+          git add asc_debug.json 2>/dev/null || true
           # Only commit if something actually changed
           git diff --staged --quiet || git commit -m "chore: update dashboard $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push
