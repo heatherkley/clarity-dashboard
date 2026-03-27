@@ -196,9 +196,9 @@
       "2026-03-27": {
         "churn_rate": 0.0,
         "churned": 0,
-        "mrr": 63.0,
-        "revenue": 46.0,
-        "subscribers": 18,
+        "mrr": 61.0,
+        "revenue": 44.0,
+        "subscribers": 17,
         "trials": 2
       }
     },
@@ -240,9 +240,9 @@
       "2026-03-27": {
         "churn_rate": 0.0,
         "churned": 0,
-        "mrr": 464.0,
-        "revenue": 628.0,
-        "subscribers": 53,
+        "mrr": 476.0,
+        "revenue": 640.0,
+        "subscribers": 54,
         "trials": 105
       }
     }
