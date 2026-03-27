@@ -74,8 +74,8 @@
         "users": 856
       },
       "2026-03-27": {
-        "sessions": 906,
-        "users": 855
+        "sessions": 905,
+        "users": 856
       }
     },
     "Self Speak": {
@@ -126,7 +126,7 @@
         "users": 98
       },
       "2026-03-27": {
-        "sessions": 141,
+        "sessions": 142,
         "users": 95
       }
     },
@@ -152,8 +152,8 @@
         "users": 3807
       },
       "2026-03-27": {
-        "sessions": 3687,
-        "users": 3764
+        "sessions": 3688,
+        "users": 3767
       }
     }
   },
@@ -243,7 +243,7 @@
         "mrr": 464.0,
         "revenue": 628.0,
         "subscribers": 53,
-        "trials": 106
+        "trials": 105
       }
     }
   }
