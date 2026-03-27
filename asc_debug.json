@@ -1,13 +1,13 @@
 {
-  "generated": "2026-03-27T01:24:25.261058Z",
+  "generated": "2026-03-27T01:27:38.852337Z",
   "apps": {
     "Shift": {
       "pending": false,
-      "installs": 0,
+      "installs": 23,
       "daily_count": 2,
       "daily_sample": {
-        "2026-03-18": 0,
-        "2026-03-19": 0
+        "2026-03-18": 12,
+        "2026-03-19": 11
       },
       "instance_states": [
         {
@@ -54,11 +54,11 @@
     },
     "Today's Front Pages": {
       "pending": false,
-      "installs": 0,
+      "installs": 81,
       "daily_count": 2,
       "daily_sample": {
-        "2026-03-18": 0,
-        "2026-03-19": 0
+        "2026-03-18": 29,
+        "2026-03-19": 52
       },
       "instance_states": [
         {
@@ -105,11 +105,11 @@
     },
     "P3": {
       "pending": false,
-      "installs": 0,
+      "installs": 8,
       "daily_count": 2,
       "daily_sample": {
-        "2026-03-24": 0,
-        "2026-03-25": 0
+        "2026-03-24": 4,
+        "2026-03-25": 4
       },
       "instance_states": [
         {
