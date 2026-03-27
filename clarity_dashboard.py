@@ -595,26 +595,35 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
             result["pending"] = True
             return result
 
-        # ── Step 4: get segment download URL ─────────────────────────────────────
-        instance_id = instances[0]["id"]
-        r5 = requests.get(
-            f"{ASC_BASE}/analyticsReportInstances/{instance_id}/segments",
-            headers=hdrs, timeout=30,
-        )
-        print(f"    [ASC] Step4 segments: HTTP {r5.status_code}")
-        segments = r5.json().get("data", []) if r5.status_code == 200 else []
+        # ── Step 4: find an instance that has segments ────────────────────────
+        segments = []
+        for inst in instances:
+            instance_id = inst["id"]
+            r5 = requests.get(
+                f"{ASC_BASE}/analyticsReportInstances/{instance_id}/segments",
+                headers=hdrs, timeout=30,
+            )
+            if r5.status_code == 200:
+                segs = r5.json().get("data", [])
+                if segs:
+                    segments = segs
+                    print(f"    [ASC] Step4 segments for {instance_id}: {len(segments)} found")
+                    break
         if not segments:
+            print(f"    [ASC] Step4: no segments found across {len(instances)} instances")
             result["pending"] = True
             return result
 
-        # ── Step 5: download & parse gzipped TSV ─────────────────────────────────
+        # ── Step 5: download & parse gzipped TSV ─────────────────────────────
         dl_url = segments[0].get("attributes", {}).get("url", "")
         if not dl_url:
+            print(f"    [ASC] Step5: no download URL in segment")
             result["pending"] = True
             return result
 
         r6 = requests.get(dl_url, headers=hdrs, timeout=60)
         if r6.status_code != 200:
+            print(f"    [ASC] Step5 download: HTTP {r6.status_code}")
             result["pending"] = True
             return result
 
@@ -622,9 +631,14 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
         reader  = csv.DictReader(io.StringIO(content), delimiter="\t")
         total_installs = 0
         daily_installs = {}
+        first_row = True
         for row in reader:
-            val  = row.get("Installations") or row.get("First Time Downloads") or 0
-            date = (row.get("Date") or row.get("date") or "").strip()[:10]
+            if first_row:
+                print(f"    [ASC] Step5 TSV columns: {list(row.keys())[:10]}")
+                first_row = False
+            val  = (row.get("Installations") or row.get("First Time Downloads") or
+                    row.get("Total Downloads") or row.get("Units") or 0)
+            date = (row.get("Date") or row.get("date") or row.get("Day") or "").strip()[:10]
             try:
                 count = int(float(str(val).replace(",", "") or 0))
                 total_installs += count
@@ -632,6 +646,7 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
                     daily_installs[date] = daily_installs.get(date, 0) + count
             except (ValueError, TypeError):
                 pass
+        print(f"    [ASC] Step5 parsed: {total_installs} total installs, {len(daily_installs)} days")
         result["installs"]       = total_installs
         result["daily_installs"] = dict(sorted(daily_installs.items()))
         return result
