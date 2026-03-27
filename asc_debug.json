@@ -1,11 +1,14 @@
 {
-  "generated": "2026-03-27T01:16:41.319974Z",
+  "generated": "2026-03-27T01:24:25.261058Z",
   "apps": {
     "Shift": {
-      "pending": true,
-      "installs": null,
-      "daily_count": 0,
-      "daily_sample": {},
+      "pending": false,
+      "installs": 0,
+      "daily_count": 2,
+      "daily_sample": {
+        "2026-03-18": 0,
+        "2026-03-19": 0
+      },
       "instance_states": [
         {
           "id": "3bf1e553-1aa6-41c7-8b6f-d1de0706dae7",
@@ -21,13 +24,42 @@
           "segments_count": 1,
           "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"0051e575-714e-4f1a-b2ee-e6382f853b0b\",\n    \"attributes\" : {\n      \"checksum\" : \"8877076d460f877e7dabbd881232bb0e\",\n      \"sizeInBytes\" : 1285,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6745610776/aa_downloads/daily/ongoing/20260320/1774001368323/41nj20tsol1or.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226745610776_App%20Downloads%20Standard_Daily_2026-03-20_0051e575-714e-4f1a-b"
         }
-      ]
+      ],
+      "tsv_columns": [
+        "Date",
+        "App Name",
+        "App Apple Identifier",
+        "Download Type",
+        "App Version",
+        "Device",
+        "Platform Version",
+        "Source Type",
+        "Page Type",
+        "Pre-Order",
+        "Territory",
+        "Counts"
+      ],
+      "tsv_first_row": {
+        "Date": "2026-03-19",
+        "App Name": "Shift: The Global Irish App",
+        "App Apple Identifier": "6745610776",
+        "Download Type": "First-time download",
+        "App Version": "1.1.4",
+        "Device": "iPhone",
+        "Platform Version": "iOS 26.3",
+        "Source Type": "App Store search",
+        "Page Type": "No page",
+        "Pre-Order": ""
+      }
     },
     "Today's Front Pages": {
-      "pending": true,
-      "installs": null,
-      "daily_count": 0,
-      "daily_sample": {},
+      "pending": false,
+      "installs": 0,
+      "daily_count": 2,
+      "daily_sample": {
+        "2026-03-18": 0,
+        "2026-03-19": 0
+      },
       "instance_states": [
         {
           "id": "183057e0-6162-4754-a482-d5221882e03a",
@@ -43,13 +75,42 @@
           "segments_count": 1,
           "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"e1639eec-0e32-40e2-8b3f-09a4885b1477\",\n    \"attributes\" : {\n      \"checksum\" : \"a35c1243488dcfa7c63d73c2d720f07f\",\n      \"sizeInBytes\" : 1092,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/418572455/aa_downloads/daily/ongoing/20260320/1774001368323/4ffrgik06n5da.csv.gz?response-content-disposition=attachment%3B%20filename%3D%22418572455_App%20Downloads%20Standard_Daily_2026-03-20_e1639eec-0e32-40e2-8b3"
         }
-      ]
+      ],
+      "tsv_columns": [
+        "Date",
+        "App Name",
+        "App Apple Identifier",
+        "Download Type",
+        "App Version",
+        "Device",
+        "Platform Version",
+        "Source Type",
+        "Page Type",
+        "Pre-Order",
+        "Territory",
+        "Counts"
+      ],
+      "tsv_first_row": {
+        "Date": "2026-03-18",
+        "App Name": "Today's Front Pages",
+        "App Apple Identifier": "418572455",
+        "Download Type": "Restore",
+        "App Version": "4.1.8",
+        "Device": "iPad",
+        "Platform Version": "iOS 26.3",
+        "Source Type": "Unavailable",
+        "Page Type": "Product page",
+        "Pre-Order": ""
+      }
     },
     "P3": {
-      "pending": true,
-      "installs": null,
-      "daily_count": 0,
-      "daily_sample": {},
+      "pending": false,
+      "installs": 0,
+      "daily_count": 2,
+      "daily_sample": {
+        "2026-03-24": 0,
+        "2026-03-25": 0
+      },
       "instance_states": [
         {
           "id": "7f226282-3ede-49f2-acf3-83861e676779",
@@ -65,7 +126,33 @@
           "segments_count": 1,
           "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"123c8561-4ffb-4fa3-9a00-c713bb48e22b\",\n    \"attributes\" : {\n      \"checksum\" : \"2e85a588bde8cb7ba4e2156d8dba976d\",\n      \"sizeInBytes\" : 513,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6478132244/aa_downloads/daily/ongoing/20260326/1774519759745/12u9a4o47u9sl.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226478132244_App%20Downloads%20Standard_Daily_2026-03-26_123c8561-4ffb-4fa3-9a"
         }
-      ]
+      ],
+      "tsv_columns": [
+        "Date",
+        "App Name",
+        "App Apple Identifier",
+        "Download Type",
+        "App Version",
+        "Device",
+        "Platform Version",
+        "Source Type",
+        "Page Type",
+        "Pre-Order",
+        "Territory",
+        "Counts"
+      ],
+      "tsv_first_row": {
+        "Date": "2026-03-24",
+        "App Name": "P3: Pulse of Perseverance",
+        "App Apple Identifier": "6478132244",
+        "Download Type": "Auto-update",
+        "App Version": "1.0.25",
+        "Device": "iPad",
+        "Platform Version": "iOS 17.5",
+        "Source Type": "App Store search",
+        "Page Type": "No page",
+        "Pre-Order": ""
+      }
     }
   }
 }
