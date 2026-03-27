@@ -596,18 +596,6 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
                 inst_all = r4.json().get("data", [])
                 if not inst_all:
                     continue
-                # Collect diagnostic info for first few instances of each report
-                for i in inst_all[:3]:
-                    attrs = i.get("attributes", {})
-                    all_instance_states.append({
-                        "id": i["id"],
-                        "gran": attrs.get("granularity"),
-                        "processingDate": attrs.get("processingDate"),
-                        "report_id": report_id,
-                        "report_type": rep_type,
-                        "all_attr_keys": sorted(attrs.keys()),
-                        "all_attrs": attrs,
-                    })
                 # Only consider instances that Apple has marked ready (have processingDate)
                 ready = [i for i in inst_all
                          if i.get("attributes", {}).get("processingDate")]
@@ -617,29 +605,46 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
                 print(f"    [ASC] Step3 {report_id} [{rep_type}/{gran}]: "
                       f"{len(ready)} ready instances, dates={dates[:3]}")
                 # Step 4 inline: probe each ready instance for segments
+                # Collect diagnostics here so we capture the segments response too
                 for inst in ready:
                     instance_id = inst["id"]
-                    proc_date   = inst.get("attributes", {}).get("processingDate")
+                    attrs       = inst.get("attributes", {})
+                    proc_date   = attrs.get("processingDate")
                     r5 = requests.get(
                         f"{ASC_BASE}/analyticsReportInstances/{instance_id}/segments",
                         headers=hdrs, timeout=30,
                     )
                     print(f"    [ASC] Step4 inst={instance_id} date={proc_date} "
                           f"HTTP {r5.status_code}", end=" ")
+                    seg_count  = 0
+                    seg_body   = r5.text[:500]
                     if r5.status_code == 200:
                         segs = r5.json().get("data", [])
-                        print(f"→ {len(segs)} segments")
+                        seg_count = len(segs)
+                        print(f"→ {seg_count} segments")
                         if segs:
                             segments = segs
                             found_report_id   = report_id
                             found_report_type = rep_type
                             print(f"    [ASC] Step4 ✓ found {len(segments)} segments "
                                   f"(report={report_id} type={rep_type} gran={gran})")
-                            break
-                        else:
-                            print(f"    [ASC] Step4 empty body: {r5.text[:400]}")
                     else:
                         print(f"→ HTTP {r5.status_code}: {r5.text[:200]}")
+                    # Record diagnostics for this instance (include segments response)
+                    if len(all_instance_states) < 15:
+                        all_instance_states.append({
+                            "id": instance_id,
+                            "gran": attrs.get("granularity"),
+                            "processingDate": proc_date,
+                            "report_id": report_id,
+                            "report_type": rep_type,
+                            "all_attr_keys": sorted(attrs.keys()),
+                            "segments_http": r5.status_code,
+                            "segments_count": seg_count,
+                            "segments_body": seg_body,
+                        })
+                    if segments:
+                        break
                 # break inner gran loop if found
                 if segments:
                     break
