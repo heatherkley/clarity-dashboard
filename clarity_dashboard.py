@@ -597,10 +597,11 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
                         "date": attrs.get("reportDate"),
                         "gran": attrs.get("granularity"),
                         "report_type": rep_type,
+                        "all_attr_keys": sorted(attrs.keys()),
+                        "all_attrs": attrs,
                     }
                     all_instance_states.append(state_info)
-                    print(f"      → inst={i['id']} state={attrs.get('processingState')} "
-                          f"date={attrs.get('reportDate')} type={rep_type}")
+                    print(f"      → inst={i['id']} attrs={attrs} type={rep_type}")
                 # Prefer COMPLETE, fall back to all
                 complete = [i for i in inst_all
                             if i.get("attributes", {}).get("processingState") == "COMPLETE"]
