@@ -48,7 +48,7 @@
         "users": 20
       },
       "2026-03-27": {
-        "sessions": 28,
+        "sessions": 27,
         "users": 19
       }
     },
@@ -74,8 +74,8 @@
         "users": 856
       },
       "2026-03-27": {
-        "sessions": 904,
-        "users": 854
+        "sessions": 906,
+        "users": 855
       }
     },
     "Self Speak": {
@@ -100,8 +100,8 @@
         "users": 11
       },
       "2026-03-27": {
-        "sessions": 21,
-        "users": 10
+        "sessions": 20,
+        "users": 9
       }
     },
     "Shift": {
@@ -152,7 +152,7 @@
         "users": 3807
       },
       "2026-03-27": {
-        "sessions": 3684,
+        "sessions": 3687,
         "users": 3764
       }
     }
@@ -199,7 +199,7 @@
         "mrr": 63.0,
         "revenue": 46.0,
         "subscribers": 18,
-        "trials": 3
+        "trials": 2
       }
     },
     "Shift": {
