@@ -74,8 +74,8 @@
         "users": 856
       },
       "2026-03-27": {
-        "sessions": 902,
-        "users": 855
+        "sessions": 900,
+        "users": 853
       }
     },
     "Self Speak": {
@@ -126,7 +126,7 @@
         "users": 98
       },
       "2026-03-27": {
-        "sessions": 144,
+        "sessions": 143,
         "users": 98
       }
     },
@@ -152,8 +152,8 @@
         "users": 3807
       },
       "2026-03-27": {
-        "sessions": 3694,
-        "users": 3770
+        "sessions": 3689,
+        "users": 3765
       }
     }
   },
