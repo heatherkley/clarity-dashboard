@@ -71,7 +71,7 @@ def fetch_project(name, token, start_dt, end_dt):
         "startDate":   start_dt.strftime("%Y-%m-%d"),
         "endDate":     end_dt.strftime("%Y-%m-%d"),
         "granularity": "daily",
-        "metrics":     "Sessions,Users,PagesPerSession,ScrollDepth,TotalSessionDuration"
+        "metrics":     "Traffic,EngagementTime,Device",
     }
     try:
         r = requests.get(CLARITY_API, headers=headers, params=params, timeout=30)
@@ -856,8 +856,21 @@ def googleplay_block(gp_data):
 
 # ── Amplitude Fetching ─────────────────────────────────────────────────────────
 
-def fetch_amplitude_registrations(api_key, secret_key, mentor_screen, mentee_screen, days=30):
-    """Fetch daily new registrations from Amplitude via events/segmentation API."""
+def fetch_amplitude_registrations(api_key, secret_key, amplitude_events=None, days=30):
+    """Fetch daily new registrations from Amplitude via events/segmentation API.
+
+    amplitude_events: list of Amplitude event-filter dicts (each passed as the 'e' param).
+    Defaults to LoginAttempted(LoginStatus=Success) OR SignUpCompleted — uniques summed per day.
+    """
+    if amplitude_events is None:
+        amplitude_events = [
+            {
+                "event_type": "LoginAttempted",
+                "filters": [{"subprop_key": "LoginStatus", "subprop_op": "is",
+                             "subprop_value": ["Success"], "subprop_type": "event"}],
+            },
+            {"event_type": "SignUpCompleted"},
+        ]
     import base64
     auth = base64.b64encode(f"{api_key}:{secret_key}".encode()).decode()
     headers = {"Authorization": f"Basic {auth}"}
@@ -866,12 +879,8 @@ def fetch_amplitude_registrations(api_key, secret_key, mentor_screen, mentee_scr
     start_str = start_dt.strftime("%Y%m%d")
     end_str   = end_dt.strftime("%Y%m%d")
     daily = {}
-    for screen in [s for s in [mentor_screen, mentee_screen] if s]:
-        e_param = json.dumps({
-            "event_type": "AppScreenViewed",
-            "filters": [{"subprop_key": "ScreenName", "subprop_op": "is",
-                         "subprop_value": [screen], "subprop_type": "event"}]
-        })
+    for event_config in amplitude_events:
+        e_param = json.dumps(event_config)
         params = {"e": e_param, "start": start_str, "end": end_str, "m": "uniques", "i": 1}
         try:
             r = requests.get("https://amplitude.com/api/2/events/segmentation",
@@ -886,12 +895,11 @@ def fetch_amplitude_registrations(api_key, secret_key, mentor_screen, mentee_scr
                     v = vals[i] if i < len(vals) else 0
                     daily[date_key] = daily.get(date_key, 0) + (int(v) if v else 0)
             else:
-                print(f"    \u26a0\ufe0f  Amplitude HTTP {r.status_code}: {r.text[:200]}")
+                print(f"    ⚠️  Amplitude HTTP {r.status_code}: {r.text[:200]}")
         except Exception as e:
-            print(f"    \u26a0\ufe0f  Amplitude error: {e}")
+            print(f"    ⚠️  Amplitude error: {e}")
     total = sum(daily.values())
     return {"daily_registrations": dict(sorted(daily.items())), "total_registrations": total}
-
 
 # ── HTML Helpers ────────────────────────────────────────────────────────────────
 
@@ -1989,13 +1997,14 @@ def main():
             if not amp_secret:
                 env_name   = "AMPLITUDE_SECRET_" + re.sub(r"[^A-Z0-9]+", "_", group_name.upper()).strip("_")
                 amp_secret = os.environ.get(env_name, "").strip()
-            mentor_screen = app.get("mentor_screen", "OnboardingVideoPlayerScreen")
-            mentee_screen = app.get("mentee_screen", "OnboardingScreen")
-            print(f"  \u2192 {group_name} ...", end=" ", flush=True)
+            # Per-app override: set "amplitude_events" in config to customise which events count.
+            # Defaults to LoginAttempted(Success) + SignUpCompleted.
+            amp_events = app.get("amplitude_events") or None
+            print(f"  → {group_name} ...", end=" ", flush=True)
             if not amp_key or not amp_secret:
-                print("\u23ed  skipped (no credentials)")
+                print("⏭  skipped (no credentials)")
                 continue
-            amp_data = fetch_amplitude_registrations(amp_key, amp_secret, mentor_screen, mentee_screen)
+            amp_data = fetch_amplitude_registrations(amp_key, amp_secret, amplitude_events=amp_events)
             total = amp_data.get("total_registrations", 0)
             days_count = len(amp_data.get("daily_registrations", {}))
             print(f"\u2705 {total:,} total registrations ({days_count} days)")
