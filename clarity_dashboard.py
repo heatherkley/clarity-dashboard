@@ -554,10 +554,11 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
         if r3.status_code == 200:
             reports = r3.json().get("data", [])
             print(f"({len(reports)} reports)")
-            for rep in reports[:5]:
-                print(f"      → id={rep['id']} type={rep.get('attributes',{}).get('reportType')} category={rep.get('attributes',{}).get('reportCategory')}")
+            for rep in reports[:10]:
+                attrs = rep.get('attributes', {})
+                print(f"      → id={rep['id']} name={attrs.get('name')} category={attrs.get('category')} allKeys={sorted(attrs.keys())}")
         else:
-            print(f"— {r3.text[:120]}")
+            print(f"— {r3.text[:200]}")
 
         if not reports:
             # No reports yet — Apple needs up to 72h to generate data for a new request.
@@ -635,8 +636,10 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
                             print(f"    [ASC] Step4 ✓ found {len(segments)} segments "
                                   f"(report={report_id} type={rep_type} gran={gran})")
                             break
+                        else:
+                            print(f"    [ASC] Step4 empty body: {r5.text[:400]}")
                     else:
-                        print(f"→ {r5.text[:120]}")
+                        print(f"→ HTTP {r5.status_code}: {r5.text[:200]}")
                 # break inner gran loop if found
                 if segments:
                     break
@@ -644,8 +647,9 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
         result["instance_states"] = all_instance_states  # persist for asc_debug.json
 
         if not segments:
+            rpts_with_instances = len(set(s.get("report_id") for s in all_instance_states))
             print(f"    [ASC] Steps3+4: no segments across {len(reports)} reports "
-                  f"(sampled {len(all_instance_states)} instances)")
+                  f"({rpts_with_instances} had instances, sampled {len(all_instance_states)} instance states)")
             result["pending"] = True
             return result
 
