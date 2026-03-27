@@ -567,10 +567,11 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
             result["pending"] = True
             return result
 
-        # ── Step 3: find COMPLETE instances across all reports ────────────────────
-        # Iterate ALL reports looking for instances with processingState=COMPLETE.
-        # A COMPLETE instance has downloadable segment files; CREATED/IN_PROGRESS do not.
+        # ──         # ── Step 3: find instances across all reports, prefer COMPLETE ones ─────────
+        # NOTE: filter[processingState] is NOT a supported API parameter — we fetch
+        # all instances and filter in Python.  Only COMPLETE instances have segments.
         instances = []
+        all_instance_states = []  # diagnostic: collect states across first few reports
         for rep in reports:
             report_id   = rep["id"]
             rep_type    = rep.get("attributes", {}).get("reportType", "?")
@@ -579,38 +580,44 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
                 r4 = requests.get(
                     f"{ASC_BASE}/analyticsReports/{report_id}/instances",
                     headers=hdrs,
-                    params={"filter[granularity]": gran, "filter[processingState]": "COMPLETE"},
+                    params={"filter[granularity]": gran},
                     timeout=30,
                 )
-                if r4.status_code == 200:
-                    inst = r4.json().get("data", [])
-                    if inst:
-                        instances = inst
-                        print(f"    [ASC] Step3 COMPLETE instances ({gran}) for {report_id} "
-                              f"[type={rep_type} cat={rep_cat}]: {len(instances)} found")
-                        break
-                # Non-200 or empty → try next granularity/report
+                if r4.status_code != 200:
+                    continue
+                inst_all = r4.json().get("data", [])
+                if not inst_all:
+                    continue
+                # Record states for debug output
+                for i in inst_all[:5]:
+                    attrs = i.get("attributes", {})
+                    state_info = {
+                        "id": i["id"],
+                        "state": attrs.get("processingState"),
+                        "date": attrs.get("reportDate"),
+                        "gran": attrs.get("granularity"),
+                        "report_type": rep_type,
+                    }
+                    all_instance_states.append(state_info)
+                    print(f"      → inst={i['id']} state={attrs.get('processingState')} "
+                          f"date={attrs.get('reportDate')} type={rep_type}")
+                # Prefer COMPLETE, fall back to all
+                complete = [i for i in inst_all
+                            if i.get("attributes", {}).get("processingState") == "COMPLETE"]
+                if complete:
+                    instances = complete
+                    print(f"    [ASC] Step3 COMPLETE instances ({gran}) for {report_id} "
+                          f"[type={rep_type} cat={rep_cat}]: {len(instances)} found")
+                    break
+                # No COMPLETE yet — record but keep searching other reports
             if instances:
                 break
+
+        result["instance_states"] = all_instance_states  # persist for asc_debug.json
+
         if not instances:
-            # Fallback: try without processingState filter to see what's out there
-            print(f"    [ASC] Step3: no COMPLETE instances — checking unfiltered for diagnostics...")
-            for rep in reports[:3]:
-                report_id = rep["id"]
-                rep_type  = rep.get("attributes", {}).get("reportType", "?")
-                r4 = requests.get(
-                    f"{ASC_BASE}/analyticsReports/{report_id}/instances",
-                    headers=hdrs,
-                    params={"filter[granularity]": "DAILY"},
-                    timeout=30,
-                )
-                if r4.status_code == 200:
-                    inst = r4.json().get("data", [])
-                    for i in inst[:3]:
-                        attrs = i.get("attributes", {})
-                        print(f"      → inst={i['id']} state={attrs.get('processingState')} "
-                              f"date={attrs.get('reportDate')} gran={attrs.get('granularity')}")
-            print(f"    [ASC] Step3: still waiting on Apple to complete processing")
+            print(f"    [ASC] Step3: no COMPLETE instances across {len(reports)} reports "
+                  f"(found {len(all_instance_states)} instances total, all non-COMPLETE)")
             result["pending"] = True
             return result
 
@@ -619,7 +626,7 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
         for inst in instances:
             instance_id = inst["id"]
             inst_attrs  = inst.get("attributes", {})
-            print(f"    [ASC] Step4 checking segments for {instance_id} "
+            print(f"    [ASC] Step4 checking {instance_id} "
                   f"(state={inst_attrs.get('processingState')} date={inst_attrs.get('reportDate')})")
             r5 = requests.get(
                 f"{ASC_BASE}/analyticsReportInstances/{instance_id}/segments",
@@ -634,11 +641,11 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
                     print(f"    [ASC] Step4 found {len(segments)} segments → downloading")
                     break
                 else:
-                    print(f"    [ASC] Step4 empty segments body: {r5.text[:200]}")
+                    print(f"    [ASC] Step4 empty: {r5.text[:200]}")
             else:
                 print(f"— {r5.text[:200]}")
         if not segments:
-            print(f"    [ASC] Step4: no segments found across {len(instances)} instances")
+            print(f"    [ASC] Step4: no segments found across {len(instances)} COMPLETE instances")
             result["pending"] = True
             return result
         # ── Step 5: download & parse gzipped TSV ─────────────────────────────
@@ -1985,10 +1992,11 @@ def main():
     }
     for grp, d in asc_by_group.items():
         asc_debug_out["apps"][grp] = {
-            "pending":        d.get("pending", False),
-            "installs":       d.get("installs"),
-            "daily_count":    len(d.get("daily_installs", {})),
-            "daily_sample":   dict(list(d.get("daily_installs", {}).items())[:5]),
+            "pending":         d.get("pending", False),
+            "installs":        d.get("installs"),
+            "daily_count":     len(d.get("daily_installs", {})),
+            "daily_sample":    dict(list(d.get("daily_installs", {}).items())[:5]),
+            "instance_states": d.get("instance_states", []),
         }
     with open("asc_debug.json", "w") as f:
         json.dump(asc_debug_out, f, indent=2)
