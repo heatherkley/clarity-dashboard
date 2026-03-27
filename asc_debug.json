@@ -1,23 +1,694 @@
 {
-  "generated": "2026-03-27T00:43:05.342202Z",
+  "generated": "2026-03-27T00:51:36.129041Z",
   "apps": {
     "Shift": {
       "pending": true,
       "installs": null,
       "daily_count": 0,
-      "daily_sample": {}
+      "daily_sample": {},
+      "instance_states": [
+        {
+          "id": "3bf1e553-1aa6-41c7-8b6f-d1de0706dae7",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "3f5e4235-6023-4229-a500-3b823843a269",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "e7b0783b-7425-4684-ac77-243df7229e09",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "807b1e32-8dff-4b2e-b89d-9ea6c2792932",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "eebb055c-1706-411f-9aaf-43a0ea17820a",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "9a80a8b9-2754-4f95-acf4-84f9c105c88b",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "91d192d7-2ede-4c79-8a23-2f76d24af1ea",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "d124952f-3af9-462a-8f75-185091668541",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "827ad97a-cd1e-4fc0-8ce6-e392372f35e0",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "a686466c-0a43-4084-b095-9f4bc2930af2",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "4b6e65cf-905b-4d17-8aad-e7040cb0c418",
+          "state": null,
+          "date": null,
+          "gran": "MONTHLY",
+          "report_type": "?"
+        },
+        {
+          "id": "8e22b18a-d41f-4020-a806-9f97fce069b0",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "99ff0930-f157-4f9d-b93f-dd62679ad501",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "5b7fed9b-0527-4f37-92c2-b91d60c21f5c",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "548772e5-8b60-4626-adf8-10eb1bb7dde2",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "1cf2e879-654d-4992-9060-95e88a8e2166",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "2515ba18-eada-490b-ab78-d42d7d55e79a",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "beb3545c-9431-4e25-b657-b57e6080a10d",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "0adb09bb-b227-40bc-a834-c66753351bbb",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "f29e108d-fe76-4546-85e5-0fd02eaf7a55",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "b523c034-4248-4c17-8d09-478dd05180c7",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "d6fb4280-c0fa-49da-8388-eccc1d3b418b",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "1ff4a086-5cb0-40d7-9e44-e1925da0b4a7",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "b4789ce7-049c-43b8-86f6-d0aeb5c5aa5f",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "2f46aeeb-f12b-4c0c-aeae-3ac31d3f96e9",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "aec680ea-3538-453d-be13-86749ea1105d",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "470dbfbb-2515-4136-85ec-e89855abe1a8",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "e24f9645-f469-443f-a31c-6df017946ae7",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "f7f0a9af-36ad-4ef5-8e11-095207d42671",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "c1a61703-9e3c-4ead-a5f0-93189a5a01e8",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "67bcdfeb-c861-4226-a164-02633450af99",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "13d7e0f6-e0d2-42fa-bfaa-b2a795b58ad1",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "47d92582-08c7-47c7-9f5a-9f8b1db472b0",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "79656fae-9714-49e9-83d8-76f02d43997f",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "86672c7c-e6f2-4dd8-b6d9-c8ac91d1f5ef",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "d4446dc3-ebe4-452a-a79d-1a9d8a22395e",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "daf5f84b-a4cc-4f85-a7dc-11375032c89a",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "b7c3f70d-695e-48e7-adae-1a9d4a9b86c7",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "bb48ef08-546e-411e-a554-5efdc91413d0",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "024d71a1-e226-4557-b069-e88f9300660c",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "51dd56cb-a664-4a8f-a461-1d73cee7d21e",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "b6da34b3-7f63-4895-8d41-31842bc31ab5",
+          "state": null,
+          "date": null,
+          "gran": "MONTHLY",
+          "report_type": "?"
+        },
+        {
+          "id": "150ffffd-aac4-4c9f-a9f5-3822bf27eb88",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "b894dab3-f294-473d-a7c9-624e4c1c773f",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "9647b373-508a-485f-ae7c-14fda3f327fc",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "ff30521a-9bf6-4d0f-a432-80d6bbf0efe1",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "a3e9e0a4-2b6b-4f29-99ff-da4dc3e43858",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "1d57f69f-5875-49fb-abfd-ab6f095feaac",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "37daf6d5-0ec2-4a81-84d1-5deeb611a71b",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "86432692-b38d-4b3c-a62a-c9fb1f057d8c",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "4cc26d1e-e7f8-42d2-929d-cc89f85215ef",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "1eb3f10b-94fc-4891-b4da-ade83b79d58b",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        }
+      ]
     },
     "Today's Front Pages": {
       "pending": true,
       "installs": null,
       "daily_count": 0,
-      "daily_sample": {}
+      "daily_sample": {},
+      "instance_states": [
+        {
+          "id": "183057e0-6162-4754-a482-d5221882e03a",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "8924ba02-b93b-459c-a567-5e476dc9df13",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "08de0035-242f-441f-9485-8686af575bff",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "1623f98d-f685-4e62-a595-1304e6f3d836",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "acf86ee6-3065-42e3-9be0-1fc563a8c506",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "6b130366-24ec-4db1-895f-acc3033f075f",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "6c392999-98e7-48fd-987f-358438efe2d0",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "330efc5b-1fbf-429c-9653-4ebb301f41e4",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "45cc17e6-ea41-407b-94ba-483e1886ed0d",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "605e7c0c-7ed9-4e46-b178-7dd9a0c1a4e9",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "d3a0247c-2c94-4942-8f4b-f286b05de388",
+          "state": null,
+          "date": null,
+          "gran": "MONTHLY",
+          "report_type": "?"
+        },
+        {
+          "id": "fadae1e6-6ca8-4f40-8dbb-b00f399354e1",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "832e9391-863f-49ce-93d5-dc02bad18973",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "544f3096-a0f9-421d-b8b4-0bb6542e8800",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "dbbabeb6-6f08-4fe8-bdf1-bece98ad1c92",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "a9659670-dca0-48bb-8d7d-6df02700dd93",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "9527ad8a-a376-4868-a14f-bc77d5d8a0a3",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "62e84efa-4038-4b69-99e2-febcd4012463",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "ec79337c-98fa-479e-bd6c-3f62a9bceef2",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "50e8b1ed-178c-44fc-9e16-c4a04969cb65",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "b1186ffa-699c-4ef6-b9a6-1fff77e970a1",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "4eb10966-b573-4095-89cd-60a3807238f5",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "ddcd4d12-2aef-43ce-a834-684beef935b0",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "723ba157-2af2-4a97-83ce-f3ee71c8a8b5",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "6ac4684b-6efd-4629-8157-23e574f43fd0",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "913066e1-56eb-419a-a673-c521cecdf116",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "ff64c1ba-f232-4b38-90e2-4299332ca3ce",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "f18b956b-2e90-4413-97a5-0545566f96a3",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "78812ecb-6d08-406c-9087-c691a059c055",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "2e819863-23aa-495a-b312-d7dc5b4c44cb",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "08267c04-ce2d-46eb-b04f-69f90bc8cfc5",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "2115a3b7-c2dd-463f-ba61-aafc957740b2",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "5b475a74-a196-4e00-b016-a33d016604cf",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "36b6ce3a-50b7-41c3-9a02-63cdef15d682",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "1a5d778c-4ef3-413d-a234-8913621cca1b",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "88c40bea-5dcf-45d6-827d-c7bd03e803c1",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "8e1ae504-7c10-4a49-b457-655d1b7178ad",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "3b974727-bf05-446e-b8c1-bab4f3c2b11c",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        }
+      ]
     },
     "P3": {
       "pending": true,
       "installs": null,
       "daily_count": 0,
-      "daily_sample": {}
+      "daily_sample": {},
+      "instance_states": [
+        {
+          "id": "7f226282-3ede-49f2-acf3-83861e676779",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "2b0f5636-639b-4bc8-b313-80a13173a064",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "202294e8-1c37-4e60-9d37-c939b4b30d9e",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "94238a9b-d0e7-464a-aa9c-8e5215c9f1ce",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        },
+        {
+          "id": "66ebef84-50b0-4b51-a3c0-14cff45e72e1",
+          "state": null,
+          "date": null,
+          "gran": "DAILY",
+          "report_type": "?"
+        }
+      ]
     }
   }
 }
