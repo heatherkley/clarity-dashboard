@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-27T01:12:32.103897Z",
+  "generated": "2026-03-27T01:16:41.319974Z",
   "apps": {
     "Shift": {
       "pending": true,
@@ -17,40 +17,9 @@
             "granularity",
             "processingDate"
           ],
-          "all_attrs": {
-            "granularity": "DAILY",
-            "processingDate": "2026-03-20"
-          }
-        },
-        {
-          "id": "3f5e4235-6023-4229-a500-3b823843a269",
-          "gran": "DAILY",
-          "processingDate": "2026-03-21",
-          "report_id": "r3-64a02ffa-47fb-4453-8868-c31cbb5e56b9",
-          "report_type": "?",
-          "all_attr_keys": [
-            "granularity",
-            "processingDate"
-          ],
-          "all_attrs": {
-            "granularity": "DAILY",
-            "processingDate": "2026-03-21"
-          }
-        },
-        {
-          "id": "e7b0783b-7425-4684-ac77-243df7229e09",
-          "gran": "DAILY",
-          "processingDate": "2026-03-22",
-          "report_id": "r3-64a02ffa-47fb-4453-8868-c31cbb5e56b9",
-          "report_type": "?",
-          "all_attr_keys": [
-            "granularity",
-            "processingDate"
-          ],
-          "all_attrs": {
-            "granularity": "DAILY",
-            "processingDate": "2026-03-22"
-          }
+          "segments_http": 200,
+          "segments_count": 1,
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"0051e575-714e-4f1a-b2ee-e6382f853b0b\",\n    \"attributes\" : {\n      \"checksum\" : \"8877076d460f877e7dabbd881232bb0e\",\n      \"sizeInBytes\" : 1285,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6745610776/aa_downloads/daily/ongoing/20260320/1774001368323/41nj20tsol1or.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226745610776_App%20Downloads%20Standard_Daily_2026-03-20_0051e575-714e-4f1a-b"
         }
       ]
     },
@@ -70,40 +39,9 @@
             "granularity",
             "processingDate"
           ],
-          "all_attrs": {
-            "granularity": "DAILY",
-            "processingDate": "2026-03-20"
-          }
-        },
-        {
-          "id": "8924ba02-b93b-459c-a567-5e476dc9df13",
-          "gran": "DAILY",
-          "processingDate": "2026-03-21",
-          "report_id": "r3-6d93213b-35da-474b-b6a5-254b01a99fd8",
-          "report_type": "?",
-          "all_attr_keys": [
-            "granularity",
-            "processingDate"
-          ],
-          "all_attrs": {
-            "granularity": "DAILY",
-            "processingDate": "2026-03-21"
-          }
-        },
-        {
-          "id": "08de0035-242f-441f-9485-8686af575bff",
-          "gran": "DAILY",
-          "processingDate": "2026-03-22",
-          "report_id": "r3-6d93213b-35da-474b-b6a5-254b01a99fd8",
-          "report_type": "?",
-          "all_attr_keys": [
-            "granularity",
-            "processingDate"
-          ],
-          "all_attrs": {
-            "granularity": "DAILY",
-            "processingDate": "2026-03-22"
-          }
+          "segments_http": 200,
+          "segments_count": 1,
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"e1639eec-0e32-40e2-8b3f-09a4885b1477\",\n    \"attributes\" : {\n      \"checksum\" : \"a35c1243488dcfa7c63d73c2d720f07f\",\n      \"sizeInBytes\" : 1092,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/418572455/aa_downloads/daily/ongoing/20260320/1774001368323/4ffrgik06n5da.csv.gz?response-content-disposition=attachment%3B%20filename%3D%22418572455_App%20Downloads%20Standard_Daily_2026-03-20_e1639eec-0e32-40e2-8b3"
         }
       ]
     },
@@ -123,10 +61,9 @@
             "granularity",
             "processingDate"
           ],
-          "all_attrs": {
-            "granularity": "DAILY",
-            "processingDate": "2026-03-26"
-          }
+          "segments_http": 200,
+          "segments_count": 1,
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"123c8561-4ffb-4fa3-9a00-c713bb48e22b\",\n    \"attributes\" : {\n      \"checksum\" : \"2e85a588bde8cb7ba4e2156d8dba976d\",\n      \"sizeInBytes\" : 513,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6478132244/aa_downloads/daily/ongoing/20260326/1774519759745/12u9a4o47u9sl.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226478132244_App%20Downloads%20Standard_Daily_2026-03-26_123c8561-4ffb-4fa3-9a"
         }
       ]
     }
