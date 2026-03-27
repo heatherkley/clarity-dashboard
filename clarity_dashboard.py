@@ -1977,6 +1977,22 @@ def main():
         f.write(html)
 
     print(f"\n✅  HTML saved → {OUTPUT_FILE}")
+    # Write ASC debug file so we can inspect it via GitHub Pages
+    import datetime as _dt
+    asc_debug_out = {
+        "generated": _dt.datetime.utcnow().isoformat() + "Z",
+        "apps": {}
+    }
+    for grp, d in asc_by_group.items():
+        asc_debug_out["apps"][grp] = {
+            "pending":        d.get("pending", False),
+            "installs":       d.get("installs"),
+            "daily_count":    len(d.get("daily_installs", {})),
+            "daily_sample":   dict(list(d.get("daily_installs", {}).items())[:5]),
+        }
+    with open("asc_debug.json", "w") as f:
+        json.dump(asc_debug_out, f, indent=2)
+    print(f"\u2705  ASC debug → asc_debug.json")
 
     # Generate PDF from compact single-page layout (not the web HTML)
     pdf_html = render_pdf_html(groups, rc_by_group, asc_by_group, len(projects), start_dt, end_dt)
