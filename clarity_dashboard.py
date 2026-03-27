@@ -567,53 +567,80 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
             result["pending"] = True
             return result
 
-        # ── Step 3: find a report that has DAILY instances ──────────────────────────────────
-        # There may be 50+ reports; iterate until we find one with instances.
+        # ── Step 3: find COMPLETE instances across all reports ────────────────────
+        # Iterate ALL reports looking for instances with processingState=COMPLETE.
+        # A COMPLETE instance has downloadable segment files; CREATED/IN_PROGRESS do not.
         instances = []
         for rep in reports:
-            report_id = rep["id"]
+            report_id   = rep["id"]
+            rep_type    = rep.get("attributes", {}).get("reportType", "?")
+            rep_cat     = rep.get("attributes", {}).get("reportCategory", "?")
             for gran in ("DAILY", "MONTHLY"):
                 r4 = requests.get(
                     f"{ASC_BASE}/analyticsReports/{report_id}/instances",
                     headers=hdrs,
-                    params={"filter[granularity]": gran},
+                    params={"filter[granularity]": gran, "filter[processingState]": "COMPLETE"},
                     timeout=30,
                 )
                 if r4.status_code == 200:
                     inst = r4.json().get("data", [])
                     if inst:
                         instances = inst
-                        print(f"    [ASC] Step3 instances ({gran}) for {report_id}: {len(instances)} found")
+                        print(f"    [ASC] Step3 COMPLETE instances ({gran}) for {report_id} "
+                              f"[type={rep_type} cat={rep_cat}]: {len(instances)} found")
                         break
-                else:
-                    pass  # try next report
+                # Non-200 or empty → try next granularity/report
             if instances:
                 break
         if not instances:
-            print(f"    [ASC] Step3: no instances found across {len(reports)} reports")
-        if not instances:
+            # Fallback: try without processingState filter to see what's out there
+            print(f"    [ASC] Step3: no COMPLETE instances — checking unfiltered for diagnostics...")
+            for rep in reports[:3]:
+                report_id = rep["id"]
+                rep_type  = rep.get("attributes", {}).get("reportType", "?")
+                r4 = requests.get(
+                    f"{ASC_BASE}/analyticsReports/{report_id}/instances",
+                    headers=hdrs,
+                    params={"filter[granularity]": "DAILY"},
+                    timeout=30,
+                )
+                if r4.status_code == 200:
+                    inst = r4.json().get("data", [])
+                    for i in inst[:3]:
+                        attrs = i.get("attributes", {})
+                        print(f"      → inst={i['id']} state={attrs.get('processingState')} "
+                              f"date={attrs.get('reportDate')} gran={attrs.get('granularity')}")
+            print(f"    [ASC] Step3: still waiting on Apple to complete processing")
             result["pending"] = True
             return result
 
-        # ── Step 4: find an instance that has segments ────────────────────────
+        # ── Step 4: find an instance that has segments ────────────────────
         segments = []
         for inst in instances:
             instance_id = inst["id"]
+            inst_attrs  = inst.get("attributes", {})
+            print(f"    [ASC] Step4 checking segments for {instance_id} "
+                  f"(state={inst_attrs.get('processingState')} date={inst_attrs.get('reportDate')})")
             r5 = requests.get(
                 f"{ASC_BASE}/analyticsReportInstances/{instance_id}/segments",
                 headers=hdrs, timeout=30,
             )
+            print(f"    [ASC] Step4 segments HTTP {r5.status_code}", end=" ")
             if r5.status_code == 200:
                 segs = r5.json().get("data", [])
+                print(f"({len(segs)} segments)")
                 if segs:
                     segments = segs
-                    print(f"    [ASC] Step4 segments for {instance_id}: {len(segments)} found")
+                    print(f"    [ASC] Step4 found {len(segments)} segments → downloading")
                     break
+                else:
+                    print(f"    [ASC] Step4 empty segments body: {r5.text[:200]}")
+            else:
+                print(f"— {r5.text[:200]}")
         if not segments:
             print(f"    [ASC] Step4: no segments found across {len(instances)} instances")
             result["pending"] = True
             return result
-
         # ── Step 5: download & parse gzipped TSV ─────────────────────────────
         dl_url = segments[0].get("attributes", {}).get("url", "")
         if not dl_url:
