@@ -693,8 +693,14 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
                 result["tsv_columns"]  = cols
                 result["tsv_first_row"] = dict(list(row.items())[:10])
                 first_row = False
-            val  = (row.get("Installations") or row.get("First Time Downloads") or
-                    row.get("Total Downloads") or row.get("Units") or 0)
+            # Apple's Analytics Reports TSV uses "Counts" as the metric column.
+            # Only count "First-time download" rows for installs (not Restore/Update).
+            dl_type = row.get("Download Type", "")
+            if dl_type not in ("First-time download", ""):
+                continue
+            val  = (row.get("Counts") or row.get("Installations") or
+                    row.get("First Time Downloads") or row.get("Total Downloads") or
+                    row.get("Units") or 0)
             date = (row.get("Date") or row.get("date") or row.get("Day") or "").strip()[:10]
             try:
                 count = int(float(str(val).replace(",", "") or 0))
