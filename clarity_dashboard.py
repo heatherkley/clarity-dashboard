@@ -543,26 +543,21 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
 
         print(f"    [ASC] Using request id={ongoing_id}")
 
-        # ── Step 2: get reports from this request (try with and without filter) ───
+        # ── Step 2: get all reports from this request (no filter — filter[reportType] causes 400) ──
         reports = []
-        for type_filter in ({"filter[reportType]": "APP_USAGE"}, {}):
-            r3 = requests.get(
-                f"{ASC_BASE}/analyticsReportRequests/{ongoing_id}/reports",
-                headers=hdrs,
-                params=type_filter,
-                timeout=30,
-            )
-            label = type_filter.get("filter[reportType]", "no filter")
-            print(f"    [ASC] Step2 reports ({label}): HTTP {r3.status_code}", end=" ")
-            if r3.status_code == 200:
-                reports = r3.json().get("data", [])
-                print(f"({len(reports)} reports)")
-                for rep in reports:
-                    print(f"      → id={rep['id']} type={rep.get('attributes',{}).get('reportType')} category={rep.get('attributes',{}).get('reportCategory')}")
-                if reports:
-                    break
-            else:
-                print(f"— {r3.text[:120]}")
+        r3 = requests.get(
+            f"{ASC_BASE}/analyticsReportRequests/{ongoing_id}/reports",
+            headers=hdrs,
+            timeout=30,
+        )
+        print(f"    [ASC] Step2 reports: HTTP {r3.status_code}", end=" ")
+        if r3.status_code == 200:
+            reports = r3.json().get("data", [])
+            print(f"({len(reports)} reports)")
+            for rep in reports[:5]:
+                print(f"      → id={rep['id']} type={rep.get('attributes',{}).get('reportType')} category={rep.get('attributes',{}).get('reportCategory')}")
+        else:
+            print(f"— {r3.text[:120]}")
 
         if not reports:
             # No reports yet — Apple needs up to 72h to generate data for a new request.
@@ -572,25 +567,30 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
             result["pending"] = True
             return result
 
-        # ── Step 3: get the latest instance ──────────────────────────────────────
-        report_id = reports[0]["id"]
+        # ── Step 3: find a report that has DAILY instances ──────────────────────────────────
+        # There may be 50+ reports; iterate until we find one with instances.
         instances = []
-        for gran in ("MONTHLY", "DAILY"):
-            r4 = requests.get(
-                f"{ASC_BASE}/analyticsReports/{report_id}/instances",
-                headers=hdrs,
-                params={"filter[granularity]": gran},
-                timeout=30,
-            )
-            print(f"    [ASC] Step3 instances ({gran}): HTTP {r4.status_code}", end=" ")
-            if r4.status_code == 200:
-                instances = r4.json().get("data", [])
-                print(f"({len(instances)} instances)")
-            else:
-                print(f"— {r4.text[:200]}")
+        for rep in reports:
+            report_id = rep["id"]
+            for gran in ("DAILY", "MONTHLY"):
+                r4 = requests.get(
+                    f"{ASC_BASE}/analyticsReports/{report_id}/instances",
+                    headers=hdrs,
+                    params={"filter[granularity]": gran},
+                    timeout=30,
+                )
+                if r4.status_code == 200:
+                    inst = r4.json().get("data", [])
+                    if inst:
+                        instances = inst
+                        print(f"    [ASC] Step3 instances ({gran}) for {report_id}: {len(instances)} found")
+                        break
+                else:
+                    pass  # try next report
             if instances:
                 break
-
+        if not instances:
+            print(f"    [ASC] Step3: no instances found across {len(reports)} reports")
         if not instances:
             result["pending"] = True
             return result
