@@ -665,20 +665,33 @@ def fetch_appstore(apple_id, key_id, issuer_id, key_file):
             result["pending"] = True
             return result
 
-        r6 = requests.get(dl_url, headers=hdrs, timeout=60)
+        # S3 pre-signed URLs embed auth in the URL — do NOT send Authorization header
+        r6 = requests.get(dl_url, timeout=60)
+        print(f"    [ASC] Step5 download: HTTP {r6.status_code} "
+              f"content-type={r6.headers.get('Content-Type','?')} "
+              f"size={len(r6.content)} bytes")
         if r6.status_code != 200:
-            print(f"    [ASC] Step5 download: HTTP {r6.status_code}")
+            print(f"    [ASC] Step5 download failed: {r6.text[:300]}")
             result["pending"] = True
             return result
 
-        content = gzip.decompress(r6.content).decode("utf-8")
+        # File may be gzip or plain TSV — detect by magic bytes
+        raw = r6.content
+        if raw[:2] == b'\x1f\x8b':
+            content = gzip.decompress(raw).decode("utf-8")
+        else:
+            content = raw.decode("utf-8")
+        print(f"    [ASC] Step5 first 200 chars: {content[:200]}")
         reader  = csv.DictReader(io.StringIO(content), delimiter="\t")
         total_installs = 0
         daily_installs = {}
         first_row = True
         for row in reader:
             if first_row:
-                print(f"    [ASC] Step5 TSV columns: {list(row.keys())[:10]}")
+                cols = list(row.keys())
+                print(f"    [ASC] Step5 TSV columns: {cols[:15]}")
+                result["tsv_columns"]  = cols
+                result["tsv_first_row"] = dict(list(row.items())[:10])
                 first_row = False
             val  = (row.get("Installations") or row.get("First Time Downloads") or
                     row.get("Total Downloads") or row.get("Units") or 0)
@@ -2001,17 +2014,21 @@ def main():
         "apps": {}
     }
     for grp, d in asc_by_group.items():
-        asc_debug_out["apps"][grp] = {
-            "pending":         d.get("pending", False),
-            "installs":        d.get("installs"),
-            "daily_count":     len(d.get("daily_installs", {})),
-            "daily_sample":    dict(list(d.get("daily_installs", {}).items())[:5]),
-            "instance_states": d.get("instance_states", []),
-        }
+        if d is None:
+            asc_debug_out["apps"][grp] = {"error": "fetch_appstore returned None"}
+        else:
+            asc_debug_out["apps"][grp] = {
+                "pending":         d.get("pending", False),
+                "installs":        d.get("installs"),
+                "daily_count":     len(d.get("daily_installs", {})),
+                "daily_sample":    dict(list(d.get("daily_installs", {}).items())[:5]),
+                "instance_states": d.get("instance_states", []),
+                "tsv_columns":     d.get("tsv_columns"),
+                "tsv_first_row":   d.get("tsv_first_row"),
+            }
     with open("asc_debug.json", "w") as f:
         json.dump(asc_debug_out, f, indent=2)
-    print(f"\u2705  ASC debug → asc_debug.json")
-
+    print(f"✅  ASC debug → asc_debug.json")
     # Generate PDF from compact single-page layout (not the web HTML)
     pdf_html = render_pdf_html(groups, rc_by_group, asc_by_group, len(projects), start_dt, end_dt)
 
