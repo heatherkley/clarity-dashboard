@@ -34,8 +34,8 @@
         "users": 10
       },
       "2026-03-30": {
-        "sessions": 8,
-        "users": 5
+        "sessions": 9,
+        "users": 6
       }
     },
     "P3": {
@@ -72,8 +72,8 @@
         "users": 8
       },
       "2026-03-30": {
-        "sessions": 6,
-        "users": 5
+        "sessions": 5,
+        "users": 4
       }
     },
     "Quiet Collection": {
@@ -110,8 +110,8 @@
         "users": 640
       },
       "2026-03-30": {
-        "sessions": 767,
-        "users": 747
+        "sessions": 844,
+        "users": 778
       }
     },
     "Self Speak": {
@@ -186,8 +186,8 @@
         "users": 96
       },
       "2026-03-30": {
-        "sessions": 141,
-        "users": 100
+        "sessions": 144,
+        "users": 103
       }
     },
     "Today's Front Pages": {
@@ -224,8 +224,8 @@
         "users": 3093
       },
       "2026-03-30": {
-        "sessions": 3480,
-        "users": 3699
+        "sessions": 3396,
+        "users": 3610
       }
     }
   },
@@ -363,7 +363,7 @@
         "mrr": 476.0,
         "revenue": 637.0,
         "subscribers": 54,
-        "trials": 110
+        "trials": 111
       }
     }
   }
