@@ -1070,9 +1070,9 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
     chart_data_json = json.dumps(chart_data)
 
     # ── Summary totals ──────────────────────────────────────────────────────────
-    all_results    = [p for g in groups.values() for p in g]
-    total_sessions = sum(extract_clarity_metrics(r["raw"]).get("sessions", 0) for r in all_results)
-    total_users    = sum(extract_clarity_metrics(r["raw"]).get("users",    0) for r in all_results)
+    # ── Summary totals — sum history across all groups ──────────────────────
+    total_sessions = sum(sum(chart_data.get(g, {}).get("sessions", {}).get("values", [])) for g in sorted_group_names)
+    total_users    = sum(sum(chart_data.get(g, {}).get("users",    {}).get("values", [])) for g in sorted_group_names)
     total_mrr = total_revenue = 0.0
     for rc_data in rc_by_group.values():
         m = rc_data.get("_metrics") or extract_revenuecat_metrics(rc_data)
@@ -1083,8 +1083,9 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
     overview_cards_html = ""
     for gname in sorted_group_names:
         members    = groups[gname]
-        g_sessions = sum(extract_clarity_metrics(r["raw"]).get("sessions", 0) for r in members)
-        g_users    = sum(extract_clarity_metrics(r["raw"]).get("users",    0) for r in members)
+        _gcd       = chart_data.get(gname, {})
+        g_sessions = sum(_gcd.get("sessions", {}).get("values", []))
+        g_users    = sum(_gcd.get("users",    {}).get("values", []))
         asc_g      = asc_by_group.get(gname) or {}
         installs   = asc_g.get("installs")
         pending    = asc_g.get("pending", False)
@@ -1139,8 +1140,9 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         members    = groups[gname]
         t_id       = tid(gname)
         color      = gcolor(gname)
-        g_sessions = sum(extract_clarity_metrics(r["raw"]).get("sessions", 0) for r in members)
-        g_users    = sum(extract_clarity_metrics(r["raw"]).get("users",    0) for r in members)
+        gcd        = chart_data.get(gname, {})
+        g_sessions = sum(gcd.get("sessions", {}).get("values", []))
+        g_users    = sum(gcd.get("users",    {}).get("values", []))
         asc_g        = asc_by_group.get(gname) or {}
         installs     = asc_g.get("installs")
         pending      = asc_g.get("pending", False)
