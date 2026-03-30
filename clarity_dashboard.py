@@ -1102,11 +1102,11 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         if pending:
             inst_str = "<span style='color:#64748b;font-size:0.72em'>⏳ iOS pending (up to 72h)</span>"
         elif installs is not None:
-            inst_str = f"<b>{int(installs):,}</b> <span class='ov-sub'>iOS dl</span>"
+            inst_str = f"<b>{int(installs):,}</b> <span class='ov-sub'>iOS downloads</span>"
 
         gp_str = ""
         if gp_installs is not None:
-            gp_str = f"<b>{int(gp_installs):,}</b> <span class='ov-sub'>Android dl</span>"
+            gp_str = f"<b>{int(gp_installs):,}</b> <span class='ov-sub'>Android downloads</span>"
 
         rc_line = ""
         if mrr:
