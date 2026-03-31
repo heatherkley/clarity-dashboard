@@ -67,11 +67,12 @@ def fetch_project(name, token, start_dt, end_dt):
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
+    # Clarity's project-live-insights API only supports numOfDays=1,2,3 (last 24/48/72h).
+    # The startDate/endDate/granularity params are not supported and are ignored by the API.
+    # We use numOfDays=3 to get the maximum available window (72 hours).
     params = {
-        "startDate":   start_dt.strftime("%Y-%m-%d"),
-        "endDate":     end_dt.strftime("%Y-%m-%d"),
-        "granularity": "daily",
-        "metrics":     "Traffic,EngagementTime,Device",
+        "numOfDays": 3,
+        "metrics":   "Traffic,EngagementTime,Device",
     }
     try:
         r = requests.get(CLARITY_API, headers=headers, params=params, timeout=30)
@@ -999,8 +1000,8 @@ def platform_row(platform, data, raw):
           <span class="status-dot" style="background:{dot_col}" title="{status_title}"></span>
         </div>
         <div class="metrics">
-          {metric_block("Sessions", sessions_str)}
-          {metric_block("Users", users_str)}
+          {metric_block("Sessions (72h)", sessions_str)}
+          {metric_block("Users (72h)", users_str)}
           {metric_block("Screens", sps_str)}
           {metric_block("Eng. Time", eng_str)}
         </div>
