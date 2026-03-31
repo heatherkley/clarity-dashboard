@@ -101,19 +101,42 @@ def get_metric(raw_list, metric_name):
     return {}
 
 def extract_clarity_metrics(raw):
-    """Parse Clarity's array-of-metrics response into a flat dict."""
+    """Parse Clarity's array-of-metrics response into a flat dict, summing all daily entries."""
     if not isinstance(raw, list):
         return {}
-    traffic    = get_metric(raw, "Traffic")
-    engagement = get_metric(raw, "EngagementTime")
 
-    # Device breakdown — array of {name, sessionsCount}
+    # Sum Traffic metrics across all daily entries
+    total_sessions   = 0.0
+    total_users      = 0.0
+    weighted_sps_sum = 0.0   # for weighted-average screens/session
+
+    for item in raw:
+        if item.get("metricName") == "Traffic":
+            for info in item.get("information", []):
+                sess = safe_float(info.get("totalSessionCount", 0))
+                total_sessions   += sess
+                total_users      += safe_float(info.get("distinctUserCount", 0))
+                sps               = safe_float(info.get("screensPerSessionPercentage", 0))
+                weighted_sps_sum += sess * sps
+            break
+
+    screens_per_session = safe_float(weighted_sps_sum / total_sessions) if total_sessions > 0 else 0.0
+
+    # Sum EngagementTime across all daily entries
+    total_engagement = 0.0
+    for item in raw:
+        if item.get("metricName") == "EngagementTime":
+            for info in item.get("information", []):
+                total_engagement += safe_float(info.get("totalTime", 0))
+            break
+
+    # Device breakdown — already aggregate (not per-day), no summing needed
     device_info = []
     for item in raw:
         if item.get("metricName") == "Device":
             device_info = item.get("information", [])
             break
-    total_sessions = safe_float(traffic.get("totalSessionCount", 0))
+
     # Normalize device names (Clarity returns "PC", "Mobile", "Tablet", "Desktop")
     DEVICE_NAME_NORM = {"Pc": "PC", "Mobile": "Mobile", "Tablet": "Tablet", "Desktop": "PC"}
     devices = {}
@@ -125,14 +148,14 @@ def extract_clarity_metrics(raw):
         devices[name] = {"count": int(count), "pct": pct}
 
     return {
-        "sessions":         total_sessions,
-        "users":            safe_float(traffic.get("distinctUserCount",          0)),
-        "screensPerSession":safe_float(traffic.get("screensPerSessionPercentage",0)),
-        "engagementSec":    safe_float(engagement.get("totalTime",               0)),
-        "devices":          devices,
+        "sessions":          safe_float(total_sessions),
+        "users":             safe_float(total_users),
+        "screensPerSession": screens_per_session,
+        "engagementSec":     safe_float(total_engagement),
+        "devices":           devices,
     }
 
-def extract_clarity_daily(raw):
+def extract_clarity_daily(raw):def extract_clarity_daily(raw):
     """Extract per-day {date: {sessions, users}} from Clarity granularity=daily response."""
     if not isinstance(raw, list):
         return {}
