@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-31T12:02:45.976198Z",
+  "generated": "2026-03-31T12:19:38.446580Z",
   "apps": {
     "Shift": {
       "pending": false,
@@ -155,6 +155,15 @@
       }
     },
     "Footsteps with Jesus": {
+      "pending": true,
+      "installs": null,
+      "daily_count": 0,
+      "daily_sample": {},
+      "instance_states": [],
+      "tsv_columns": null,
+      "tsv_first_row": null
+    },
+    "Self Speak": {
       "pending": true,
       "installs": null,
       "daily_count": 0,
