@@ -155,7 +155,7 @@ def extract_clarity_metrics(raw):
         "devices":           devices,
     }
 
-def extract_clarity_daily(raw):def extract_clarity_daily(raw):
+def extract_clarity_daily(raw):
     """Extract per-day {date: {sessions, users}} from Clarity granularity=daily response."""
     if not isinstance(raw, list):
         return {}
