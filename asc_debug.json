@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-31T18:58:19.016219Z",
+  "generated": "2026-04-01T08:17:52.662222Z",
   "apps": {
     "Shift": {
       "pending": false,
@@ -155,13 +155,56 @@
       }
     },
     "Footsteps with Jesus": {
-      "pending": true,
-      "installs": null,
-      "daily_count": 0,
-      "daily_sample": {},
-      "instance_states": [],
-      "tsv_columns": null,
-      "tsv_first_row": null
+      "pending": false,
+      "installs": 0,
+      "daily_count": 2,
+      "daily_sample": {
+        "2026-03-30": 0,
+        "2026-03-31": 0
+      },
+      "instance_states": [
+        {
+          "id": "593a986d-2e3a-4493-a3b2-c32155aa0696",
+          "gran": "DAILY",
+          "processingDate": "2026-04-01",
+          "report_id": "r8-9b94ca4b-babf-4a18-8250-d59d4d784ad1",
+          "report_type": "?",
+          "all_attr_keys": [
+            "granularity",
+            "processingDate"
+          ],
+          "segments_http": 200,
+          "segments_count": 1,
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"05728370-7a82-4a87-aaa1-d98768ec378e\",\n    \"attributes\" : {\n      \"checksum\" : \"e04fe1df1742055dbe9174796f9eab72\",\n      \"sizeInBytes\" : 353,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6702027471/app_sessions/daily/ongoing/20260401/1775022529470/774h44kpsubkd.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226702027471_App%20Sessions%20Standard_Daily_2026-04-01_05728370-7a82-4a87-aaa"
+        }
+      ],
+      "tsv_columns": [
+        "Date",
+        "App Name",
+        "App Apple Identifier",
+        "App Version",
+        "Device",
+        "Platform Version",
+        "Source Type",
+        "Page Type",
+        "App Download Date",
+        "Territory",
+        "Sessions",
+        "Total Session Duration",
+        "Unique Devices"
+      ],
+      "tsv_first_row": {
+        "Date": "2026-03-30",
+        "App Name": "Footsteps with Jesus",
+        "App Apple Identifier": "6702027471",
+        "App Version": "1.1.5",
+        "Device": "iPhone",
+        "Platform Version": "iOS 18.6",
+        "Source Type": "App Store search",
+        "Page Type": "Product page",
+        "App Download Date": "2026-03-29",
+        "Territory": "US"
+      }
     },
     "Self Speak": {
       "pending": true,
