@@ -1252,16 +1252,6 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         for r in sorted(members, key=lambda x: PLATFORM_ORDER.get(x["platform"], 99)):
             platform_rows_html += platform_row(r["platform"], r["data"], r["raw"])
 
-        combined_block = ""
-        if len(members) > 1:
-            combined_block = f"""
-          <div class="combined-total">
-            <span class="combined-label">Combined</span>
-            <span class="combined-stat">{int(g_sessions):,} sessions</span>
-            <span class="combined-sep">&middot;</span>
-            <span class="combined-stat">{int(g_users):,} users</span>
-          </div>"""
-
         rc_html_block  = revenuecat_block(rc)
         asc_html_block = appstore_block(asc_g)
         gp_html_block  = googleplay_block(gp_g)
@@ -1283,7 +1273,6 @@ def render_html(groups, rc_by_group, asc_by_group, total_projects, start_dt, end
         <span class="project-name">{gname}</span>
         <span class="platform-count">{len(members)} platform{"s" if len(members)!=1 else ""}</span>
       </div>
-      {combined_block}
       {platform_rows_html}
     </div>
   </div>
