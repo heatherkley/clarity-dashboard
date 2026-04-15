@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-14T08:26:56.020170Z",
+  "generated": "2026-04-15T08:28:29.549159Z",
   "apps": {
     "Shift": {
       "pending": false,
@@ -104,55 +104,13 @@
       }
     },
     "P3": {
-      "pending": false,
-      "installs": 8,
-      "daily_count": 2,
-      "daily_sample": {
-        "2026-03-24": 4,
-        "2026-03-25": 4
-      },
-      "instance_states": [
-        {
-          "id": "7f226282-3ede-49f2-acf3-83861e676779",
-          "gran": "DAILY",
-          "processingDate": "2026-03-26",
-          "report_id": "r3-58b88a60-b77e-4c3a-b82e-68f574e14624",
-          "report_type": "?",
-          "all_attr_keys": [
-            "granularity",
-            "processingDate"
-          ],
-          "segments_http": 200,
-          "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"123c8561-4ffb-4fa3-9a00-c713bb48e22b\",\n    \"attributes\" : {\n      \"checksum\" : \"2e85a588bde8cb7ba4e2156d8dba976d\",\n      \"sizeInBytes\" : 513,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6478132244/aa_downloads/daily/ongoing/20260326/1774519759745/12u9a4o47u9sl.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226478132244_App%20Downloads%20Standard_Daily_2026-03-26_123c8561-4ffb-4fa3-9a"
-        }
-      ],
-      "tsv_columns": [
-        "Date",
-        "App Name",
-        "App Apple Identifier",
-        "Download Type",
-        "App Version",
-        "Device",
-        "Platform Version",
-        "Source Type",
-        "Page Type",
-        "Pre-Order",
-        "Territory",
-        "Counts"
-      ],
-      "tsv_first_row": {
-        "Date": "2026-03-24",
-        "App Name": "P3: Pulse of Perseverance",
-        "App Apple Identifier": "6478132244",
-        "Download Type": "Auto-update",
-        "App Version": "1.0.25",
-        "Device": "iPad",
-        "Platform Version": "iOS 17.5",
-        "Source Type": "App Store search",
-        "Page Type": "No page",
-        "Pre-Order": ""
-      }
+      "pending": true,
+      "installs": null,
+      "daily_count": 0,
+      "daily_sample": {},
+      "instance_states": [],
+      "tsv_columns": null,
+      "tsv_first_row": null
     },
     "Footsteps with Jesus": {
       "pending": false,
@@ -205,55 +163,13 @@
       }
     },
     "Self Speak": {
-      "pending": false,
-      "installs": 2,
-      "daily_count": 2,
-      "daily_sample": {
-        "2026-03-30": 1,
-        "2026-03-31": 1
-      },
-      "instance_states": [
-        {
-          "id": "1500c353-c493-491d-bf02-c1b8eb250d28",
-          "gran": "DAILY",
-          "processingDate": "2026-04-01",
-          "report_id": "r3-bb5670e3-0394-4a92-aeb8-325e2d3c6683",
-          "report_type": "?",
-          "all_attr_keys": [
-            "granularity",
-            "processingDate"
-          ],
-          "segments_http": 200,
-          "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"d31e191d-3c22-40f9-b2a4-778fdef49272\",\n    \"attributes\" : {\n      \"checksum\" : \"45dae3b883a93f3e94a337b79a48e0c4\",\n      \"sizeInBytes\" : 252,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6504500031/aa_downloads/daily/ongoing/20260401/1775038127475/3j0el20kfea5i.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226504500031_App%20Downloads%20Standard_Daily_2026-04-01_d31e191d-3c22-40f9-b2"
-        }
-      ],
-      "tsv_columns": [
-        "Date",
-        "App Name",
-        "App Apple Identifier",
-        "Download Type",
-        "App Version",
-        "Device",
-        "Platform Version",
-        "Source Type",
-        "Page Type",
-        "Pre-Order",
-        "Territory",
-        "Counts"
-      ],
-      "tsv_first_row": {
-        "Date": "2026-03-30",
-        "App Name": "SelfSpeak Voice Affirmations",
-        "App Apple Identifier": "6504500031",
-        "Download Type": "Auto-update",
-        "App Version": "1.0.22",
-        "Device": "iPhone",
-        "Platform Version": "iOS 26.2",
-        "Source Type": "App Store search",
-        "Page Type": "No page",
-        "Pre-Order": ""
-      }
+      "pending": true,
+      "installs": null,
+      "daily_count": 0,
+      "daily_sample": {},
+      "instance_states": [],
+      "tsv_columns": null,
+      "tsv_first_row": null
     }
   }
 }
