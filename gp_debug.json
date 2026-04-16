@@ -5,38 +5,38 @@
     {
       "group": "Shift",
       "status": "ok",
-      "installs": 90,
-      "days": 10
+      "installs": 102,
+      "days": 11
     },
     {
       "group": "Today's Front Pages",
       "status": "ok",
-      "installs": 78,
-      "days": 10
+      "installs": 90,
+      "days": 11
     },
     {
       "group": "P3",
       "status": "ok",
       "installs": 6,
-      "days": 10
+      "days": 11
     },
     {
       "group": "Quiet Collection",
       "status": "ok",
-      "installs": 40,
-      "days": 10
+      "installs": 46,
+      "days": 11
     },
     {
       "group": "Self Speak",
       "status": "ok",
-      "installs": 40,
-      "days": 10
+      "installs": 46,
+      "days": 11
     },
     {
       "group": "Footsteps with Jesus",
       "status": "ok",
-      "installs": 156,
-      "days": 10
+      "installs": 160,
+      "days": 11
     }
   ]
 }
