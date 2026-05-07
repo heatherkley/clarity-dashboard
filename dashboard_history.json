@@ -160,6 +160,10 @@
       "2026-05-06": {
         "sessions": 49,
         "users": 37
+      },
+      "2026-05-07": {
+        "sessions": 33,
+        "users": 28
       }
     },
     "P3": {
@@ -330,6 +334,10 @@
       "2026-05-03": {
         "sessions": 2,
         "users": 2
+      },
+      "2026-05-07": {
+        "sessions": 1,
+        "users": 1
       }
     },
     "Quiet Collection": {
@@ -516,6 +524,10 @@
       "2026-05-06": {
         "sessions": 181,
         "users": 170
+      },
+      "2026-05-07": {
+        "sessions": 180,
+        "users": 165
       }
     },
     "Self Speak": {
@@ -694,6 +706,10 @@
       "2026-05-06": {
         "sessions": 17,
         "users": 12
+      },
+      "2026-05-07": {
+        "sessions": 19,
+        "users": 15
       }
     },
     "Shift": {
@@ -880,6 +896,10 @@
       "2026-05-06": {
         "sessions": 495,
         "users": 410
+      },
+      "2026-05-07": {
+        "sessions": 300,
+        "users": 242
       }
     },
     "Today's Front Pages": {
@@ -1066,6 +1086,10 @@
       "2026-05-06": {
         "sessions": 2921,
         "users": 3352
+      },
+      "2026-05-07": {
+        "sessions": 3004,
+        "users": 3318
       }
     }
   },
@@ -1432,6 +1456,14 @@
         "revenue": 113.0,
         "subscribers": 20,
         "trials": 5
+      },
+      "2026-05-07": {
+        "churn_rate": 0.0,
+        "churned": 0,
+        "mrr": 106.0,
+        "revenue": 122.0,
+        "subscribers": 21,
+        "trials": 3
       }
     },
     "Shift": {
@@ -1796,6 +1828,14 @@
         "revenue": 1083.0,
         "subscribers": 72,
         "trials": 56
+      },
+      "2026-05-07": {
+        "churn_rate": 0.0,
+        "churned": 0,
+        "mrr": 722.0,
+        "revenue": 1149.0,
+        "subscribers": 74,
+        "trials": 57
       }
     }
   }
