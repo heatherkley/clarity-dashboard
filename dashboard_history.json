@@ -1684,6 +1684,14 @@
         "revenue": 79.0,
         "subscribers": 22,
         "trials": 2
+      },
+      "2026-05-16": {
+        "churn_rate": 0.0,
+        "churned": 0,
+        "mrr": 113.0,
+        "revenue": 79.0,
+        "subscribers": 22,
+        "trials": 1
       }
     },
     "Shift": {
@@ -2120,6 +2128,14 @@
         "revenue": 910.0,
         "subscribers": 79,
         "trials": 64
+      },
+      "2026-05-16": {
+        "churn_rate": 0.0,
+        "churned": 0,
+        "mrr": 766.0,
+        "revenue": 937.0,
+        "subscribers": 80,
+        "trials": 62
       }
     }
   }
