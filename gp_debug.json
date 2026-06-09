@@ -18,7 +18,7 @@
       "group": "P3",
       "status": "ok",
       "installs": 0,
-      "days": 3
+      "days": 4
     },
     {
       "group": "Quiet Collection",
@@ -29,14 +29,14 @@
     {
       "group": "Self Speak",
       "status": "ok",
-      "installs": 12,
-      "days": 4
+      "installs": 16,
+      "days": 5
     },
     {
       "group": "Footsteps with Jesus",
       "status": "ok",
-      "installs": 32,
-      "days": 3
+      "installs": 46,
+      "days": 4
     }
   ]
 }
