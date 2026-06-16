@@ -1,19 +1,19 @@
 {
-  "generated": "2026-06-15T13:14:29.270630Z",
+  "generated": "2026-06-16T12:13:12.713118Z",
   "apps": {
     "Shift": {
       "pending": false,
-      "installs": 50,
+      "installs": 43,
       "daily_count": 2,
       "daily_sample": {
-        "2026-05-09": 32,
-        "2026-05-10": 18
+        "2026-05-10": 18,
+        "2026-05-11": 25
       },
       "instance_states": [
         {
-          "id": "c95b9a04-3d60-4e00-a092-67d3f098c403",
+          "id": "85d01441-6b6b-4a4b-a55d-5f01392d14d1",
           "gran": "DAILY",
-          "processingDate": "2026-05-11",
+          "processingDate": "2026-05-12",
           "report_id": "r3-64a02ffa-47fb-4453-8868-c31cbb5e56b9",
           "report_type": "?",
           "all_attr_keys": [
@@ -22,7 +22,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"4e4bed4b-ba74-4168-9cea-3b668f50eef3\",\n    \"attributes\" : {\n      \"checksum\" : \"1a4424346458c979ef21fbd829fa586a\",\n      \"sizeInBytes\" : 636,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6745610776/aa_downloads/daily/ongoing/20260511/1778494114846/1p73k2hil8phm.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226745610776_App%20Downloads%20Standard_Daily_2026-05-11_4e4bed4b-ba74-4168-9c"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"346d6bfe-177c-456c-918c-b0f3f9be457f\",\n    \"attributes\" : {\n      \"checksum\" : \"c07e307ed350cf6410f30cfbe0ee289c\",\n      \"sizeInBytes\" : 1642,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6745610776/aa_downloads/daily/ongoing/20260512/1778580569150/1t8ku9hl7n5im.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226745610776_App%20Downloads%20Standard_Daily_2026-05-12_346d6bfe-177c-456c-9"
         }
       ],
       "tsv_columns": [
@@ -40,31 +40,31 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-05-10",
+        "Date": "2026-05-11",
         "App Name": "Shift: The Global Irish App",
         "App Apple Identifier": "6745610776",
         "Download Type": "Auto-update",
-        "App Version": "1.1.13",
-        "Device": "iPad",
-        "Platform Version": "iOS 26.4",
+        "App Version": "1.1.14",
+        "Device": "iPhone",
+        "Platform Version": "iOS 26.5",
         "Source Type": "App Store search",
-        "Page Type": "Product page",
+        "Page Type": "No page",
         "Pre-Order": ""
       }
     },
     "Today's Front Pages": {
       "pending": false,
-      "installs": 186,
+      "installs": 180,
       "daily_count": 2,
       "daily_sample": {
-        "2026-05-09": 83,
-        "2026-05-10": 103
+        "2026-05-10": 103,
+        "2026-05-11": 77
       },
       "instance_states": [
         {
-          "id": "603cc2bc-76b8-439a-9b9b-c6c92c5f28b1",
+          "id": "a17daeed-1cd3-43de-8115-252b404e2684",
           "gran": "DAILY",
-          "processingDate": "2026-05-11",
+          "processingDate": "2026-05-12",
           "report_id": "r3-6d93213b-35da-474b-b6a5-254b01a99fd8",
           "report_type": "?",
           "all_attr_keys": [
@@ -73,7 +73,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"d735aeca-74e7-4233-a413-221cec686204\",\n    \"attributes\" : {\n      \"checksum\" : \"284f62f31bb5692cd0e2a2d68092b331\",\n      \"sizeInBytes\" : 1765,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/418572455/aa_downloads/daily/ongoing/20260511/1778494114846/26vc2k9m3at65.csv.gz?response-content-disposition=attachment%3B%20filename%3D%22418572455_App%20Downloads%20Standard_Daily_2026-05-11_d735aeca-74e7-4233-a41"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"1cf362c6-0657-43fe-9d1f-36e945f05adc\",\n    \"attributes\" : {\n      \"checksum\" : \"480404cb573d2e6948d32338216dc510\",\n      \"sizeInBytes\" : 1636,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/418572455/aa_downloads/daily/ongoing/20260512/1778580569150/2b0tcr9olp975.csv.gz?response-content-disposition=attachment%3B%20filename%3D%22418572455_App%20Downloads%20Standard_Daily_2026-05-12_1cf362c6-0657-43fe-9d1"
         }
       ],
       "tsv_columns": [
@@ -91,30 +91,30 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-05-09",
+        "Date": "2026-05-11",
         "App Name": "Today's Front Pages",
         "App Apple Identifier": "418572455",
-        "Download Type": "Restore",
-        "App Version": "4.1.0",
-        "Device": "iPhone",
-        "Platform Version": "iOS 17.7",
-        "Source Type": "App Store search",
+        "Download Type": "Manual update",
+        "App Version": "4.1.10",
+        "Device": "iPad",
+        "Platform Version": "iOS 26.3",
+        "Source Type": "Unavailable",
         "Page Type": "No page",
         "Pre-Order": ""
       }
     },
     "P3": {
       "pending": false,
-      "installs": 1,
+      "installs": 2,
       "daily_count": 1,
       "daily_sample": {
-        "2026-05-09": 1
+        "2026-05-11": 2
       },
       "instance_states": [
         {
-          "id": "66f70674-255b-4fc9-8029-81ac97c79dcd",
+          "id": "04324729-0071-479a-9197-fe77d69051b2",
           "gran": "DAILY",
-          "processingDate": "2026-05-11",
+          "processingDate": "2026-05-12",
           "report_id": "r3-58b88a60-b77e-4c3a-b82e-68f574e14624",
           "report_type": "?",
           "all_attr_keys": [
@@ -123,7 +123,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"885a1e73-373b-49a3-b24d-d86626b0db24\",\n    \"attributes\" : {\n      \"checksum\" : \"67c959f5cd189c40ea6a858e064e62b7\",\n      \"sizeInBytes\" : 344,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6478132244/aa_downloads/daily/ongoing/20260511/1778494114846/paoe21am601i.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226478132244_App%20Downloads%20Standard_Daily_2026-05-11_885a1e73-373b-49a3-b24"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"5296fe2e-22a6-425b-a767-86f90760198c\",\n    \"attributes\" : {\n      \"checksum\" : \"9fca366c89621b4f9534ce45837e5b86\",\n      \"sizeInBytes\" : 322,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6478132244/aa_downloads/daily/ongoing/20260512/1778580569150/tc9o91d8kc2i.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226478132244_App%20Downloads%20Standard_Daily_2026-05-12_5296fe2e-22a6-425b-a76"
         }
       ],
       "tsv_columns": [
@@ -147,8 +147,8 @@
         "Download Type": "Auto-update",
         "App Version": "1.0.27",
         "Device": "iPhone",
-        "Platform Version": "iOS 18.1",
-        "Source Type": "App Store search",
+        "Platform Version": "iOS 26.4",
+        "Source Type": "Web referrer",
         "Page Type": "Product page",
         "Pre-Order": ""
       }
@@ -162,9 +162,9 @@
       },
       "instance_states": [
         {
-          "id": "903bc87a-dcc0-476d-b456-e2469317b003",
+          "id": "2ff715df-a223-4d89-9074-140628f6b7f7",
           "gran": "DAILY",
-          "processingDate": "2026-05-11",
+          "processingDate": "2026-05-12",
           "report_id": "r3-9b94ca4b-babf-4a18-8250-d59d4d784ad1",
           "report_type": "?",
           "all_attr_keys": [
@@ -173,7 +173,7 @@
           ],
           "segments_http": 200,
           "segments_count": 2,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"6a8df2ce-de83-487f-a3b0-95ef8da64103\",\n    \"attributes\" : {\n      \"checksum\" : \"6442222fda25b5aefbfc9e3e4e502d38\",\n      \"sizeInBytes\" : 298,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6702027471/aa_downloads/daily/ongoing/20260511/1778494114846/1k0rcpdhbmnnd.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226702027471_App%20Downloads%20Standard_Daily_2026-05-11_6a8df2ce-de83-487f-a3"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"c54bd6a1-3a74-4ec3-af38-f8d18db7e13d\",\n    \"attributes\" : {\n      \"checksum\" : \"478794139c9f31696a9b9a0e804943a1\",\n      \"sizeInBytes\" : 307,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6702027471/aa_downloads/daily/ongoing/20260512/1778580569150/1o2cn0hju53od.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226702027471_App%20Downloads%20Standard_Daily_2026-05-12_c54bd6a1-3a74-4ec3-af"
         }
       ],
       "tsv_columns": [
@@ -197,24 +197,25 @@
         "Download Type": "First-time download",
         "App Version": "1.1.6",
         "Device": "iPhone",
-        "Platform Version": "iOS 18.6",
-        "Source Type": "App referrer",
+        "Platform Version": "iOS 26.4",
+        "Source Type": "App Store browse",
         "Page Type": "Product page",
         "Pre-Order": ""
       }
     },
     "Self Speak": {
       "pending": false,
-      "installs": 1,
-      "daily_count": 1,
+      "installs": 2,
+      "daily_count": 2,
       "daily_sample": {
-        "2026-05-10": 1
+        "2026-05-10": 1,
+        "2026-05-11": 1
       },
       "instance_states": [
         {
-          "id": "6870a0fa-a191-41db-98aa-5c28ffd4ea42",
+          "id": "d3ea489f-0df8-47ce-b6ef-bae4e38dc96a",
           "gran": "DAILY",
-          "processingDate": "2026-05-11",
+          "processingDate": "2026-05-12",
           "report_id": "r3-bb5670e3-0394-4a92-aeb8-325e2d3c6683",
           "report_type": "?",
           "all_attr_keys": [
@@ -223,7 +224,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"96683ebf-97dd-4775-9473-be031a1a1a0e\",\n    \"attributes\" : {\n      \"checksum\" : \"7272f5f08420cba2665a1d27e590aea3\",\n      \"sizeInBytes\" : 239,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6504500031/aa_downloads/daily/ongoing/20260511/1778494114846/sfb57dbfalqt.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226504500031_App%20Downloads%20Standard_Daily_2026-05-11_96683ebf-97dd-4775-947"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"7b96d484-f8d4-4f16-bb9d-eec7288bdde4\",\n    \"attributes\" : {\n      \"checksum\" : \"9a1398dd7705ec00b1aeec88a75a8d7d\",\n      \"sizeInBytes\" : 259,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6504500031/aa_downloads/daily/ongoing/20260512/1778580569150/10gsfede1p1rt.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226504500031_App%20Downloads%20Standard_Daily_2026-05-12_7b96d484-f8d4-4f16-bb"
         }
       ],
       "tsv_columns": [
@@ -241,15 +242,15 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-05-10",
+        "Date": "2026-05-11",
         "App Name": "SelfSpeak Voice Affirmations",
         "App Apple Identifier": "6504500031",
-        "Download Type": "Redownload",
+        "Download Type": "First-time download",
         "App Version": "1.0.22",
-        "Device": "iPad",
-        "Platform Version": "iOS 26.4",
+        "Device": "iPhone",
+        "Platform Version": "iOS 26.2",
         "Source Type": "App Store search",
-        "Page Type": "No page",
+        "Page Type": "Product page",
         "Pre-Order": ""
       }
     }
