@@ -1,29 +1,15 @@
 {
-  "generated": "2026-06-29T12:01:06.530088Z",
+  "generated": "2026-06-30T10:34:03.335242Z",
   "apps": {
     "Shift": {
       "pending": false,
-      "installs": 22,
+      "installs": 54,
       "daily_count": 2,
       "daily_sample": {
-        "2026-05-25": 15,
-        "2026-05-26": 7
+        "2026-05-24": 39,
+        "2026-05-25": 15
       },
       "instance_states": [
-        {
-          "id": "ab6a80c9-2707-44b9-8939-742c9b96f139",
-          "gran": "DAILY",
-          "processingDate": "2026-05-25",
-          "report_id": "r3-64a02ffa-47fb-4453-8868-c31cbb5e56b9",
-          "report_type": "?",
-          "all_attr_keys": [
-            "granularity",
-            "processingDate"
-          ],
-          "segments_http": 500,
-          "segments_count": 0,
-          "segments_body": "{\r\n\t\"errors\": [{\r\n\t\t\"status\": \"500\",\r\n\t\t\"code\": \"UNEXPECTED_ERROR\",\r\n\t\t\"title\": \"An unexpected error occurred.\",\r\n\t\t\"detail\": \"An unexpected error occurred on the server side. If this issue continues, contact us at https://developer.apple.com/contact/.\"\r\n\t}]\r\n}"
-        },
         {
           "id": "f10b5f50-2a6f-4397-b869-5833cd863126",
           "gran": "DAILY",
@@ -34,23 +20,9 @@
             "granularity",
             "processingDate"
           ],
-          "segments_http": 500,
-          "segments_count": 0,
-          "segments_body": "{\r\n\t\"errors\": [{\r\n\t\t\"status\": \"500\",\r\n\t\t\"code\": \"UNEXPECTED_ERROR\",\r\n\t\t\"title\": \"An unexpected error occurred.\",\r\n\t\t\"detail\": \"An unexpected error occurred on the server side. If this issue continues, contact us at https://developer.apple.com/contact/.\"\r\n\t}]\r\n}"
-        },
-        {
-          "id": "33fb8ae1-9fce-42ac-86c5-8a288f532c2b",
-          "gran": "DAILY",
-          "processingDate": "2026-05-27",
-          "report_id": "r3-64a02ffa-47fb-4453-8868-c31cbb5e56b9",
-          "report_type": "?",
-          "all_attr_keys": [
-            "granularity",
-            "processingDate"
-          ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"8ca08864-e99a-483f-ada8-382b56ae9014\",\n    \"attributes\" : {\n      \"checksum\" : \"da206458eac4c21f8611ad5225e8c221\",\n      \"sizeInBytes\" : 975,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6745610776/aa_downloads/daily/ongoing/20260527/1779876488495/5llu6tgrrjfq7.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226745610776_App%20Downloads%20Standard_Daily_2026-05-27_8ca08864-e99a-483f-ad"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"a71a706f-4a41-4c3d-ada8-b7d608b8be1c\",\n    \"attributes\" : {\n      \"checksum\" : \"59e96212a0816bde7af24fe5386b67fd\",\n      \"sizeInBytes\" : 1427,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6745610776/aa_downloads/daily/ongoing/20260526/1779790071440/6ad8l8gp96858.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226745610776_App%20Downloads%20Standard_Daily_2026-05-26_a71a706f-4a41-4c3d-a"
         }
       ],
       "tsv_columns": [
@@ -68,13 +40,13 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-05-26",
+        "Date": "2026-05-25",
         "App Name": "Shift: The Global Irish App",
         "App Apple Identifier": "6745610776",
         "Download Type": "Auto-update",
         "App Version": "1.1.17",
         "Device": "iPhone",
-        "Platform Version": "iOS 26.4",
+        "Platform Version": "iOS 26.3",
         "Source Type": "App Store search",
         "Page Type": "No page",
         "Pre-Order": ""
@@ -82,17 +54,45 @@
     },
     "Today's Front Pages": {
       "pending": false,
-      "installs": 98,
+      "installs": 113,
       "daily_count": 2,
       "daily_sample": {
-        "2026-05-23": 55,
-        "2026-05-24": 43
+        "2026-05-26": 66,
+        "2026-05-27": 47
       },
       "instance_states": [
         {
-          "id": "6816980a-c6b2-42a9-a34a-58deb9442b91",
+          "id": "ecc168ee-c4e0-4faa-966e-ebee2987c92b",
           "gran": "DAILY",
-          "processingDate": "2026-05-25",
+          "processingDate": "2026-05-26",
+          "report_id": "r3-6d93213b-35da-474b-b6a5-254b01a99fd8",
+          "report_type": "?",
+          "all_attr_keys": [
+            "granularity",
+            "processingDate"
+          ],
+          "segments_http": 500,
+          "segments_count": 0,
+          "segments_body": "{\r\n\t\"errors\": [{\r\n\t\t\"status\": \"500\",\r\n\t\t\"code\": \"UNEXPECTED_ERROR\",\r\n\t\t\"title\": \"An unexpected error occurred.\",\r\n\t\t\"detail\": \"An unexpected error occurred on the server side. If this issue continues, contact us at https://developer.apple.com/contact/.\"\r\n\t}]\r\n}"
+        },
+        {
+          "id": "1bd8ec43-599f-46e0-a2a0-0cf505b1fbbe",
+          "gran": "DAILY",
+          "processingDate": "2026-05-27",
+          "report_id": "r3-6d93213b-35da-474b-b6a5-254b01a99fd8",
+          "report_type": "?",
+          "all_attr_keys": [
+            "granularity",
+            "processingDate"
+          ],
+          "segments_http": 500,
+          "segments_count": 0,
+          "segments_body": "{\r\n\t\"errors\": [{\r\n\t\t\"status\": \"500\",\r\n\t\t\"code\": \"UNEXPECTED_ERROR\",\r\n\t\t\"title\": \"An unexpected error occurred.\",\r\n\t\t\"detail\": \"An unexpected error occurred on the server side. If this issue continues, contact us at https://developer.apple.com/contact/.\"\r\n\t}]\r\n}"
+        },
+        {
+          "id": "db8894a8-43b3-49a9-bdca-2eb350cac788",
+          "gran": "DAILY",
+          "processingDate": "2026-05-28",
           "report_id": "r3-6d93213b-35da-474b-b6a5-254b01a99fd8",
           "report_type": "?",
           "all_attr_keys": [
@@ -101,7 +101,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"417a7928-69f8-425a-8ed4-d22141d7d41d\",\n    \"attributes\" : {\n      \"checksum\" : \"da6b6bdc7cb02cb7a598441ca4dbacbe\",\n      \"sizeInBytes\" : 1541,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/418572455/aa_downloads/daily/ongoing/20260525/1779703874417/2th8ulcq51r0o.csv.gz?response-content-disposition=attachment%3B%20filename%3D%22418572455_App%20Downloads%20Standard_Daily_2026-05-25_417a7928-69f8-425a-8ed"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"d8ad56c5-2281-4197-b407-3b4eecc37582\",\n    \"attributes\" : {\n      \"checksum\" : \"45bf9ccab08a45f8e5dc5acce2d01edf\",\n      \"sizeInBytes\" : 1426,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/418572455/aa_downloads/daily/ongoing/20260528/1779962870355/4p55q551s1onq.csv.gz?response-content-disposition=attachment%3B%20filename%3D%22418572455_App%20Downloads%20Standard_Daily_2026-05-28_d8ad56c5-2281-4197-b40"
         }
       ],
       "tsv_columns": [
@@ -119,14 +119,14 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-05-24",
+        "Date": "2026-05-27",
         "App Name": "Today's Front Pages",
         "App Apple Identifier": "418572455",
-        "Download Type": "Auto-update",
+        "Download Type": "Restore",
         "App Version": "4.1.11",
         "Device": "iPad",
-        "Platform Version": "iOS 18.7",
-        "Source Type": "App Store search",
+        "Platform Version": "iOS 26.4",
+        "Source Type": "Unavailable",
         "Page Type": "No page",
         "Pre-Order": ""
       }
@@ -140,20 +140,6 @@
         "2026-05-25": 1
       },
       "instance_states": [
-        {
-          "id": "54773439-95b4-4c1c-b032-823005f3044d",
-          "gran": "DAILY",
-          "processingDate": "2026-05-25",
-          "report_id": "r3-58b88a60-b77e-4c3a-b82e-68f574e14624",
-          "report_type": "?",
-          "all_attr_keys": [
-            "granularity",
-            "processingDate"
-          ],
-          "segments_http": 500,
-          "segments_count": 0,
-          "segments_body": "{\r\n\t\"errors\": [{\r\n\t\t\"status\": \"500\",\r\n\t\t\"code\": \"UNEXPECTED_ERROR\",\r\n\t\t\"title\": \"An unexpected error occurred.\",\r\n\t\t\"detail\": \"An unexpected error occurred on the server side. If this issue continues, contact us at https://developer.apple.com/contact/.\"\r\n\t}]\r\n}"
-        },
         {
           "id": "ccd9e336-50d6-4a5b-bea7-fe4706e89ab9",
           "gran": "DAILY",
@@ -201,13 +187,27 @@
       "installs": 1,
       "daily_count": 1,
       "daily_sample": {
-        "2026-05-24": 1
+        "2026-05-26": 1
       },
       "instance_states": [
         {
-          "id": "7e6b2c5f-c4d2-456a-ae74-902998e100c7",
+          "id": "5512cdc4-6969-4ee0-8cad-c48b39ddb372",
           "gran": "DAILY",
-          "processingDate": "2026-05-25",
+          "processingDate": "2026-05-26",
+          "report_id": "r3-9b94ca4b-babf-4a18-8250-d59d4d784ad1",
+          "report_type": "?",
+          "all_attr_keys": [
+            "granularity",
+            "processingDate"
+          ],
+          "segments_http": 500,
+          "segments_count": 0,
+          "segments_body": "{\r\n\t\"errors\": [{\r\n\t\t\"status\": \"500\",\r\n\t\t\"code\": \"UNEXPECTED_ERROR\",\r\n\t\t\"title\": \"An unexpected error occurred.\",\r\n\t\t\"detail\": \"An unexpected error occurred on the server side. If this issue continues, contact us at https://developer.apple.com/contact/.\"\r\n\t}]\r\n}"
+        },
+        {
+          "id": "b34dc402-7a67-4e15-8687-9192f5d487e0",
+          "gran": "DAILY",
+          "processingDate": "2026-05-27",
           "report_id": "r3-9b94ca4b-babf-4a18-8250-d59d4d784ad1",
           "report_type": "?",
           "all_attr_keys": [
@@ -216,7 +216,7 @@
           ],
           "segments_http": 200,
           "segments_count": 2,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"7f5ba8a7-acfc-4c4a-b4a6-9f68274d1e9c\",\n    \"attributes\" : {\n      \"checksum\" : \"18c488c48bc002b05e38d010243ee54d\",\n      \"sizeInBytes\" : 299,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6702027471/aa_downloads/daily/ongoing/20260525/1779703874417/2aio8qklddli0.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226702027471_App%20Downloads%20Standard_Daily_2026-05-25_7f5ba8a7-acfc-4c4a-b4"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"831b7785-2b86-4309-908a-93943dc4892e\",\n    \"attributes\" : {\n      \"checksum\" : \"9a0f9c23080aee1755963d96d9f893e1\",\n      \"sizeInBytes\" : 648,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6702027471/aa_downloads/daily/ongoing/20260527/1779876488495/5gflvkcqi1dvu.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226702027471_App%20Downloads%20Standard_Daily_2026-05-27_831b7785-2b86-4309-90"
         }
       ],
       "tsv_columns": [
@@ -234,15 +234,15 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-05-24",
+        "Date": "2026-05-26",
         "App Name": "Footsteps with Jesus Christ",
         "App Apple Identifier": "6702027471",
         "Download Type": "Auto-update",
-        "App Version": "1.1.6",
+        "App Version": "1.1.7",
         "Device": "iPhone",
-        "Platform Version": "iOS 17.6",
-        "Source Type": "App Store search",
-        "Page Type": "No page",
+        "Platform Version": "iOS 26.1",
+        "Source Type": "App referrer",
+        "Page Type": "Store sheet",
         "Pre-Order": ""
       }
     },
@@ -251,14 +251,14 @@
       "installs": 4,
       "daily_count": 2,
       "daily_sample": {
-        "2026-05-23": 1,
-        "2026-05-24": 3
+        "2026-05-24": 3,
+        "2026-05-25": 1
       },
       "instance_states": [
         {
-          "id": "7c890c2b-7487-42b6-bec7-243e5bc82ae9",
+          "id": "ef1d5d0f-0f40-4295-a610-d8ab0b97e0f9",
           "gran": "DAILY",
-          "processingDate": "2026-05-25",
+          "processingDate": "2026-05-26",
           "report_id": "r3-bb5670e3-0394-4a92-aeb8-325e2d3c6683",
           "report_type": "?",
           "all_attr_keys": [
@@ -267,7 +267,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"22ebcd44-45b3-45b3-96c6-e5a76f46e7f2\",\n    \"attributes\" : {\n      \"checksum\" : \"a2d219db6a5781eb3624a74e1e768561\",\n      \"sizeInBytes\" : 227,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6504500031/aa_downloads/daily/ongoing/20260525/1779703874417/1j1818kfh1jlg.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226504500031_App%20Downloads%20Standard_Daily_2026-05-25_22ebcd44-45b3-45b3-96"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"1d849e1a-e98f-48cb-8d36-49ca0d88350c\",\n    \"attributes\" : {\n      \"checksum\" : \"af88013a786cd5e12f70fb1d5aa7b653\",\n      \"sizeInBytes\" : 243,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6504500031/aa_downloads/daily/ongoing/20260526/1779790071440/5dlg6dci384ef.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226504500031_App%20Downloads%20Standard_Daily_2026-05-26_1d849e1a-e98f-48cb-8d"
         }
       ],
       "tsv_columns": [
@@ -285,15 +285,15 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-05-24",
+        "Date": "2026-05-25",
         "App Name": "SelfSpeak Voice Affirmations",
         "App Apple Identifier": "6504500031",
         "Download Type": "First-time download",
         "App Version": "1.0.22",
         "Device": "iPhone",
-        "Platform Version": "iOS 26.5",
-        "Source Type": "App referrer",
-        "Page Type": "Store sheet",
+        "Platform Version": "iOS 26.4",
+        "Source Type": "App Store search",
+        "Page Type": "Product page",
         "Pre-Order": ""
       }
     }
