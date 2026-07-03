@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-02T10:12:26.187104Z",
+  "generated": "2026-07-03T09:59:05.603634Z",
   "apps": {
     "Shift": {
       "pending": false,
@@ -10,20 +10,6 @@
         "2026-05-28": 4
       },
       "instance_states": [
-        {
-          "id": "a285efeb-1ef1-4786-b1a2-a3419f05e770",
-          "gran": "DAILY",
-          "processingDate": "2026-05-28",
-          "report_id": "r3-64a02ffa-47fb-4453-8868-c31cbb5e56b9",
-          "report_type": "?",
-          "all_attr_keys": [
-            "granularity",
-            "processingDate"
-          ],
-          "segments_http": 500,
-          "segments_count": 0,
-          "segments_body": "{\r\n\t\"errors\": [{\r\n\t\t\"status\": \"500\",\r\n\t\t\"code\": \"UNEXPECTED_ERROR\",\r\n\t\t\"title\": \"An unexpected error occurred.\",\r\n\t\t\"detail\": \"An unexpected error occurred on the server side. If this issue continues, contact us at https://developer.apple.com/contact/.\"\r\n\t}]\r\n}"
-        },
         {
           "id": "da3ec360-244e-4b13-b69e-08c4705460b1",
           "gran": "DAILY",
@@ -68,17 +54,17 @@
     },
     "Today's Front Pages": {
       "pending": false,
-      "installs": 113,
+      "installs": 102,
       "daily_count": 2,
       "daily_sample": {
-        "2026-05-26": 66,
-        "2026-05-27": 47
+        "2026-05-27": 50,
+        "2026-05-28": 52
       },
       "instance_states": [
         {
-          "id": "db8894a8-43b3-49a9-bdca-2eb350cac788",
+          "id": "9d2d5746-db3b-4b89-b7ee-6369bfc00017",
           "gran": "DAILY",
-          "processingDate": "2026-05-28",
+          "processingDate": "2026-05-29",
           "report_id": "r3-6d93213b-35da-474b-b6a5-254b01a99fd8",
           "report_type": "?",
           "all_attr_keys": [
@@ -87,7 +73,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"d8ad56c5-2281-4197-b407-3b4eecc37582\",\n    \"attributes\" : {\n      \"checksum\" : \"45bf9ccab08a45f8e5dc5acce2d01edf\",\n      \"sizeInBytes\" : 1426,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/418572455/aa_downloads/daily/ongoing/20260528/1779962870355/4p55q551s1onq.csv.gz?response-content-disposition=attachment%3B%20filename%3D%22418572455_App%20Downloads%20Standard_Daily_2026-05-28_d8ad56c5-2281-4197-b40"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"a4d3d024-d8ac-40ec-b458-2f3dbec2bc67\",\n    \"attributes\" : {\n      \"checksum\" : \"61ddb68eda03c39d67f74a7577fbc627\",\n      \"sizeInBytes\" : 1281,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/418572455/aa_downloads/daily/ongoing/20260529/1780049431159/5t3koal4ejcou.csv.gz?response-content-disposition=attachment%3B%20filename%3D%22418572455_App%20Downloads%20Standard_Daily_2026-05-29_a4d3d024-d8ac-40ec-b45"
         }
       ],
       "tsv_columns": [
@@ -105,30 +91,30 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-05-27",
+        "Date": "2026-05-28",
         "App Name": "Today's Front Pages",
         "App Apple Identifier": "418572455",
-        "Download Type": "Restore",
+        "Download Type": "Redownload",
         "App Version": "4.1.11",
-        "Device": "iPad",
-        "Platform Version": "iOS 26.4",
-        "Source Type": "Unavailable",
+        "Device": "iPhone",
+        "Platform Version": "iOS 26.5",
+        "Source Type": "App referrer",
         "Page Type": "No page",
         "Pre-Order": ""
       }
     },
     "P3": {
       "pending": false,
-      "installs": 1,
+      "installs": 3,
       "daily_count": 1,
       "daily_sample": {
-        "2026-05-27": 1
+        "2026-05-28": 3
       },
       "instance_states": [
         {
-          "id": "b834904a-7d68-492d-b7e2-afd23aaf89cc",
+          "id": "78908c06-997e-4b33-a93f-ae0ea745c667",
           "gran": "DAILY",
-          "processingDate": "2026-05-28",
+          "processingDate": "2026-05-29",
           "report_id": "r3-58b88a60-b77e-4c3a-b82e-68f574e14624",
           "report_type": "?",
           "all_attr_keys": [
@@ -137,7 +123,7 @@
           ],
           "segments_http": 200,
           "segments_count": 2,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"66db4b94-cf57-44ce-80eb-102092cfeaf5\",\n    \"attributes\" : {\n      \"checksum\" : \"3b7e1fcb4f1b4b13ad2202fb455cafad\",\n      \"sizeInBytes\" : 243,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6478132244/aa_downloads/daily/ongoing/20260528/1779962870355/3bgi5j0mesrj7.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226478132244_App%20Downloads%20Standard_Daily_2026-05-28_66db4b94-cf57-44ce-80"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"2d857552-aee7-45c2-a8f2-c52376e3446b\",\n    \"attributes\" : {\n      \"checksum\" : \"2edd44c7222195a58c8124303f7e7391\",\n      \"sizeInBytes\" : 283,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6478132244/aa_downloads/daily/ongoing/20260529/1780049431159/4ff13ogp1efkb.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226478132244_App%20Downloads%20Standard_Daily_2026-05-29_2d857552-aee7-45c2-a8"
         }
       ],
       "tsv_columns": [
@@ -155,13 +141,13 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-05-27",
+        "Date": "2026-05-28",
         "App Name": "P3: Pulse of Perseverance",
         "App Apple Identifier": "6478132244",
-        "Download Type": "Auto-update",
+        "Download Type": "Restore",
         "App Version": "1.0.27",
         "Device": "iPhone",
-        "Platform Version": "iOS 18.1",
+        "Platform Version": "iOS 26.4",
         "Source Type": "Web referrer",
         "Page Type": "Product page",
         "Pre-Order": ""
@@ -169,16 +155,16 @@
     },
     "Footsteps with Jesus": {
       "pending": false,
-      "installs": 2,
+      "installs": 4,
       "daily_count": 1,
       "daily_sample": {
-        "2026-05-27": 2
+        "2026-05-28": 4
       },
       "instance_states": [
         {
-          "id": "98ab2bd1-45de-4f1c-9f27-56e892e85b5a",
+          "id": "6b6cca33-5580-4156-a6ad-dfc5c0a803fe",
           "gran": "DAILY",
-          "processingDate": "2026-05-28",
+          "processingDate": "2026-05-29",
           "report_id": "r3-9b94ca4b-babf-4a18-8250-d59d4d784ad1",
           "report_type": "?",
           "all_attr_keys": [
@@ -187,7 +173,7 @@
           ],
           "segments_http": 200,
           "segments_count": 2,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"5c82a721-e1b7-4f72-abbd-92682fa0a175\",\n    \"attributes\" : {\n      \"checksum\" : \"72404ee16d65dd9e5eb32ce6daed62d7\",\n      \"sizeInBytes\" : 373,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6702027471/aa_downloads/daily/ongoing/20260528/1779962870355/466l4act4dj92.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226702027471_App%20Downloads%20Standard_Daily_2026-05-28_5c82a721-e1b7-4f72-ab"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"97b98c0a-7758-47ab-8a35-64fe1776c2b1\",\n    \"attributes\" : {\n      \"checksum\" : \"19a6de2a9ba6a7e52179436f9bb05be8\",\n      \"sizeInBytes\" : 441,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6702027471/aa_downloads/daily/ongoing/20260529/1780049431159/5a542fsvmv7a6.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226702027471_App%20Downloads%20Standard_Daily_2026-05-29_97b98c0a-7758-47ab-8a"
         }
       ],
       "tsv_columns": [
@@ -205,13 +191,13 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-05-27",
+        "Date": "2026-05-28",
         "App Name": "Footsteps with Jesus Christ",
         "App Apple Identifier": "6702027471",
         "Download Type": "Auto-update",
         "App Version": "1.1.7",
         "Device": "iPhone",
-        "Platform Version": "iOS 17.6",
+        "Platform Version": "iOS 26.5",
         "Source Type": "App referrer",
         "Page Type": "Store sheet",
         "Pre-Order": ""
@@ -225,20 +211,6 @@
         "2026-05-28": 3
       },
       "instance_states": [
-        {
-          "id": "687079cd-d547-4522-9468-025ae4416c58",
-          "gran": "DAILY",
-          "processingDate": "2026-05-28",
-          "report_id": "r3-bb5670e3-0394-4a92-aeb8-325e2d3c6683",
-          "report_type": "?",
-          "all_attr_keys": [
-            "granularity",
-            "processingDate"
-          ],
-          "segments_http": 500,
-          "segments_count": 0,
-          "segments_body": "{\r\n\t\"errors\": [{\r\n\t\t\"status\": \"500\",\r\n\t\t\"code\": \"UNEXPECTED_ERROR\",\r\n\t\t\"title\": \"An unexpected error occurred.\",\r\n\t\t\"detail\": \"An unexpected error occurred on the server side. If this issue continues, contact us at https://developer.apple.com/contact/.\"\r\n\t}]\r\n}"
-        },
         {
           "id": "2016c495-aeb6-4102-8e02-6bb51cd6bda9",
           "gran": "DAILY",
