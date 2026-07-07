@@ -11,32 +11,32 @@
     {
       "group": "Today's Front Pages",
       "status": "ok",
-      "installs": 120,
-      "days": 17
+      "installs": 0,
+      "days": 2
     },
     {
       "group": "P3",
       "status": "ok",
-      "installs": 4,
-      "days": 17
+      "installs": 0,
+      "days": 2
     },
     {
       "group": "Quiet Collection",
       "status": "ok",
-      "installs": 88,
-      "days": 17
+      "installs": 0,
+      "days": 2
     },
     {
       "group": "Self Speak",
       "status": "ok",
-      "installs": 80,
-      "days": 17
+      "installs": 116,
+      "days": 29
     },
     {
       "group": "Footsteps with Jesus",
       "status": "ok",
-      "installs": 202,
-      "days": 17
+      "installs": 4,
+      "days": 2
     }
   ]
 }
