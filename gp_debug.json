@@ -5,8 +5,8 @@
     {
       "group": "Shift",
       "status": "ok",
-      "installs": 600,
-      "days": 21
+      "installs": 616,
+      "days": 22
     },
     {
       "group": "Today's Front Pages",
@@ -18,7 +18,7 @@
       "group": "P3",
       "status": "ok",
       "installs": 20,
-      "days": 21
+      "days": 22
     },
     {
       "group": "Quiet Collection",
@@ -29,14 +29,14 @@
     {
       "group": "Self Speak",
       "status": "ok",
-      "installs": 106,
-      "days": 21
+      "installs": 112,
+      "days": 22
     },
     {
       "group": "Footsteps with Jesus",
       "status": "ok",
-      "installs": 48,
-      "days": 21
+      "installs": 50,
+      "days": 22
     }
   ]
 }
