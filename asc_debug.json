@@ -1,20 +1,20 @@
 {
-  "generated": "2026-11-05T15:13:22.161410Z",
+  "generated": "2026-11-06T14:49:17.146540Z",
   "apps": {
-    "Today's Front Pages": {
+    "Shift": {
       "pending": false,
-      "installs": 83,
+      "installs": 58,
       "daily_count": 2,
       "daily_sample": {
-        "2026-09-29": 36,
-        "2026-09-30": 47
+        "2026-09-30": 41,
+        "2026-10-01": 17
       },
       "instance_states": [
         {
-          "id": "79988566-eaac-468c-82b8-bdcb19eda8bb",
+          "id": "ef9a58d8-fe20-4401-a497-1c2e7b6c0892",
           "gran": "DAILY",
-          "processingDate": "2026-10-01",
-          "report_id": "r3-6d93213b-35da-474b-b6a5-254b01a99fd8",
+          "processingDate": "2026-10-02",
+          "report_id": "r3-64a02ffa-47fb-4453-8868-c31cbb5e56b9",
           "report_type": "?",
           "all_attr_keys": [
             "granularity",
@@ -22,7 +22,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"2feb4eee-1bda-438c-b06c-813183048191\",\n    \"attributes\" : {\n      \"checksum\" : \"f83e67b5de4e39f61aa3b87e59f2ebfc\",\n      \"sizeInBytes\" : 735,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/418572455/aa_downloads/daily/ongoing/20261001/1790849665165/3vrhpl09agc9k.csv.gz?response-content-disposition=attachment%3B%20filename%3D%22418572455_App%20Downloads%20Standard_Daily_2026-10-01_2feb4eee-1bda-438c-b06c"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"c03c2d1c-dc08-4152-b058-b6ca2e8fc190\",\n    \"attributes\" : {\n      \"checksum\" : \"40b82d489eec28840c286e74febfb047\",\n      \"sizeInBytes\" : 4218,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6745610776/aa_downloads/daily/ongoing/20261002/1790936062310/17k5vgg8eqsru.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226745610776_App%20Downloads%20Standard_Daily_2026-10-02_c03c2d1c-dc08-4152-b"
         }
       ],
       "tsv_columns": [
@@ -40,30 +40,30 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-09-30",
-        "App Name": "Today's Front Pages",
-        "App Apple Identifier": "418572455",
-        "Download Type": "First-time download",
-        "App Version": "4.1.11",
+        "Date": "2026-10-01",
+        "App Name": "Shift Irish Cultural Network",
+        "App Apple Identifier": "6745610776",
+        "Download Type": "Auto-update",
+        "App Version": "1.1.37",
         "Device": "iPhone",
-        "Platform Version": "iOS 27.0",
-        "Source Type": "App Store browse",
-        "Page Type": "Store sheet",
+        "Platform Version": "iOS 26.5",
+        "Source Type": "App Store search",
+        "Page Type": "No page",
         "Pre-Order": ""
       }
     },
     "P3": {
       "pending": false,
-      "installs": 1,
+      "installs": 2,
       "daily_count": 1,
       "daily_sample": {
-        "2026-09-29": 1
+        "2026-10-01": 2
       },
       "instance_states": [
         {
-          "id": "9e4487d8-361d-44f7-906d-70e221681178",
+          "id": "3b727a5c-6f92-4cc7-a2d5-5353c986ffba",
           "gran": "DAILY",
-          "processingDate": "2026-10-01",
+          "processingDate": "2026-10-02",
           "report_id": "r3-58b88a60-b77e-4c3a-b82e-68f574e14624",
           "report_type": "?",
           "all_attr_keys": [
@@ -72,7 +72,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"5a3a5b70-b7c0-4680-8c9e-96a3af0378ad\",\n    \"attributes\" : {\n      \"checksum\" : \"fa42f9b3f075f0617a5a02d39de7a09f\",\n      \"sizeInBytes\" : 352,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6478132244/aa_downloads/daily/ongoing/20261001/1790849665165/2i6u52tttbf51.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226478132244_App%20Downloads%20Standard_Daily_2026-10-01_5a3a5b70-b7c0-4680-8c"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"84f0cb70-98aa-4699-afbf-f0d1dea007ba\",\n    \"attributes\" : {\n      \"checksum\" : \"19089a7198b164da25503c8dac70431a\",\n      \"sizeInBytes\" : 381,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6478132244/aa_downloads/daily/ongoing/20261002/1790936062310/7nqpg00fo3bq.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226478132244_App%20Downloads%20Standard_Daily_2026-10-02_84f0cb70-98aa-4699-afb"
         }
       ],
       "tsv_columns": [
@@ -90,31 +90,31 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-09-30",
+        "Date": "2026-10-01",
         "App Name": "P3: Pulse of Perseverance",
         "App Apple Identifier": "6478132244",
         "Download Type": "Auto-update",
         "App Version": "2.0.1",
         "Device": "iPhone",
         "Platform Version": "iOS 26.6",
-        "Source Type": "Web referrer",
-        "Page Type": "Product page",
+        "Source Type": "App Store search",
+        "Page Type": "No page",
         "Pre-Order": ""
       }
     },
     "Footsteps with Jesus": {
       "pending": false,
-      "installs": 2,
+      "installs": 5,
       "daily_count": 2,
       "daily_sample": {
-        "2026-09-29": 1,
-        "2026-09-30": 1
+        "2026-09-30": 1,
+        "2026-10-01": 4
       },
       "instance_states": [
         {
-          "id": "b29de8ff-f6f7-40e2-ba86-47420b9fbd96",
+          "id": "3809b7e1-3a2e-46a4-b8bc-5972a15f408d",
           "gran": "DAILY",
-          "processingDate": "2026-10-01",
+          "processingDate": "2026-10-02",
           "report_id": "r3-9b94ca4b-babf-4a18-8250-d59d4d784ad1",
           "report_type": "?",
           "all_attr_keys": [
@@ -123,7 +123,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"1255294e-9840-4e0b-b130-117d33ceab3e\",\n    \"attributes\" : {\n      \"checksum\" : \"d1c5e15a43570105e56aef2aa451bb71\",\n      \"sizeInBytes\" : 286,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6702027471/aa_downloads/daily/ongoing/20261001/1790849665165/3ct13q84is6qs.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226702027471_App%20Downloads%20Standard_Daily_2026-10-01_1255294e-9840-4e0b-b1"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"48119d69-9257-4eeb-9af8-b63ed4decc50\",\n    \"attributes\" : {\n      \"checksum\" : \"3265fc4ba494d5cd20abf044c62ea6ab\",\n      \"sizeInBytes\" : 286,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6702027471/aa_downloads/daily/ongoing/20261002/1790936062310/12dto78758r1l.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226702027471_App%20Downloads%20Standard_Daily_2026-10-02_48119d69-9257-4eeb-9a"
         }
       ],
       "tsv_columns": [
@@ -141,10 +141,10 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-09-30",
+        "Date": "2026-10-01",
         "App Name": "Footsteps with Jesus",
         "App Apple Identifier": "6702027471",
-        "Download Type": "Redownload",
+        "Download Type": "First-time download",
         "App Version": "1.1.10",
         "Device": "iPhone",
         "Platform Version": "iOS 26.6",
@@ -158,14 +158,14 @@
       "installs": 5,
       "daily_count": 2,
       "daily_sample": {
-        "2026-09-29": 2,
-        "2026-09-30": 3
+        "2026-09-30": 3,
+        "2026-10-01": 2
       },
       "instance_states": [
         {
-          "id": "774d86e2-6020-40ce-8708-65e57ec8364a",
+          "id": "9f316819-4664-4b43-9095-d0deecab66a3",
           "gran": "DAILY",
-          "processingDate": "2026-10-01",
+          "processingDate": "2026-10-02",
           "report_id": "r3-bb5670e3-0394-4a92-aeb8-325e2d3c6683",
           "report_type": "?",
           "all_attr_keys": [
@@ -174,7 +174,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"c24d3a44-88c7-484f-b8d6-52c340f62bac\",\n    \"attributes\" : {\n      \"checksum\" : \"d8c5b3f11da4f18d52be1010f29b0e6d\",\n      \"sizeInBytes\" : 247,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6504500031/aa_downloads/daily/ongoing/20261001/1790849665165/2lbgs85umg4uc.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226504500031_App%20Downloads%20Standard_Daily_2026-10-01_c24d3a44-88c7-484f-b8"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"e9d5bd3c-0dfb-4bd2-aa18-98759e1ba85a\",\n    \"attributes\" : {\n      \"checksum\" : \"33cfd050e242cb5178a7d14997a4f33c\",\n      \"sizeInBytes\" : 283,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6504500031/aa_downloads/daily/ongoing/20261002/1790936062310/asdgl818sp55.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226504500031_App%20Downloads%20Standard_Daily_2026-10-02_e9d5bd3c-0dfb-4bd2-aa1"
         }
       ],
       "tsv_columns": [
@@ -192,15 +192,15 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-09-30",
+        "Date": "2026-10-01",
         "App Name": "SelfSpeak Voice Affirmations",
         "App Apple Identifier": "6504500031",
         "Download Type": "First-time download",
         "App Version": "1.0.23",
         "Device": "iPhone",
-        "Platform Version": "iOS 26.6",
-        "Source Type": "App referrer",
-        "Page Type": "Store sheet",
+        "Platform Version": "iOS 26.5",
+        "Source Type": "Web referrer",
+        "Page Type": "Product page",
         "Pre-Order": ""
       }
     }
