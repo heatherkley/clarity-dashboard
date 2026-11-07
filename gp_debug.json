@@ -5,14 +5,14 @@
     {
       "group": "Shift",
       "status": "ok",
-      "installs": 0,
-      "days": 1
+      "installs": 16,
+      "days": 2
     },
     {
       "group": "Today's Front Pages",
       "status": "ok",
-      "installs": 0,
-      "days": 1
+      "installs": 14,
+      "days": 3
     },
     {
       "group": "P3",
@@ -23,8 +23,8 @@
     {
       "group": "Quiet Collection",
       "status": "ok",
-      "installs": 0,
-      "days": 2
+      "installs": 4,
+      "days": 3
     },
     {
       "group": "Self Speak",
