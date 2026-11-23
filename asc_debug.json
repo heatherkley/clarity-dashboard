@@ -1,19 +1,19 @@
 {
-  "generated": "2026-11-22T15:04:21.769618Z",
+  "generated": "2026-11-23T19:00:53.400441Z",
   "apps": {
     "Shift": {
       "pending": false,
-      "installs": 23,
+      "installs": 21,
       "daily_count": 2,
       "daily_sample": {
-        "2026-10-16": 12,
-        "2026-10-17": 11
+        "2026-10-17": 11,
+        "2026-10-18": 10
       },
       "instance_states": [
         {
-          "id": "69c78ec3-5356-4ad2-bc56-91e09f4ae724",
+          "id": "04f05886-9eb5-4b21-9a0c-f4dab988496c",
           "gran": "DAILY",
-          "processingDate": "2026-10-18",
+          "processingDate": "2026-10-19",
           "report_id": "r3-64a02ffa-47fb-4453-8868-c31cbb5e56b9",
           "report_type": "?",
           "all_attr_keys": [
@@ -22,7 +22,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"19bf8409-e0d8-4e88-a04e-ddabbce9e0be\",\n    \"attributes\" : {\n      \"checksum\" : \"4a36d63df442fec10dd2f78e2d5596f4\",\n      \"sizeInBytes\" : 1824,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6745610776/aa_downloads/daily/ongoing/20261018/1792318370540/7oauijkhl3j84.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226745610776_App%20Downloads%20Standard_Daily_2026-10-18_19bf8409-e0d8-4e88-a"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"570cd863-2c26-4b83-b73f-2ff11cebea65\",\n    \"attributes\" : {\n      \"checksum\" : \"0cab80f22d3320deab2ceeeeab1a1b28\",\n      \"sizeInBytes\" : 3034,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6745610776/aa_downloads/daily/ongoing/20261019/1792405012560/6b0vu94k7nmj8.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226745610776_App%20Downloads%20Standard_Daily_2026-10-19_570cd863-2c26-4b83-b"
         }
       ],
       "tsv_columns": [
@@ -40,12 +40,12 @@
         "Counts"
       ],
       "tsv_first_row": {
-        "Date": "2026-10-16",
+        "Date": "2026-10-18",
         "App Name": "Shift: The Irish Cultural App",
         "App Apple Identifier": "6745610776",
-        "Download Type": "Manual update",
-        "App Version": "1.1.39",
-        "Device": "iPhone",
+        "Download Type": "Auto-update",
+        "App Version": "1.1.40",
+        "Device": "iPad",
         "Platform Version": "iOS 26.6",
         "Source Type": "Web referrer",
         "Page Type": "Product page",
@@ -54,17 +54,17 @@
     },
     "Today's Front Pages": {
       "pending": false,
-      "installs": 8,
+      "installs": 9,
       "daily_count": 2,
       "daily_sample": {
-        "2026-10-16": 4,
-        "2026-10-17": 4
+        "2026-10-17": 4,
+        "2026-10-18": 5
       },
       "instance_states": [
         {
-          "id": "e1e74533-5aae-4f33-89dc-b5641bc8ef6c",
+          "id": "a862a188-9b89-4f82-9187-a80ad5754687",
           "gran": "DAILY",
-          "processingDate": "2026-10-18",
+          "processingDate": "2026-10-19",
           "report_id": "r3-6d93213b-35da-474b-b6a5-254b01a99fd8",
           "report_type": "?",
           "all_attr_keys": [
@@ -73,7 +73,55 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"5e5056bc-8517-4bd2-80ba-783c6cb31548\",\n    \"attributes\" : {\n      \"checksum\" : \"3e74105be6ac7540433f2f9b0f2273a7\",\n      \"sizeInBytes\" : 621,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/418572455/aa_downloads/daily/ongoing/20261018/1792318370540/637158l35msj.csv.gz?response-content-disposition=attachment%3B%20filename%3D%22418572455_App%20Downloads%20Standard_Daily_2026-10-18_5e5056bc-8517-4bd2-80ba-"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"f7f3d0cf-a1ab-4a3b-a462-ef80de78a155\",\n    \"attributes\" : {\n      \"checksum\" : \"c1ae535c10e4fffbff08b1688bcea793\",\n      \"sizeInBytes\" : 578,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/418572455/aa_downloads/daily/ongoing/20261019/1792405012560/6op8cqonlpq7n.csv.gz?response-content-disposition=attachment%3B%20filename%3D%22418572455_App%20Downloads%20Standard_Daily_2026-10-19_f7f3d0cf-a1ab-4a3b-a462"
+        }
+      ],
+      "tsv_columns": [
+        "Date",
+        "App Name",
+        "App Apple Identifier",
+        "Download Type",
+        "App Version",
+        "Device",
+        "Platform Version",
+        "Source Type",
+        "Page Type",
+        "Pre-Order",
+        "Territory",
+        "Counts"
+      ],
+      "tsv_first_row": {
+        "Date": "2026-10-18",
+        "App Name": "Today's Front Pages",
+        "App Apple Identifier": "418572455",
+        "Download Type": "First-time download",
+        "App Version": "4.1.11",
+        "Device": "iPhone",
+        "Platform Version": "iOS 27.0",
+        "Source Type": "App Store search",
+        "Page Type": "No page",
+        "Pre-Order": ""
+      }
+    },
+    "P3": {
+      "pending": false,
+      "installs": 0,
+      "daily_count": 0,
+      "daily_sample": {},
+      "instance_states": [
+        {
+          "id": "9a57e3ca-5c2f-4ec6-b3a6-0698707b4e78",
+          "gran": "DAILY",
+          "processingDate": "2026-10-19",
+          "report_id": "r3-58b88a60-b77e-4c3a-b82e-68f574e14624",
+          "report_type": "?",
+          "all_attr_keys": [
+            "granularity",
+            "processingDate"
+          ],
+          "segments_http": 200,
+          "segments_count": 1,
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"b830593a-2e14-446b-a7d6-663317c88cd6\",\n    \"attributes\" : {\n      \"checksum\" : \"6e568a5fce767c95fdc2446767b41e1b\",\n      \"sizeInBytes\" : 299,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6478132244/aa_downloads/daily/ongoing/20261019/1792405012560/5b4ko8oc8kt34.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226478132244_App%20Downloads%20Standard_Daily_2026-10-19_b830593a-2e14-446b-a7"
         }
       ],
       "tsv_columns": [
@@ -92,64 +140,14 @@
       ],
       "tsv_first_row": {
         "Date": "2026-10-17",
-        "App Name": "Today's Front Pages",
-        "App Apple Identifier": "418572455",
-        "Download Type": "Restore",
-        "App Version": "4.1.11",
-        "Device": "iPhone",
-        "Platform Version": "iOS 26.6",
-        "Source Type": "Web referrer",
-        "Page Type": "Product page",
-        "Pre-Order": ""
-      }
-    },
-    "P3": {
-      "pending": false,
-      "installs": 1,
-      "daily_count": 1,
-      "daily_sample": {
-        "2026-10-16": 1
-      },
-      "instance_states": [
-        {
-          "id": "0bf09b73-5a39-42c9-8445-db9169c9e168",
-          "gran": "DAILY",
-          "processingDate": "2026-10-18",
-          "report_id": "r3-58b88a60-b77e-4c3a-b82e-68f574e14624",
-          "report_type": "?",
-          "all_attr_keys": [
-            "granularity",
-            "processingDate"
-          ],
-          "segments_http": 200,
-          "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"545a244e-3fef-4da9-91b1-9c6c1ca5aa7f\",\n    \"attributes\" : {\n      \"checksum\" : \"f0a4d77831600b2a7ab4b55c32b351bc\",\n      \"sizeInBytes\" : 323,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6478132244/aa_downloads/daily/ongoing/20261018/1792318370540/6oejcj89m0po0.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226478132244_App%20Downloads%20Standard_Daily_2026-10-18_545a244e-3fef-4da9-91"
-        }
-      ],
-      "tsv_columns": [
-        "Date",
-        "App Name",
-        "App Apple Identifier",
-        "Download Type",
-        "App Version",
-        "Device",
-        "Platform Version",
-        "Source Type",
-        "Page Type",
-        "Pre-Order",
-        "Territory",
-        "Counts"
-      ],
-      "tsv_first_row": {
-        "Date": "2026-10-16",
         "App Name": "P3: Pulse of Perseverance",
         "App Apple Identifier": "6478132244",
-        "Download Type": "Restore",
+        "Download Type": "Auto-update",
         "App Version": "2.0.1",
         "Device": "iPhone",
-        "Platform Version": "iOS 27.0",
+        "Platform Version": "iOS 26.4",
         "Source Type": "App Store search",
-        "Page Type": "Product page",
+        "Page Type": "No page",
         "Pre-Order": ""
       }
     },
@@ -164,16 +162,16 @@
     },
     "Self Speak": {
       "pending": false,
-      "installs": 2,
+      "installs": 1,
       "daily_count": 1,
       "daily_sample": {
-        "2026-10-16": 2
+        "2026-10-18": 1
       },
       "instance_states": [
         {
-          "id": "ad4dc598-37d0-447f-9941-4fed59971705",
+          "id": "81d16ddc-299a-426a-a676-2702702ca5eb",
           "gran": "DAILY",
-          "processingDate": "2026-10-18",
+          "processingDate": "2026-10-19",
           "report_id": "r3-bb5670e3-0394-4a92-aeb8-325e2d3c6683",
           "report_type": "?",
           "all_attr_keys": [
@@ -182,7 +180,7 @@
           ],
           "segments_http": 200,
           "segments_count": 1,
-          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"a475adac-19a8-4eed-a0b4-fe94cd908cce\",\n    \"attributes\" : {\n      \"checksum\" : \"d13422d070bf25e38141d6b67498f1ae\",\n      \"sizeInBytes\" : 251,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6504500031/aa_downloads/daily/ongoing/20261018/1792318370540/6rj63ogaf5fhb.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226504500031_App%20Downloads%20Standard_Daily_2026-10-18_a475adac-19a8-4eed-a0"
+          "segments_body": "{\n  \"data\" : [ {\n    \"type\" : \"analyticsReportSegments\",\n    \"id\" : \"25838953-1fba-43a2-8f7b-21546f9ff2d4\",\n    \"attributes\" : {\n      \"checksum\" : \"277db81b97668fe3e1083b4b917cb6f6\",\n      \"sizeInBytes\" : 236,\n      \"url\" : \"https://asp-us-west-2.s3.us-west-2.amazonaws.com/reports/6504500031/aa_downloads/daily/ongoing/20261019/1792405012560/5e97fe0d1pisf.csv.gz?response-content-disposition=attachment%3B%20filename%3D%226504500031_App%20Downloads%20Standard_Daily_2026-10-19_25838953-1fba-43a2-8f"
         }
       ],
       "tsv_columns": [
